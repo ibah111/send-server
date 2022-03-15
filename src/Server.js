@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize";
 import Fastify from "fastify";
-import sequelizeHierarchy from "@motivation/sequelize-hierarchy";
 import FastifyCors from "fastify-cors";
 import models from "./models";
 import pages from "./pages";
@@ -9,16 +8,36 @@ import ServerCheck from "./utils/server_check";
 const fastify = Fastify({
   logger: true,
 });
+const demo = true;
 fastify.register(FastifyCors);
-sequelizeHierarchy(Sequelize);
-const sql = new Sequelize({
-  dialect: "sqlite",
-  storage: "database.db",
-});
-models(sql);
+const sql = {
+  local: new Sequelize({
+    dialect: "sqlite",
+    storage: "database.db",
+  }),
+};
+const migrates = { local: models(sql.local, "local") };
 pages(fastify, sql);
 const start = async () => {
-  await sql.sync();
+  await sql.local.sync();
+  for (const model of migrates.local) {
+    if (model.migrate) {
+      await model.migrate(sql.local);
+    }
+  }
+  if (demo) {
+    for (const model of migrates.local) {
+      if (model.demo) {
+        await model.demo(sql.local);
+      }
+    }
+  } else {
+    for (const model of migrates.local) {
+      if (model.production) {
+        await model.production(sql.local);
+      }
+    }
+  }
   ServerCheck();
   await fastify.listen(client("httpPort"), "0.0.0.0");
 };

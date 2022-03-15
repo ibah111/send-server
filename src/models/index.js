@@ -1,4 +1,13 @@
-const models = [];
+import * as Group from "./Group";
+import * as PermitRight from "./PermitRight";
+import * as Right from "./Right";
+import * as User from "./User";
+const models = [
+  Group,
+  Right,
+  User,
+  PermitRight,
+];
 export default (sequelize) => {
   models.forEach((model) => {
     if (model.model) {

@@ -56,7 +56,7 @@ export const request = async (token) => {
 export default async (req, sql) => {
   const loged = await request(req?.body?.token);
   if (loged?.login_result) {
-    return true;
+    return await sql.local.models.User.findOne({ where: { bitrix_id: loged.id } });
   } else {
     return false;
   }
