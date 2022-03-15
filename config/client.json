@@ -1,0 +1,1 @@
+{ "version": "0.0.1", "httpPort": 3001, "wsPort": 3002, "demo":true }
