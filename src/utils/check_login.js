@@ -49,9 +49,14 @@ export const request = async (token) => {
     return result.data;
   }
 };
+/** 
+ * @typedef {Object} Sql
+ * @property {import("sequelize").Sequelize} Sql.local
+ * @property {import("sequelize").Sequelize} Sql.contact
+ */
 /**
  * @param {(import("fastify").FastifyRequest} req
- * @param {import("sequelize").Sequelize} sql
+ * @param {Sql} sql
  */
 export default async (req, sql) => {
   const loged = await request(req?.body?.token);

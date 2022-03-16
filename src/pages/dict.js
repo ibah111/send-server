@@ -15,7 +15,7 @@ export const call = (fastify, sql) => {
    */
   return async (req, res) => {
     const body = req.body;
-    return "Ok";
+    return sql.contact.models.find
   };
 };
-export const name = "login";
+export const name = "dict";

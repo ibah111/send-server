@@ -1,9 +1,17 @@
 import checkLogin from "../utils/check_login";
 import * as login from "./login";
-const pages = [login];
+import * as dict from "./dict";
+const pages = [login, dict];
+
+/** 
+ * @typedef {Object} Sql
+ * @property {import("sequelize").Sequelize} Sql.local
+ * @property {import("sequelize").Sequelize} Sql.contact
+ */
+
 /**
  * @param {import("fastify").FastifyInstance} fastify
- * @param {import("sequelize").Sequelize} sql
+ * @param {Sql} sql
  */
 export default (fastify, sql) => {
   pages.forEach((page) => {
