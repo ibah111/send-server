@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import dtypes from "./utils/types";
 import Fastify from "fastify";
 import FastifyCors from "fastify-cors";
 import models from "./models";
@@ -10,16 +11,28 @@ const fastify = Fastify({
 });
 const demo = true;
 fastify.register(FastifyCors);
+const types = () => {
+  Object.values(dtypes).forEach((value) => value(Sequelize));
+};
+types();
 const sql = {
   local: new Sequelize({
     dialect: "sqlite",
     storage: "database.db",
   }),
+  contact: new Sequelize("i_collect_test", "contact", "contact", {
+    host: "newct.usb.ru",
+    dialect: "mssql",
+  }),
 };
-const migrates = { local: models(sql.local, "local") };
+const migrates = {
+  local: models(sql.local, "local"),
+  contact: models(sql.contact, "contact"),
+};
 pages(fastify, sql);
 const start = async () => {
   await sql.local.sync();
+  await sql.contact.sync();
   for (const model of migrates.local) {
     if (model.migrate) {
       await model.migrate(sql.local);
