@@ -1,7 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import { asoc } from "../utils/asoc";
-import server from "../utils/server";
-import axios from "axios";
+import { asoc } from "../../utils/asoc";
 export const model = (sequelize) => {
   class model extends Model {}
   model.init(
