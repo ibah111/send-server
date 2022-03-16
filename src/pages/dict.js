@@ -1,4 +1,4 @@
-/** 
+/**
  * @typedef {Object} Sql
  * @property {import("sequelize").Sequelize} Sql.local
  * @property {import("sequelize").Sequelize} Sql.contact
@@ -15,7 +15,7 @@ export const call = (fastify, sql) => {
    */
   return async (req, res) => {
     const body = req.body;
-    return sql.contact.models.find
+    return await sql.contact.models.findAll({ where: { parent_id: body.id } });
   };
 };
 export const name = "dict";
