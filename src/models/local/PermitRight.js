@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import { asoc } from "../utils/asoc";
+import { asoc } from "../../utils/asoc";
 export const model = (sequelize) => {
   class model extends Model {}
   model.init(
