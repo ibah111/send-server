@@ -1,7 +1,6 @@
 import * as Dict from "./Dict";
-const models = [
-  Dict
-];
+import * as LawCourt from "./LawCourt";
+const models = [Dict, LawCourt];
 export default (sequelize) => {
   models.forEach((model) => {
     if (model.model) {
