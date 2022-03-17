@@ -1,4 +1,5 @@
 import { DataTypes, Model } from "sequelize";
+export const name = "LawCourt";
 export const model = (sequelize) => {
   class model extends Model {}
   model.init(
