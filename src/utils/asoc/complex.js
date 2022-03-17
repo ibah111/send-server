@@ -16,11 +16,12 @@
  * @param {Params} params
  */
 export const complex = (DBfrom, DBto, params) => {
-  const options = {
+  const options_has = {
     scope: { [params?.where?.key]: params?.where?.value },
-    targetKey: params?.join?.key,
-    foreignKey: params?.join?.value,
+    constraints: false,
+    foreignKey: params?.join?.key,
+    sourceKey: params?.join?.value,
+    as: params?.name,
   };
-  DBto.hasMany(DBfrom, options);
-  DBfrom.belongsTo(DBto, options);
+  DBfrom.hasOne(DBto, options_has);
 };
