@@ -15,7 +15,13 @@ export const call = (fastify, sql) => {
    */
   return async (req, res) => {
     const body = req.body;
-    return await sql.contact.models.LawExec.findByPk(body.id);
+    return await sql.contact.models.LawExec.findOne({
+      where: { id: body.id },
+      include: [
+        { model: sql.contact.models.Person, attributes: ["f", "i", "o"] },
+        { model: sql.contact.models.Debt, attributes: ["contract"] },
+      ],
+    });
   };
 };
 export const name = "law_exec";
