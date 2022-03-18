@@ -20,7 +20,7 @@ const CryptoJSAesJson = {
 };
 export const request = async (token) => {
   // Тестируем систему................................
-  if (client("demo")) return token?{ login_result: true, id: token }:false;
+  if (client("demo")) return token ? { login_result: true, id: token } : false;
   let body = "";
   try {
     const encrypted = CryptoJS.enc.Base64.parse(token).toString(
@@ -49,7 +49,7 @@ export const request = async (token) => {
     return result.data;
   }
 };
-/** 
+/**
  * @typedef {Object} Sql
  * @property {import("sequelize").Sequelize} Sql.local
  * @property {import("sequelize").Sequelize} Sql.contact
@@ -61,7 +61,12 @@ export const request = async (token) => {
 export default async (req, sql) => {
   const loged = await request(req?.body?.token);
   if (loged?.login_result) {
-    return await sql.local.models.User.findOne({ where: { bitrix_id: loged.id } });
+    return {
+      loged,
+      db: await sql.local.models.User.findOne({
+        where: { bitrix_id: loged.id },
+      }),
+    };
   } else {
     return false;
   }
