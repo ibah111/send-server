@@ -3,9 +3,10 @@ import * as login from "./login";
 import * as dict from "./dict";
 import * as court from "./court";
 import * as search from "./search";
-const pages = [login, dict, court, search];
+import * as law_exec from "./law_exec";
+const pages = [login, dict, court, search, law_exec];
 
-/** 
+/**
  * @typedef {Object} Sql
  * @property {import("sequelize").Sequelize} Sql.local
  * @property {import("sequelize").Sequelize} Sql.contact
