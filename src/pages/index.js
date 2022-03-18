@@ -2,7 +2,8 @@ import checkLogin from "../utils/check_login";
 import * as login from "./login";
 import * as dict from "./dict";
 import * as court from "./court";
-const pages = [login, dict, court];
+import * as search from "./search";
+const pages = [login, dict, court, search];
 
 /** 
  * @typedef {Object} Sql
