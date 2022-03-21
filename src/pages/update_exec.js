@@ -106,17 +106,19 @@ export const call = (fastify, sql) => {
         le[value] = g(body[value]);
       }
       const changes = le.changed();
-      for (const change of changes) {
-        await le.createLawExecProtokol({
-          r_user_id: OpUser.id,
-          typ: 2,
-          dsc: `${t(change)}. Старое значение: ${await h(
-            change,
-            le.previous(change)
-          )}. Новое значение: ${await h(change, le[change])}.`,
-        });
+      if (changes) {
+        for (const change of changes) {
+          await le.createLawExecProtokol({
+            r_user_id: OpUser.id,
+            typ: 2,
+            dsc: `${t(change)}. Старое значение: ${await h(
+              change,
+              le.previous(change)
+            )}. Новое значение: ${await h(change, le[change])}.`,
+          });
+        }
+        await le.save();
       }
-      await le.save();
       return true;
     } else {
       return false;
