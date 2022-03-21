@@ -6,7 +6,17 @@ import * as search from "./search";
 import * as search_la from "./search_la";
 import * as law_exec from "./law_exec";
 import * as create_exec from "./create_exec";
-const pages = [login, dict, court, search, law_exec, search_la, create_exec];
+import * as update_exec from "./update_exec";
+const pages = [
+  login,
+  dict,
+  court,
+  search,
+  law_exec,
+  search_la,
+  create_exec,
+  update_exec,
+];
 
 /**
  * @typedef {Object} Sql
