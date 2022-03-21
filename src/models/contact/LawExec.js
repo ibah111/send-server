@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import { asoc } from "../../utils/asoc";
-import moment from "moment";
 export const name = "LawExec";
 /**
  *

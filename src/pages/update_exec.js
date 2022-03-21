@@ -29,16 +29,6 @@ const t = (value) => {
   if (translate[value]) return translate[value];
   return "Не определено";
 };
-const g = (value) => {
-  switch (value) {
-    case "":
-      return null;
-    case 0:
-      return null;
-    default:
-      return value;
-  }
-};
 /**
  * @typedef {Object} Sql
  * @property {import("sequelize").Sequelize} Sql.local
@@ -103,7 +93,7 @@ export const call = (fastify, sql) => {
     if (OpUser !== null) {
       const le = await sql.contact.models.LawExec.findByPk(body.id);
       for (const value of data) {
-        le[value] = g(body[value]);
+        le[value] = body[value];
       }
       const changes = le.changed();
       if (changes) {

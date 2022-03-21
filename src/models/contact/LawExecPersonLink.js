@@ -1,6 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { asoc } from "../../utils/asoc";
-export const name = "LawExecProtokol";
+export const name = "LawExecPersonLink";
 /**
  *
  * @param {@param {import("sequelize").Sequelize} sequelize} sequelize
