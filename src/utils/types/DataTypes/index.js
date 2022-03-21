@@ -1,4 +1,9 @@
 //export {default as BASE} from "./BASE";
-export {default as MONEY} from "./MONEY";
-export {default as NUMERIC} from "./NUMERIC";
-export {default as VARCHAR} from "./VARCHAR";
+import { default as MONEY } from "./MONEY";
+import { default as NUMERIC } from "./NUMERIC";
+import { default as VARCHAR } from "./VARCHAR";
+export default function Types(Sequelize) {
+  MONEY(Sequelize);
+  NUMERIC(Sequelize);
+  VARCHAR(Sequelize);
+}

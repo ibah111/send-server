@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import dtypes from "./utils/types";
+import types from "./utils/types";
 import Fastify from "fastify";
 import FastifyCors from "fastify-cors";
 import models from "./models";
@@ -11,10 +11,7 @@ const fastify = Fastify({
 });
 const demo = true;
 fastify.register(FastifyCors);
-const types = () => {
-  Object.values(dtypes).forEach((value) => value(Sequelize));
-};
-types();
+types(Sequelize);
 const sql = {
   local: new Sequelize({
     dialect: "sqlite",
