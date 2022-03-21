@@ -5,7 +5,23 @@ import * as Debt from "./Debt";
 import * as LawCourt from "./LawCourt";
 import * as LawAct from "./LawAct";
 import * as LawExec from "./LawExec";
-const models = [Dict, Portfolio, Person, Debt, LawCourt, LawAct, LawExec];
+import * as User from "./User";
+import * as WorkTask from "./WorkTask";
+import * as LawExecProtokol from "./LawExecProtokol";
+import * as LawExecPersonLink from "./LawExecPersonLink";
+const models = [
+  Dict,
+  User,
+  Portfolio,
+  Person,
+  Debt,
+  WorkTask,
+  LawCourt,
+  LawAct,
+  LawExec,
+  LawExecProtokol,
+  LawExecPersonLink
+];
 export default (sequelize) => {
   models.forEach((model) => {
     if (model.model) {

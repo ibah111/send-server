@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { asoc } from "../../utils/asoc";
+import moment from "moment";
 export const name = "LawExec";
 /**
  *
@@ -44,7 +45,9 @@ export const model = (sequelize) => {
       typ_name: { type: DataTypes.INTEGER },
       due_sum: { type: DataTypes.MONEY },
       uncollectibility_act: { type: DataTypes.VARCHAR(64) },
-      load_dt: { type: DataTypes.DATE },
+      load_dt: {
+        type: DataTypes.DATE,
+      },
       receipt_act_dt: { type: DataTypes.DATE },
       executive_typ: { type: DataTypes.INTEGER },
       entry_force_dt: { type: DataTypes.DATE },
@@ -74,6 +77,7 @@ export const model = (sequelize) => {
       modelName: "LawExec",
       tableName: "law_exec",
       createdAt: "load_dt",
+      hasTrigger: true,
       updatedAt: false,
     }
   );

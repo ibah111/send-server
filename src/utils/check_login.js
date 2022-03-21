@@ -20,7 +20,10 @@ const CryptoJSAesJson = {
 };
 export const request = async (token) => {
   // Тестируем систему................................
-  if (client("demo")) return token ? { login_result: true, id: token } : false;
+  if (client("demo"))
+    return token
+      ? { login_result: true, id: token, login: "smorkalov@zakon43.ru" }
+      : false;
   let body = "";
   try {
     const encrypted = CryptoJS.enc.Base64.parse(token).toString(
