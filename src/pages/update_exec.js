@@ -1,4 +1,6 @@
 import moment from "moment";
+import download from "../utils/download";
+import help from "../utils/help";
 const data = [
   "total_sum",
   "load_dt",
@@ -10,9 +12,9 @@ const data = [
   "receipt_recover_dt",
   "fssp_date",
   "r_court_id",
-  "dsc",
 ];
 const translate = {
+  state: "Статус",
   total_sum: "Общая сумма",
   load_dt: "Дата создания ИП",
   court_doc_num: "№ исп. документа",
@@ -39,47 +41,8 @@ const t = (value) => {
  * @param {Sql} sql
  */
 export const call = (fastify, sql) => {
-  const h = async (typ, value) => {
-    switch (typ) {
-      case "load_dt":
-        if (value) return moment(value).format("DD.MM.YYYY");
-        return value;
-      case "executive_typ":
-        if (value)
-          return (
-            await sql.contact.models.Dict.findOne({
-              where: { parent_id: 124, code: value },
-            })
-          ).name;
-        return value;
-      case "court_date":
-        if (value) return moment(value).format("DD.MM.YYYY");
-        return value;
-      case "DELIVERY_TYP":
-        if (value)
-          return (
-            await sql.contact.models.Dict.findOne({
-              where: { parent_id: 16, code: value },
-            })
-          ).name;
-        return value;
-      case "entry_force_dt":
-        if (value) return moment(value).format("DD.MM.YYYY");
-        return value;
-      case "receipt_recover_dt":
-        if (value) return moment(value).format("DD.MM.YYYY");
-        return value;
-      case "fssp_date":
-        if (value) return moment(value).format("DD.MM.YYYY");
-        return value;
-      case "r_court_id":
-        if (value)
-          return (await sql.contact.models.LawCourt.findByPk(value)).name;
-        return value;
-      default:
-        return value;
-    }
-  };
+  const downloadFile = download(sql);
+  const h = help(sql);
   /**
    *
    * @param {import("fastify").FastifyRequest} req
@@ -97,19 +60,103 @@ export const call = (fastify, sql) => {
       }
       const changes = le.changed();
       if (changes) {
-        for (const change of changes) {
-          await le.createLawExecProtokol({
+        le.state = 9;
+        const new_dsc = `${moment().format("DD.MM.YYYY")} Сопровод к ИД ${
+          le.court_doc_num
+        } ${await h("executive_typ", le.executive_typ)} ${moment(
+          le.court_date
+        ).format("DD.MM.YYYY")}`;
+        if (le.dsc === 'Создается ИП из "Отправка"') {
+          le.dsc = new_dsc;
+        } else {
+          if (le.dsc) le.dsc = "";
+          le.dsc += "\r\n" + new_dsc;
+        }
+        const la = await le.getLawAct();
+        if (la !== null) {
+          if (la.typ !== 1) {
+            la.act_status = 13;
+          } else {
+            la.status = 9;
+          }
+          await la.save();
+          await la.createLawActProtokol({
             r_user_id: OpUser.id,
-            typ: 2,
-            dsc: `${t(change)}. Старое значение: ${await h(
-              change,
-              le.previous(change)
-            )}. Новое значение: ${await h(change, le[change])}.`,
+            typ: 36,
+            dsc: `Перевод исполнительного документа на исполнительное производство. ID исп. док-та = ${le.id}`,
           });
         }
+        const changes = le.changed();
+
+        const doc_name = `Сопровод к ИД ${le.court_doc_num.replaceAll("\\","-").replaceAll("/","-")} ${await h(
+          "executive_typ",
+          le.executive_typ
+        )} ${moment(le.court_date).format("DD.MM.YYYY")}.pdf`;
+        const data = await downloadFile(OpUser, le, doc_name);
+        const doc = await sql.contact.models.DocAttach.create(data.sql);
+        await le.createLawExecProtokol({
+          r_user_id: OpUser.id,
+          typ: 8,
+          r_doc_attach_id: doc.id,
+          dsc: `Вложение: ${doc.name}`,
+        });
+        for (const change of changes) {
+          switch (change) {
+            case "r_court_id":
+              await le.createLawExecProtokol({
+                r_user_id: OpUser.id,
+                typ: 62,
+                dsc: `${t(change)}. Новое значение: "${await h(
+                  change,
+                  le[change]
+                )}". Старое значение: "${await h(
+                  change,
+                  le.previous(change)
+                )}".`,
+              });
+              break;
+            case "state":
+              switch (le.previous(change)) {
+                case 13:
+                  await le.createLawExecProtokol({
+                    r_user_id: OpUser.id,
+                    typ: 30,
+                    dsc: `Перевод исполнительного документа на исполнительное производство`,
+                  });
+                  break;
+                default:
+                  await le.createLawExecProtokol({
+                    r_user_id: OpUser.id,
+                    typ: 2,
+                    dsc: `${t(change)}. Новое значение: "${await h(
+                      change,
+                      le[change]
+                    )}". Старое значение: "${await h(
+                      change,
+                      le.previous(change)
+                    )}".`,
+                  });
+                  break;
+              }
+              break;
+            default:
+              await le.createLawExecProtokol({
+                r_user_id: OpUser.id,
+                typ: 2,
+                dsc: `${t(change)}. Новое значение: "${await h(
+                  change,
+                  le[change]
+                )}". Старое значение: "${await h(
+                  change,
+                  le.previous(change)
+                )}".`,
+              });
+              break;
+          }
+        }
         await le.save();
+        return data.data;
       }
-      return true;
     } else {
       return false;
     }

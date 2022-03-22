@@ -9,7 +9,11 @@ import * as User from "./User";
 import * as WorkTask from "./WorkTask";
 import * as LawExecProtokol from "./LawExecProtokol";
 import * as LawExecPersonLink from "./LawExecPersonLink";
+import * as LawActProtokol from "./LawActProtokol";
+import * as DocAttach from "./DocAttach";
+import * as ConstValue from "./ConstValue";
 const models = [
+  ConstValue,
   Dict,
   User,
   Portfolio,
@@ -18,9 +22,11 @@ const models = [
   WorkTask,
   LawCourt,
   LawAct,
+  LawActProtokol,
   LawExec,
   LawExecProtokol,
-  LawExecPersonLink
+  LawExecPersonLink,
+  DocAttach,
 ];
 export default (sequelize) => {
   models.forEach((model) => {

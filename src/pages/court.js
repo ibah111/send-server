@@ -20,7 +20,7 @@ export const call = (fastify, sql) => {
     if (body.id) where = { id: body.id };
     if (body.name) where = { name: { [Op.like]: `%${body.name}%` } };
     return await sql.contact.models.LawCourt.findAll({
-      where: where,
+      where: { typ: 2, ...where },
       attributes: ["id", "name", "address"],
       limit: 25,
     });
