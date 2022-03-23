@@ -98,14 +98,6 @@ export const call = (fastify, sql) => {
           "executive_typ",
           le.executive_typ
         )} ${moment(le.court_date).format("DD.MM.YYYY")}.pdf`;
-        const data = await downloadFile(OpUser, le, doc_name);
-        const doc = await sql.contact.models.DocAttach.create(data.sql);
-        await le.createLawExecProtokol({
-          r_user_id: OpUser.id,
-          typ: 8,
-          r_doc_attach_id: doc.id,
-          dsc: `Вложение: ${doc.name}`,
-        });
         for (const change of changes) {
           switch (change) {
             case "r_court_id":
@@ -160,6 +152,14 @@ export const call = (fastify, sql) => {
               break;
           }
         }
+        const data = await downloadFile(OpUser, le, doc_name);
+        const doc = await sql.contact.models.DocAttach.create(data.sql);
+        await le.createLawExecProtokol({
+          r_user_id: OpUser.id,
+          typ: 8,
+          r_doc_attach_id: doc.id,
+          dsc: `Вложение: ${doc.name}`,
+        });
         await le.save();
         return { file: data.file.data, name: data.sql.name };
       }
