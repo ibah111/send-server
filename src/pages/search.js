@@ -18,7 +18,7 @@ export const call = (fastify, sql) => {
     const body = req.body;
     const result = await sql.contact.models.LawExec.findAll({
       raw: true,
-      where: { state: 13 },
+      where: { state: 13, fssp_doc_num: { [Op.or]: [null, ""] } },
       attributes: ["id", "court_doc_num", "executive_typ", "court_date"],
       include: [
         {
