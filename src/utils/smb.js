@@ -3,7 +3,7 @@ import config from "../../config/smb" assert { type: "json" };
 let smb = null;
 const create_smb = () =>
   new SMB2({
-    share: "\\\\newct\\Luxbase",
+    share: "\\\\newct.usb.ru\\Luxbase",
     domain: config.domain,
     username: config.username,
     password: config.password,

@@ -19,6 +19,12 @@ export const call = (fastify, sql) => {
     const result = await sql.contact.models.LawAct.findAll({
       raw: true,
       attributes: ["id", "typ"],
+      where: {
+        [Op.or]: [
+          { status: { [Op.notIn]: [10] }, typ: { [Op.in]: [1] } },
+          { act_status: { [Op.notIn]: [15] }, typ: { [Op.in]: [0, 2, 3, 4] } },
+        ],
+      },
       include: [
         {
           model: sql.contact.models.Dict,
@@ -64,7 +70,10 @@ export const call = (fastify, sql) => {
         {
           model: sql.contact.models.Debt,
           attributes: ["id", "contract", "debt_sum"],
-          where: body.contract ? { contract: body.contract } : {},
+          where: {
+            status: { [Op.notIn]: [7] },
+            ...(body.contract ? { contract: body.contract } : {}),
+          },
           include: {
             model: sql.contact.models.Dict,
             as: "Status",
