@@ -69,7 +69,7 @@ export const call = (fastify, sql) => {
         if (le.dsc === 'Создается ИП из "Отправка"') {
           le.dsc = new_dsc;
         } else {
-          if (le.dsc) le.dsc = "";
+          if (!le.dsc) le.dsc = "";
           le.dsc += "\r\n" + new_dsc;
         }
         const la = await le.getLawAct();
@@ -155,7 +155,7 @@ export const call = (fastify, sql) => {
           }
         }
         await le.save();
-        return data.data;
+        return {file:data.file.data, name:data.sql.name};
       }
     } else {
       return false;

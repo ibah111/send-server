@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import types from "./utils/types";
 import Fastify from "fastify";
 import FastifyCors from "fastify-cors";
+import FastifyMultipart from "fastify-multipart";
 import models from "./models";
 import pages from "./pages";
 import client from "./utils/client";
@@ -11,6 +12,7 @@ const fastify = Fastify({
 });
 const demo = true;
 fastify.register(FastifyCors);
+fastify.register(FastifyMultipart)
 types(Sequelize);
 const sql = {
   local: new Sequelize({

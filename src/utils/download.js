@@ -2,15 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import smb from "./smb";
 import axios from "axios";
 import moment from "moment";
-function stream2buffer(stream) {
-  return new Promise((resolve, reject) => {
-    const _buf = [];
-
-    stream.on("data", (chunk) => _buf.push(chunk));
-    stream.on("end", () => resolve(Buffer.concat(_buf)));
-    stream.on("error", (err) => reject(err));
-  });
-}
 const uploadSmb = (doc_name, save_path, path, file, OpUser, id) =>
   new Promise((resolve, reject) => {
     const data = {
@@ -84,15 +75,15 @@ export default (sql) => async (OpUser, le, doc_name) => {
   const file = await axios({
     method: "get",
     url: `http://winapps.usb.ru/report=16.fr3&id=${le.id}&format=pdf`,
-    responseType: "stream",
+    responseType: "arraybuffer",
   });
   const data = await uploadSmb(
     doc_name,
     save_path,
     path,
-    await stream2buffer(file.data),
+    file.data,
     OpUser,
     le.id
   );
-  return { data: file.data, sql: data };
+  return { file: file, sql: data };
 };
