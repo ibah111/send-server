@@ -7,6 +7,7 @@ import * as search_la from "./search_la";
 import * as law_exec from "./law_exec";
 import * as create_exec from "./create_exec";
 import * as update_exec from "./update_exec";
+import * as delete_exec from "./delete_exec";
 const pages = [
   login,
   dict,
@@ -16,6 +17,7 @@ const pages = [
   search_la,
   create_exec,
   update_exec,
+  delete_exec,
 ];
 
 /**

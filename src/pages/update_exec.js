@@ -152,6 +152,7 @@ export const call = (fastify, sql) => {
               break;
           }
         }
+        await le.save();
         const data = await downloadFile(OpUser, le, doc_name);
         const doc = await sql.contact.models.DocAttach.create(data.sql);
         await le.createLawExecProtokol({
@@ -160,7 +161,6 @@ export const call = (fastify, sql) => {
           r_doc_attach_id: doc.id,
           dsc: `Вложение: ${doc.name}`,
         });
-        await le.save();
         return { file: data.file.data, name: data.sql.name };
       }
     } else {

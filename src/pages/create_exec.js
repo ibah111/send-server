@@ -36,6 +36,7 @@ export const call = (fastify, sql) => {
           DELIVERY_TYP: 3,
           contract: debt.contract,
           currency: 1,
+          ...body.old,
           dsc: 'Создается ИП из "Отправка"',
         });
         await le.createLawExecPersonLink({ PERSON_ID: la.r_person_id });
