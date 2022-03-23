@@ -69,8 +69,12 @@ export const call = (fastify, sql) => {
         if (le.dsc === 'Создается ИП из "Отправка"') {
           le.dsc = new_dsc;
         } else {
-          if (!le.dsc) le.dsc = "";
-          le.dsc += "\r\n" + new_dsc;
+          if (!le.dsc) {
+            le.dsc = "";
+          } else {
+            le.dsc += "\r\n";
+          }
+          le.dsc += new_dsc;
         }
         const la = await le.getLawAct();
         if (la !== null) {
@@ -88,7 +92,9 @@ export const call = (fastify, sql) => {
         }
         const changes = le.changed();
 
-        const doc_name = `Сопровод к ИД ${le.court_doc_num.replaceAll("\\","-").replaceAll("/","-")} ${await h(
+        const doc_name = `Сопровод к ИД ${le.court_doc_num
+          .replaceAll("\\", "-")
+          .replaceAll("/", "-")} ${await h(
           "executive_typ",
           le.executive_typ
         )} ${moment(le.court_date).format("DD.MM.YYYY")}.pdf`;
@@ -155,7 +161,7 @@ export const call = (fastify, sql) => {
           }
         }
         await le.save();
-        return {file:data.file.data, name:data.sql.name};
+        return { file: data.file.data, name: data.sql.name };
       }
     } else {
       return false;
