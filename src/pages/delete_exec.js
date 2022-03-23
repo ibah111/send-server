@@ -22,7 +22,7 @@ export const call = (fastify, sql) => {
     if (OpUser !== null) {
       const le = await sql.contact.models.LawExec.findByPk(body.id);
       if (le !== null) {
-        le.status = 6;
+        le.state = 6;
         le.save();
         await le.createLawExecProtokol({
           r_user_id: OpUser.id,

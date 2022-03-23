@@ -25,6 +25,7 @@ export const call = (fastify, sql) => {
         "executive_typ",
         "fssp_doc_num",
         "court_date",
+        "entry_force_dt",
       ],
       include: [
         {
