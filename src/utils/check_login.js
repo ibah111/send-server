@@ -66,9 +66,9 @@ export default async (req, sql) => {
   if (loged?.login_result) {
     return {
       loged,
-      db: await sql.local.models.User.findOne({
+      /*db: await sql.local.models.User.findOne({
         where: { bitrix_id: loged.id },
-      }),
+      }),*/
     };
   } else {
     return false;
