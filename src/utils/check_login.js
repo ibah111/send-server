@@ -64,12 +64,19 @@ export const request = async (token) => {
 export default async (req, sql) => {
   const loged = await request(req?.body?.token);
   if (loged?.login_result) {
-    return {
-      loged,
-      /*db: await sql.local.models.User.findOne({
+    const OpUser = await sql.contact.models.User.findOne({
+      where: { email: loged.login },
+    });
+    if (OpUser) {
+      return {
+        loged,
+        /*db: await sql.local.models.User.findOne({
         where: { bitrix_id: loged.id },
       }),*/
-    };
+      };
+    } else {
+      return false;
+    }
   } else {
     return false;
   }
