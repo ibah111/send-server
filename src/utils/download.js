@@ -74,7 +74,7 @@ export default (sql) => async (OpUser, le, doc_name) => {
   ).value;
   const file = await axios({
     method: "get",
-    url: `http://winapps.usb.ru/report=16.fr3&id=${le.id}&format=pdf`,
+    url: `${server("fastreport")}/report=16.fr3&id=${le.id}&format=pdf`,
     responseType: "arraybuffer",
   });
   const data = await uploadSmb(

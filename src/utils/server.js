@@ -4,6 +4,8 @@ export default (name = "url") => {
   switch (name) {
     case "token":
       return config.token;
+    case "fastreport":
+      return config.fastreport;
     default:
       switch (config.protocol) {
         case "http":
@@ -16,6 +18,8 @@ export default (name = "url") => {
           prot = "http";
           break;
       }
-      return `${prot}://${config.server}${config.port==="80"?"":`:${config.port}`}`;
+      return `${prot}://${config.server}${
+        config.port === "80" ? "" : `:${config.port}`
+      }`;
   }
 };
