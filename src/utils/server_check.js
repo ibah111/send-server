@@ -1,7 +1,10 @@
 import client from "./client";
 import { Server } from "socket.io";
+import https from "./https";
+import { createServer } from "https";
 export default function ServerCheck() {
-  const io = new Server({
+  const httpServer = createServer(https);
+  const io = new Server(httpServer, {
     cors: {
       origin: "*",
     },
@@ -13,5 +16,5 @@ export default function ServerCheck() {
       }
     });
   });
-  io.listen(client("wsPort"));
+  httpServer.listen(client("wsPort"));
 }

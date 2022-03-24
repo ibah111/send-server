@@ -7,8 +7,9 @@ import models from "./models";
 import pages from "./pages";
 import client from "./utils/client";
 import ServerCheck from "./utils/server_check";
+import https from "./utils/https";
 const fastify = Fastify({
-  logger: true,
+  https,
 });
 const demo = true;
 fastify.register(FastifyCors);
