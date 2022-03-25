@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import smb from "./smb";
 import axios from "axios";
 import moment from "moment";
+import server from "./server";
 const uploadSmb = (doc_name, save_path, path, file, OpUser, id) =>
   new Promise((resolve, reject) => {
     const data = {
