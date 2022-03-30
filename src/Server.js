@@ -20,7 +20,7 @@ const sql = {
     dialect: "sqlite",
     storage: "database.db",
   }),
-  contact: new Sequelize("i_collect_test", "contact", "contact", {
+  contact: new Sequelize("i_collect", "contact", "contact", {
     host: "newct.usb.ru",
     dialect: "mssql",
   }),
