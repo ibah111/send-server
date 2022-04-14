@@ -1,4 +1,4 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model } from "@contact/sequelize";
 import { asoc } from "../../utils/asoc";
 export const name = "WorkTask";
 /**

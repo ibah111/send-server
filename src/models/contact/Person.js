@@ -1,4 +1,4 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model } from "@contact/sequelize";
 export const name = "Person";
 export const model = (sequelize) => {
   class model extends Model {}

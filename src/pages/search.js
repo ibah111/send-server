@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Op } from "@contact/sequelize";
 /**
  * @typedef {Object} Sql
  * @property {import("sequelize").Sequelize} Sql.local

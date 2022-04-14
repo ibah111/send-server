@@ -1,5 +1,4 @@
-import { Sequelize } from "sequelize";
-import types from "./utils/types";
+import { Sequelize } from "@contact/sequelize";
 import Fastify from "fastify";
 import FastifyCors from "fastify-cors";
 import FastifyMultipart from "fastify-multipart";
@@ -13,8 +12,7 @@ const fastify = Fastify({
 });
 const demo = true;
 fastify.register(FastifyCors);
-fastify.register(FastifyMultipart)
-types(Sequelize);
+fastify.register(FastifyMultipart);
 const sql = {
   local: new Sequelize({
     dialect: "sqlite",

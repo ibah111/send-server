@@ -213,6 +213,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@contact/sequelize@npm:^6.19.1":
+  version: 6.19.1
+  resolution: "@contact/sequelize@npm:6.19.1::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F54%2Fpackages%2Fnpm%2F%40contact%2Fsequelize%2F-%2F%40contact%2Fsequelize-6.19.1.tgz"
+  dependencies:
+    "@types/debug": ^4.1.7
+    "@types/validator": ^13.7.1
+    debug: ^4.3.3
+    dottie: ^2.0.2
+    inflection: ^1.13.2
+    lodash: ^4.17.21
+    moment: ^2.29.1
+    moment-timezone: ^0.5.34
+    pg-connection-string: ^2.5.0
+    retry-as-promised: ^5.0.0
+    semver: ^7.3.5
+    sequelize-pool: ^7.1.0
+    toposort-class: ^1.0.1
+    uuid: ^8.3.2
+    validator: ^13.7.0
+    wkx: ^0.5.0
+  checksum: 2f9a5b6978e7f15f6e6e7078f5553bd1e5c3cd03801a6b68d255e60903fdf2af9a03148eb30ad14d72d3db1f19c8a969aad6add71b7e0cae65c919e39db9d62b
+  languageName: node
+  linkType: hard
+
 "@eslint/eslintrc@npm:^1.2.1":
   version: 1.2.1
   resolution: "@eslint/eslintrc@npm:1.2.1"
@@ -2371,6 +2395,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "motivation_server@workspace:."
   dependencies:
+    "@contact/sequelize": ^6.19.1
     "@marsaud/smb2": ^0.18.0
     "@motivation/sequelize-hierarchy": ^2.0.4
     axios: ^0.26.1
@@ -2383,7 +2408,6 @@ __metadata:
     fastify-multipart: ^5.3.1
     moment: ^2.29.2
     prettier: ^2.6.2
-    sequelize: ^6.19.0
     socket.io: ^4.4.1
     sqlite3: ^5.0.2
     tedious: ^14.4.0
@@ -3110,47 +3134,6 @@ __metadata:
   version: 7.1.0
   resolution: "sequelize-pool@npm:7.1.0"
   checksum: b11d06d02de9e8fc428ba3020b86f05fe7adad764e57f23c5901f924e31867901a5e7a090180337dc3b90de3934b64f34ae552fde37b0f3d37b09c0c8ecbddc7
-  languageName: node
-  linkType: hard
-
-"sequelize@npm:^6.19.0":
-  version: 6.19.0
-  resolution: "sequelize@npm:6.19.0"
-  dependencies:
-    "@types/debug": ^4.1.7
-    "@types/validator": ^13.7.1
-    debug: ^4.3.3
-    dottie: ^2.0.2
-    inflection: ^1.13.2
-    lodash: ^4.17.21
-    moment: ^2.29.1
-    moment-timezone: ^0.5.34
-    pg-connection-string: ^2.5.0
-    retry-as-promised: ^5.0.0
-    semver: ^7.3.5
-    sequelize-pool: ^7.1.0
-    toposort-class: ^1.0.1
-    uuid: ^8.3.2
-    validator: ^13.7.0
-    wkx: ^0.5.0
-  peerDependenciesMeta:
-    ibm_db:
-      optional: true
-    mariadb:
-      optional: true
-    mysql2:
-      optional: true
-    pg:
-      optional: true
-    pg-hstore:
-      optional: true
-    snowflake-sdk:
-      optional: true
-    sqlite3:
-      optional: true
-    tedious:
-      optional: true
-  checksum: e1faa389fe8bf4e58f4781763d313e6a28b5cf8376f9c34ba6a6af9f158a309d8fa30277706bbee004caa8068a5f3030cf1620735a2d9f84a33f204ab2dae2f2
   languageName: node
   linkType: hard
 
