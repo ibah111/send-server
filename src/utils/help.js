@@ -1,8 +1,8 @@
 import moment from "moment";
 /**
  * @typedef {Object} Sql
- * @property {import("sequelize").Sequelize} Sql.local
- * @property {import("sequelize").Sequelize} Sql.contact
+ * @property {import("@contact/sequelize").Sequelize} Sql.local
+ * @property {import("@contact/sequelize").Sequelize} Sql.contact
  */
 /**
  * @param {Sql} sql

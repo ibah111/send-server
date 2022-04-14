@@ -2,7 +2,7 @@ import { simple } from "./simple";
 import { complex } from "./complex";
 import { polym } from "./polym";
 /**
- * @typedef {import("sequelize").ModelCtor<import("sequelize").Model<any, any>>} ModelK
+ * @typedef {import("@contact/sequelize").ModelCtor<import("@contact/sequelize").Model<any, any>>} ModelK
  */
 /**
  * @param {ModelK} DBfrom

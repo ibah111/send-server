@@ -3,7 +3,7 @@ import { asoc } from "../../utils/asoc";
 export const name = "LawExecPersonLink";
 /**
  *
- * @param {@param {import("sequelize").Sequelize} sequelize} sequelize
+ * @param {@param {import("@contact/sequelize").Sequelize} sequelize} sequelize
  */
 export const model = (sequelize) => {
   class model extends Model {}
@@ -27,7 +27,7 @@ export const model = (sequelize) => {
 };
 /**
  *
- * @param {import("sequelize").Sequelize} sequelize
+ * @param {import("@contact/sequelize").Sequelize} sequelize
  */
 export const join = (sequelize) => {
   asoc(

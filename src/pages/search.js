@@ -1,8 +1,8 @@
 import { Op } from "@contact/sequelize";
 /**
  * @typedef {Object} Sql
- * @property {import("sequelize").Sequelize} Sql.local
- * @property {import("sequelize").Sequelize} Sql.contact
+ * @property {import("@contact/sequelize").Sequelize} Sql.local
+ * @property {import("@contact/sequelize").Sequelize} Sql.contact
  */
 /**
  * @param {import("fastify").FastifyInstance} fastify

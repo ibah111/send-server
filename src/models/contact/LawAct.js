@@ -93,7 +93,7 @@ export const model = (sequelize) => {
 };
 /**
  *
- * @param {import("sequelize").Sequelize} sequelize
+ * @param {import("@contact/sequelize").Sequelize} sequelize
  */
 export const join = (sequelize) => {
   asoc(sequelize.models.LawAct, sequelize.models.Debt, "r_debt_id");

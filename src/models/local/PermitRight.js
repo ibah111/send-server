@@ -31,7 +31,7 @@ export const model = (sequelize) => {
 };
 /**
  *
- * @param {import("sequelize").Sequelize} sequelize
+ * @param {import("@contact/sequelize").Sequelize} sequelize
  */
 export const join = (sequelize) => {
   asoc(sequelize.models.PermitRight, sequelize.models.Right, "right");

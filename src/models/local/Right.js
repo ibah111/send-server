@@ -22,14 +22,14 @@ export const model = (sequelize) => {
 };
 /**
  *
- * @param {import("sequelize").Sequelize} sequelize
+ * @param {import("@contact/sequelize").Sequelize} sequelize
  */
 export const join = (sequelize) => {};
 export const migrator = {
   name: "Right",
   /**
    *
-   * @param {import("sequelize").Sequelize} sequelize
+   * @param {import("@contact/sequelize").Sequelize} sequelize
    */
   migrate: async (sequelize) => {
     const data = [
