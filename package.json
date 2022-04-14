@@ -15,7 +15,7 @@
   "devDependencies": {
     "@contact/sequelize": "^6.19.1",
     "@marsaud/smb2": "^0.18.0",
-    "@motivation/sequelize-hierarchy": "^2.0.4",
+    "@motivation/sequelize-hierarchy": "^2.0.5",
     "axios": "^0.26.1",
     "cron": "^1.8.2",
     "cross-env": "^7.0.3",

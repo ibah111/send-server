@@ -314,15 +314,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@motivation/sequelize-hierarchy@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "@motivation/sequelize-hierarchy@npm:2.0.4::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F41%2Fpackages%2Fnpm%2F%40motivation%2Fsequelize-hierarchy%2F-%2F%40motivation%2Fsequelize-hierarchy-2.0.4.tgz"
+"@motivation/sequelize-hierarchy@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "@motivation/sequelize-hierarchy@npm:2.0.5::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F41%2Fpackages%2Fnpm%2F%40motivation%2Fsequelize-hierarchy%2F-%2F%40motivation%2Fsequelize-hierarchy-2.0.5.tgz"
   dependencies:
     bluebird: ^3.7.2
     is-generator: ^1.0.3
-    lodash: ^4.17.11
+    lodash: ^4.17.21
     semver-select: ^1.1.0
-  checksum: 8e4852a169ecb05b0308fa7b54f95ced8033618bc2c6568cb5370fdbcb0db14184dee6ca43a6de9221d9181b248c31458546303582beffe3500891822faf868e
+  checksum: 63c62eb006c9bb333d13c3813df2f19c4fc775c009a2b1659294c530385435d1e4cfd2c20c9768bd8c7cef1056297be7004f96ed43e8e2b5cd2edabf6ae864cc
   languageName: node
   linkType: hard
 
@@ -2187,7 +2187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.11, lodash@npm:^4.17.21":
+"lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -2397,7 +2397,7 @@ __metadata:
   dependencies:
     "@contact/sequelize": ^6.19.1
     "@marsaud/smb2": ^0.18.0
-    "@motivation/sequelize-hierarchy": ^2.0.4
+    "@motivation/sequelize-hierarchy": ^2.0.5
     axios: ^0.26.1
     cron: ^1.8.2
     cross-env: ^7.0.3
