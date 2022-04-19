@@ -1,4 +1,3 @@
-import moment from "moment";
 /**
  * @typedef {Object} Sql
  * @property {import("@contact/sequelize").Sequelize} Sql.local
