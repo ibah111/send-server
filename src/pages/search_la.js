@@ -1,4 +1,5 @@
 import { Op } from "@contact/sequelize";
+import dottie from "dottie";
 /**
  * @typedef {Object} Sql
  * @property {import("@contact/sequelize").Sequelize} Sql.local
@@ -35,7 +36,7 @@ export const call = (fastify, sql) => {
           model: sql.contact.models.Address,
           as: "Address",
           attributes: ["full_adr"],
-          limit:1
+          limit: 1,
         },
         { model: sql.contact.models.Address, as: "Address" },
         {
