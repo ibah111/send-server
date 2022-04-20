@@ -18,7 +18,6 @@ export const call = (fastify, sql) => {
   return async (req, res) => {
     const body = req.body;
     const result = await sql.contact.models.LawAct.findAll({
-      raw: true,
       attributes: ["id", "typ"],
       where: {
         [Op.or]: [
