@@ -24,10 +24,10 @@
     "fastify": "^3.28.0",
     "fastify-cors": "^6.0.3",
     "fastify-multipart": "^5.3.1",
-    "moment": "^2.29.2",
+    "moment": "^2.29.3",
     "prettier": "^2.6.2",
     "socket.io": "^4.4.1",
-    "sqlite3": "^5.0.2",
+    "sqlite3": "^5.0.4",
     "tedious": "^14.4.0",
     "uuid": "^8.3.2"
   }

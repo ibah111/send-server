@@ -1,3 +1,4 @@
+import * as Address from "./Address";
 import * as Dict from "./Dict";
 import * as Portfolio from "./Portfolio";
 import * as Person from "./Person";
@@ -18,6 +19,7 @@ const models = [
   User,
   Portfolio,
   Person,
+  Address,
   Debt,
   WorkTask,
   LawCourt,

@@ -1,4 +1,5 @@
 import { Op } from "@contact/sequelize";
+import dottie from "dottie";
 /**
  * @typedef {Object} Sql
  * @property {import("@contact/sequelize").Sequelize} Sql.local
@@ -17,8 +18,7 @@ export const call = (fastify, sql) => {
   return async (req, res) => {
     const body = req.body;
     const result = await sql.contact.models.LawExec.findAll({
-      raw: true,
-      where: { state: 13 },
+      where: { state: { [Op.in]: [13, 7] } },
       attributes: [
         "id",
         "court_doc_num",
@@ -32,6 +32,17 @@ export const call = (fastify, sql) => {
           model: sql.contact.models.Dict,
           as: "Typ",
           attributes: ["name"],
+        },
+        {
+          model: sql.contact.models.Dict,
+          as: "State",
+          attributes: ["name"],
+        },
+        {
+          model: sql.contact.models.Address,
+          as: "Address",
+          attributes: ["full_adr"],
+          limit: 1,
         },
         {
           model: sql.contact.models.LawAct,
@@ -57,6 +68,20 @@ export const call = (fastify, sql) => {
             },
           ],
           attributes: ["id", "typ"],
+        },
+        { model: sql.contact.models.Portfolio, attributes: ["name"] },
+        {
+          model: sql.contact.models.Debt,
+          attributes: ["id", "contract", "debt_sum"],
+          where: {
+            status: { [Op.notIn]: [7] },
+            ...(body.contract ? { contract: body.contract } : {}),
+          },
+          include: {
+            model: sql.contact.models.Dict,
+            as: "Status",
+            attributes: ["name"],
+          },
         },
         {
           model: sql.contact.models.Person,
@@ -88,24 +113,10 @@ export const call = (fastify, sql) => {
             ],
           ],
         },
-        { model: sql.contact.models.Portfolio, attributes: ["name"] },
-        {
-          model: sql.contact.models.Debt,
-          attributes: ["id", "contract", "debt_sum"],
-          where: {
-            status: { [Op.notIn]: [7] },
-            ...(body.contract ? { contract: body.contract } : {}),
-          },
-          include: {
-            model: sql.contact.models.Dict,
-            as: "Status",
-            attributes: ["name"],
-          },
-        },
       ],
       limit: 25,
     });
-    return result;
+    return (JSON.parse(JSON.stringify(result))).map((res) => dottie.flatten(res));
   };
 };
 export const name = "search";

@@ -112,6 +112,16 @@ export const join = (sequelize) => {
   );
   asoc(
     sequelize.models.LawAct,
+    sequelize.models.Address,
+    {
+      where: { key: "typ", value: 1 },
+      join: { key: "parent_id", value: "r_person_id" },
+      name: "Address",
+    },
+    "complex_many"
+  );
+  asoc(
+    sequelize.models.LawAct,
     sequelize.models.Dict,
     {
       where: { key: "parent_id", value: 25 },

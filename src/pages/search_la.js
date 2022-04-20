@@ -32,6 +32,12 @@ export const call = (fastify, sql) => {
           attributes: ["name"],
         },
         {
+          model: sql.contact.models.Address,
+          as: "Address",
+          attributes: ["full_adr"],
+        },
+        { model: sql.contact.models.Address, as: "Address" },
+        {
           model: sql.contact.models.Dict,
           as: "ActStatus",
           attributes: ["name"],
@@ -83,7 +89,7 @@ export const call = (fastify, sql) => {
       ],
       limit: 25,
     });
-    return result;
+    return JSON.parse(JSON.stringify(result)).map((res) => dottie.flatten(res));
   };
 };
 export const name = "search_la";
