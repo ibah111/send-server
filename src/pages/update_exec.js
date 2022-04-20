@@ -157,7 +157,7 @@ export const call = (fastify, sql) => {
           OpUser,
           le,
           doc_name,
-          data.template_typ
+          body.template_typ
         );
         const doc = await sql.contact.models.DocAttach.create(data.sql);
         await le.createLawExecProtokol({
