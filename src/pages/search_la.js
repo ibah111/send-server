@@ -35,6 +35,7 @@ export const call = (fastify, sql) => {
           model: sql.contact.models.Address,
           as: "Address",
           attributes: ["full_adr"],
+          limit:1
         },
         { model: sql.contact.models.Address, as: "Address" },
         {
