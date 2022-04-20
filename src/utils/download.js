@@ -3,6 +3,16 @@ import smb from "./smb";
 import axios from "axios";
 import moment from "moment";
 import server from "./server";
+const template = (id) => {
+  switch (id) {
+    case 16:
+      return 16;
+    case 17:
+      return 17;
+    default:
+      return 16;
+  }
+};
 const uploadSmb = (doc_name, save_path, path, file, OpUser, id) =>
   new Promise((resolve, reject) => {
     const data = {
@@ -53,7 +63,7 @@ const uploadSmb = (doc_name, save_path, path, file, OpUser, id) =>
 /**
  * @param {Sql} sql
  */
-export default (sql) => async (OpUser, le, doc_name) => {
+export default (sql) => async (OpUser, le, doc_name, template_id) => {
   const count = await sql.contact.models.DocAttach.findOne({
     attributes: [
       "REL_SERVER_PATH",
@@ -75,7 +85,9 @@ export default (sql) => async (OpUser, le, doc_name) => {
   ).value;
   const file = await axios({
     method: "get",
-    url: `${server("fastreport")}/report=16.fr3&id=${le.id}&format=pdf`,
+    url: `${server("fastreport")}/report=${template_id}.fr3&id=${
+      le.id
+    }&format=pdf`,
     responseType: "arraybuffer",
   });
   const data = await uploadSmb(
