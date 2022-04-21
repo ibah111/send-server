@@ -61,11 +61,12 @@ export const call = (fastify, sql) => {
       const changes = le.changed();
       if (changes) {
         le.state = 9;
-        const new_dsc = `${moment().format("DD.MM.YYYY")} Сопровод к ИД ${
-          le.court_doc_num
-        } ${await h("executive_typ", le.executive_typ)} ${moment(
-          le.court_date
-        ).format("DD.MM.YYYY")}`;
+        const new_dsc = `${moment()
+          .zone("+03:00")
+          .format("DD.MM.YYYY")} Сопровод к ИД ${le.court_doc_num} ${await h(
+          "executive_typ",
+          le.executive_typ
+        )} ${moment(le.court_date).zone("+03:00").format("DD.MM.YYYY")}`;
         if (le.dsc === 'Создается ИП из "Отправка"') {
           le.dsc = new_dsc;
         } else {
@@ -97,7 +98,7 @@ export const call = (fastify, sql) => {
           .replaceAll("/", "-")} ${await h(
           "executive_typ",
           le.executive_typ
-        )} ${moment(le.court_date).format("DD.MM.YYYY")}.pdf`;
+        )} ${moment(le.court_date).zone("+03:00").format("DD.MM.YYYY")}.pdf`;
         for (const change of changes) {
           switch (change) {
             case "r_court_id":
