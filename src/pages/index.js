@@ -1,5 +1,6 @@
 import checkLogin from "../utils/check_login";
 import * as login from "./login";
+import * as get_comment from "./get_comment";
 import * as dict from "./dict";
 import * as court from "./court";
 import * as search from "./search";
@@ -18,6 +19,7 @@ const pages = [
   create_exec,
   update_exec,
   delete_exec,
+  get_comment,
 ];
 
 /**
