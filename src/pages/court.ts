@@ -13,6 +13,7 @@ export const call = (fastify: FastifyInstance, sql: Sql) => {
     if (body.name)
       where = {
         name: { [Op.like]: `%${body.name}%` },
+        id: { [Op.gte]: 74643 },
       };
     return await sql.contact.models.LawCourt.findAll({
       where: { typ: 2, ...where },
