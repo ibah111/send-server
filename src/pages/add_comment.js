@@ -24,7 +24,7 @@ export const call = (fastify, sql) => {
       } else {
         le.dsc += "\r\n";
       }
-      le.dsc += new_dsc;
+      le.dsc += body.dsc;
       await le.createLawExecProtokol({
         r_user_id: OpUser.id,
         typ: 2,
