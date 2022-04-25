@@ -1,16 +1,19 @@
 import CryptoJS from "crypto-js";
 import axios from "axios";
 import client from "./client";
+import { Sql } from "./sql";
 const CryptoJSAesJson = {
-  stringify: function (cipherParams) {
-    var j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64) };
+  stringify: function (cipherParams: CryptoJS.lib.CipherParams) {
+    const j: { ct?: string; iv?: string; s?: string } = {
+      ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64),
+    };
     if (cipherParams.iv) j.iv = cipherParams.iv.toString();
     if (cipherParams.salt) j.s = cipherParams.salt.toString();
     return JSON.stringify(j);
   },
-  parse: function (jsonStr) {
-    var j = JSON.parse(jsonStr);
-    var cipherParams = CryptoJS.lib.CipherParams.create({
+  parse: function (jsonStr: string) {
+    const j = JSON.parse(jsonStr);
+    const cipherParams = CryptoJS.lib.CipherParams.create({
       ciphertext: CryptoJS.enc.Base64.parse(j.ct),
     });
     if (j.iv) cipherParams.iv = CryptoJS.enc.Hex.parse(j.iv);
@@ -18,13 +21,13 @@ const CryptoJSAesJson = {
     return cipherParams;
   },
 };
-export const request = async (token) => {
+export const request = async (token: string) => {
   // Тестируем систему................................
   if (client("demo"))
     return token
       ? { login_result: true, id: token, login: "smorkalov@zakon43.ru" }
       : false;
-  let body = "";
+  let body = {};
   try {
     const encrypted = CryptoJS.enc.Base64.parse(token).toString(
       CryptoJS.enc.Utf8
@@ -52,17 +55,8 @@ export const request = async (token) => {
     return result.data;
   }
 };
-/**
- * @typedef {Object} Sql
- * @property {import("@contact/sequelize").Sequelize} Sql.local
- * @property {import("@contact/sequelize").Sequelize} Sql.contact
- */
-/**
- * @param {(import("fastify").FastifyRequest} req
- * @param {Sql} sql
- */
-export default async (req, sql) => {
-  const loged = await request(req?.body?.token);
+export default async (token: string, sql: Sql) => {
+  const loged = await request(token);
   if (loged?.login_result) {
     const OpUser = await sql.contact.models.User.findOne({
       where: { email: loged.login },

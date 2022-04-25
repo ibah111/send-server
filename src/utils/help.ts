@@ -1,26 +1,19 @@
 import moment from "moment";
-/**
- * @typedef {Object} Sql
- * @property {import("@contact/sequelize").Sequelize} Sql.local
- * @property {import("@contact/sequelize").Sequelize} Sql.contact
- */
-/**
- * @param {Sql} sql
- */
-export default (sql) => async (typ, value) => {
+import { Sql } from "./sql";
+export default (sql: Sql) => async (typ: string, value: any) => {
   switch (typ) {
     case "load_dt":
       if (value) return moment(value).format("DD.MM.YYYY");
     case "state":
       if (value) {
-        const data = await sql.contact.models.Dict.findOne({
+        const data: any = await sql.contact.models.Dict.findOne({
           where: { parent_id: 77, code: value },
         });
         if (data) return data.name;
       }
     case "executive_typ":
       if (value) {
-        const data = await sql.contact.models.Dict.findOne({
+        const data: any = await sql.contact.models.Dict.findOne({
           where: { parent_id: 124, code: value },
         });
         if (data) return data.name;
@@ -29,7 +22,7 @@ export default (sql) => async (typ, value) => {
       if (value) return moment(value).format("DD.MM.YYYY");
     case "DELIVERY_TYP":
       if (value) {
-        const data = await sql.contact.models.Dict.findOne({
+        const data: any = await sql.contact.models.Dict.findOne({
           where: { parent_id: 16, code: value },
         });
         if (data) return data.name;
@@ -42,7 +35,7 @@ export default (sql) => async (typ, value) => {
       if (value) return moment(value).format("DD.MM.YYYY");
     case "r_court_id":
       if (value) {
-        const data = await sql.contact.models.LawCourt.findByPk(value);
+        const data: any = await sql.contact.models.LawCourt.findByPk(value);
         if (data) return data.name;
       }
     default:

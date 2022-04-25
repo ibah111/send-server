@@ -1,6 +1,6 @@
-import { DataTypes, Model } from "@contact/sequelize";
+import { DataTypes, Model, Sequelize } from "@contact/sequelize";
 import { asoc } from "../../utils/asoc";
-export const model = (sequelize) => {
+export const model = (sequelize: Sequelize) => {
   class model extends Model {}
   model.init(
     {
@@ -29,11 +29,7 @@ export const model = (sequelize) => {
     { sequelize, modelName: "PermitRight", tableName: "permit_rights" }
   );
 };
-/**
- *
- * @param {import("@contact/sequelize").Sequelize} sequelize
- */
-export const join = (sequelize) => {
+export const join = (sequelize: Sequelize) => {
   asoc(sequelize.models.PermitRight, sequelize.models.Right, "right");
   asoc(sequelize.models.PermitRight, sequelize.models.Group, "group");
   asoc(sequelize.models.PermitRight, sequelize.models.User, "user");

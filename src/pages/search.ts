@@ -1,21 +1,14 @@
 import { Op } from "@contact/sequelize";
 import dottie from "dottie";
-/**
- * @typedef {Object} Sql
- * @property {import("@contact/sequelize").Sequelize} Sql.local
- * @property {import("@contact/sequelize").Sequelize} Sql.contact
- */
-/**
- * @param {import("fastify").FastifyInstance} fastify
- * @param {Sql} sql
- */
-export const call = (fastify, sql) => {
-  /**
-   *
-   * @param {import("fastify").FastifyRequest} req
-   * @param {import("fastify").FastifyReply} res
-   */
-  return async (req, res) => {
+import { FastifyInstance, FastifyRequest } from "fastify";
+import { Sql } from "../utils/sql";
+export const call = (fastify: FastifyInstance, sql: Sql) => {
+  return async (
+    req: FastifyRequest<{
+      Body: { id: number; name: string; contract: string };
+    }>,
+    user: any
+  ) => {
     const body = req.body;
     const result = await sql.contact.models.LawExec.findAll({
       where: { state: { [Op.notIn]: [5] } },
@@ -78,6 +71,7 @@ export const call = (fastify, sql) => {
             ...(body.contract ? { contract: body.contract } : {}),
           },
           include: {
+            //@ts-ignore
             model: sql.contact.models.Dict,
             as: "Status",
             attributes: ["name"],
@@ -116,7 +110,9 @@ export const call = (fastify, sql) => {
       ],
       limit: 25,
     });
-    return (JSON.parse(JSON.stringify(result))).map((res) => dottie.flatten(res));
+    return JSON.parse(JSON.stringify(result)).map((res: any) =>
+      dottie.flatten(res)
+    );
   };
 };
 export const name = "search";

@@ -1,24 +1,19 @@
 import { Op } from "@contact/sequelize";
-/**
- * @typedef {Object} Sql
- * @property {import("@contact/sequelize").Sequelize} Sql.local
- * @property {import("@contact/sequelize").Sequelize} Sql.contact
- */
-/**
- * @param {import("fastify").FastifyInstance} fastify
- * @param {Sql} sql
- */
-export const call = (fastify, sql) => {
-  /**
-   *
-   * @param {import("fastify").FastifyRequest} req
-   * @param {import("fastify").FastifyReply} res
-   */
-  return async (req, res) => {
+import { FastifyInstance, FastifyRequest } from "fastify";
+import { Sql } from "../utils/sql";
+
+export const call = (fastify: FastifyInstance, sql: Sql) => {
+  return async (
+    req: FastifyRequest<{ Body: { id: number; name: string } }>,
+    user: any
+  ) => {
     const body = req.body;
     let where = {};
     if (body.id) where = { id: body.id };
-    if (body.name) where = { name: { [Op.like]: `%${body.name}%` } };
+    if (body.name)
+      where = {
+        name: { [Op.like]: `%${body.name}%` },
+      };
     return await sql.contact.models.LawCourt.findAll({
       where: { typ: 2, ...where },
       attributes: ["id", "name", "address"],

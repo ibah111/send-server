@@ -1,6 +1,6 @@
-export default function transliterate(word) {
-  let answer = "",
-    a = {};
+export default function transliterate(word: any) {
+  let answer: string = "",
+    a: any = {};
 
   a["Ё"] = "YO";
   a["Й"] = "I";

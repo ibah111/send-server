@@ -1,20 +1,11 @@
-/**
- * @typedef {import("@contact/sequelize").ModelCtor<import("@contact/sequelize").Model<any, any>>} ModelK
- */
-/**
- * @typedef {Object} Params
- * @property {Object} options.target
- * @property {string} options.target.key
- * @property {string} options.target.value
- * @property {string} options.nameKey
- */
-/**
- * @param {ModelK} DBfrom
- * @param {ModelK} DBto
- * @param {Params} params
- */
-export const polym = (DBfrom, DBto, params) => {
-  const options = {
+import { HasManyOptions } from "@contact/sequelize/types";
+import { ModelK } from "./types";
+export type ParamsPolym = {
+  nameKey: string;
+  target: { key: string; value: string };
+};
+export const polym = (DBfrom: ModelK, DBto: ModelK, params: ParamsPolym) => {
+  const options: HasManyOptions = {
     scope: { [params?.target?.key]: params?.target?.value },
     constraints: false,
     foreignKey: params?.nameKey,

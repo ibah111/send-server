@@ -1,6 +1,6 @@
-import { DataTypes, Model } from "@contact/sequelize";
+import { DataTypes, Model, Sequelize } from "@contact/sequelize";
 import { asoc } from "../../utils/asoc";
-export const model = (sequelize) => {
+export const model = (sequelize: Sequelize) => {
   class model extends Model {}
   model.init(
     {
@@ -31,25 +31,13 @@ export const model = (sequelize) => {
     { sequelize, modelName: "User", tableName: "users" }
   );
 };
-/**
- *
- * @param {import("@contact/sequelize").Sequelize} sequelize
- */
-export const join = (sequelize) => {
+export const join = (sequelize: Sequelize) => {
   asoc(sequelize.models.User, sequelize.models.Group, "group");
 };
 export const migrator = {
   name: "User",
-  /**
-   *
-   * @param {import("@contact/sequelize").Sequelize} sequelize
-   */
-  migrate: async (sequelize) => {},
-  /**
-   *
-   * @param {import("@contact/sequelize").Sequelize} sequelize
-   */
-  demo: async (sequelize) => {
+  migrate: async (sequelize: Sequelize) => {},
+  demo: async (sequelize: Sequelize) => {
     const data = [
       { bitrix_id: 1, f: "Тестер 1", group: 1 },
       { bitrix_id: 2, f: "Тестер 2", group: 2 },

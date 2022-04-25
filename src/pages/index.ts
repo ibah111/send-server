@@ -10,6 +10,8 @@ import * as law_exec from "./law_exec";
 import * as create_exec from "./create_exec";
 import * as update_exec from "./update_exec";
 import * as delete_exec from "./delete_exec";
+import { FastifyInstance, FastifyRequest } from "fastify";
+import { Sql } from "../utils/sql";
 const pages = [
   login,
   dict,
@@ -21,28 +23,20 @@ const pages = [
   update_exec,
   delete_exec,
   get_comment,
-  add_comment
+  add_comment,
 ];
-
-/**
- * @typedef {Object} Sql
- * @property {import("@contact/sequelize").Sequelize} Sql.local
- * @property {import("@contact/sequelize").Sequelize} Sql.contact
- */
-
-/**
- * @param {import("fastify").FastifyInstance} fastify
- * @param {Sql} sql
- */
-export default (fastify, sql) => {
+export default (fastify: FastifyInstance, sql: Sql) => {
   pages.forEach((page) => {
-    fastify.post("/" + page.name, async (req) => {
-      const user = await checkLogin(req, sql);
-      if (user) {
-        return await page.call(fastify, sql)(req, user);
-      } else {
-        return "Not Loged";
+    fastify.post(
+      "/" + page.name,
+      async (req: FastifyRequest<{ Body: any }>) => {
+        const user = await checkLogin(req.body.token, sql);
+        if (user) {
+          return await page.call(fastify, sql)(req, user);
+        } else {
+          return "Not Loged";
+        }
       }
-    });
+    );
   });
 };

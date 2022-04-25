@@ -1,3 +1,4 @@
+import { Sequelize } from "@contact/sequelize/types";
 import * as Group from "./Group";
 import * as PermitRight from "./PermitRight";
 import * as Right from "./Right";
@@ -8,7 +9,7 @@ const models = [
   User,
   PermitRight,
 ];
-export default (sequelize) => {
+export default (sequelize:Sequelize) => {
   models.forEach((model) => {
     if (model.model) {
       model?.model(sequelize);

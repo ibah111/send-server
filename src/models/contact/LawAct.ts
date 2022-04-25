@@ -1,7 +1,7 @@
-import { DataTypes, Model } from "@contact/sequelize";
+import { DataTypes, Model, Sequelize } from "@contact/sequelize";
 import { asoc } from "../../utils/asoc";
 export const name = "LawAct";
-export const model = (sequelize) => {
+export const model = (sequelize: Sequelize) => {
   class model extends Model {}
   model.init(
     {
@@ -95,7 +95,7 @@ export const model = (sequelize) => {
  *
  * @param {import("@contact/sequelize").Sequelize} sequelize
  */
-export const join = (sequelize) => {
+export const join = (sequelize: Sequelize) => {
   asoc(sequelize.models.LawAct, sequelize.models.Debt, "r_debt_id");
   asoc(sequelize.models.LawAct, sequelize.models.Person, "r_person_id");
   asoc(sequelize.models.LawAct, sequelize.models.LawCourt, "r_court_id");

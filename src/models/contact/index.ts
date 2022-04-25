@@ -13,6 +13,7 @@ import * as LawExecPersonLink from "./LawExecPersonLink";
 import * as LawActProtokol from "./LawActProtokol";
 import * as DocAttach from "./DocAttach";
 import * as ConstValue from "./ConstValue";
+import { Sequelize } from "@contact/sequelize";
 const models = [
   ConstValue,
   Dict,
@@ -30,17 +31,20 @@ const models = [
   LawExecPersonLink,
   DocAttach,
 ];
-export default (sequelize) => {
+export default (sequelize: Sequelize) => {
   models.forEach((model) => {
     if (model.model) {
       model?.model(sequelize);
     }
   });
   models.forEach((model) => {
-    if (model.join) {
+    //@ts-ignore
+    if (model?.join) {
+      //@ts-ignore
       model?.join(sequelize);
     }
   });
+  //@ts-ignore
   const result = models.map((model) => model.migrator);
   return result;
 };

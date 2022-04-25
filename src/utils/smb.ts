@@ -1,6 +1,6 @@
 import SMB2 from "@marsaud/smb2";
-import config from "../../config/smb" assert { type: "json" };
-let smb = null;
+import config from "../../config/smb.json";
+let smb:SMB2;
 const create_smb = () =>
   new SMB2({
     share: config.share,

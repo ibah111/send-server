@@ -1,5 +1,5 @@
-import { DataTypes, Model } from "@contact/sequelize";
-export const model = (sequelize) => {
+import { DataTypes, Model, Sequelize } from "@contact/sequelize";
+export const model = (sequelize: Sequelize) => {
   class model extends Model {}
   model.init(
     {
@@ -20,19 +20,11 @@ export const model = (sequelize) => {
     { sequelize, modelName: "Group", tableName: "groups" }
   );
 };
-/**
- *
- * @param {import("@contact/sequelize").Sequelize} sequelize
- */
-export const join = (sequelize) => {};
+export const join = (sequelize: Sequelize) => {};
 
 export const migrator = {
   name: "Group",
-  /**
-   *
-   * @param {import("@contact/sequelize").Sequelize} sequelize
-   */
-  migrate: async (sequelize) => {
+  migrate: async (sequelize: Sequelize) => {
     const data = [
       { title: "Администратор", name: "admin" },
       { title: "Модератор", name: "moderator" },

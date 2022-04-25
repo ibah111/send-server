@@ -1,6 +1,8 @@
+import { FastifyInstance, FastifyRequest } from "fastify";
 import moment from "moment";
 import download from "../utils/download";
 import help from "../utils/help";
+import { Sql } from "../utils/sql";
 const data = [
   "total_sum",
   "load_dt",
@@ -13,7 +15,7 @@ const data = [
   "fssp_date",
   "r_court_id",
 ];
-const translate = {
+const translate: any = {
   state: "Статус",
   total_sum: "Общая сумма",
   load_dt: "Дата создания ИП",
@@ -27,34 +29,24 @@ const translate = {
   r_court_id: "ФССП",
   dsc: "Коментарий",
 };
-const t = (value) => {
+const t = (value: string) => {
   if (translate[value]) return translate[value];
   return "Не определено";
 };
-/**
- * @typedef {Object} Sql
- * @property {import("@contact/sequelize").Sequelize} Sql.local
- * @property {import("@contact/sequelize").Sequelize} Sql.contact
- */
-/**
- * @param {import("fastify").FastifyInstance} fastify
- * @param {Sql} sql
- */
-export const call = (fastify, sql) => {
+
+export const call = (fastify: FastifyInstance, sql: Sql) => {
   const downloadFile = download(sql);
   const h = help(sql);
-  /**
-   *
-   * @param {import("fastify").FastifyRequest} req
-   * @param {import("fastify").FastifyReply} res
-   */
-  return async (req, user) => {
+  return async (
+    req: FastifyRequest<{ Body: any }>,
+    user: any
+  ) => {
     const body = req.body;
-    const OpUser = await sql.contact.models.User.findOne({
+    const OpUser:any = await sql.contact.models.User.findOne({
       where: { email: user.loged.login },
     });
     if (OpUser !== null) {
-      const le = await sql.contact.models.LawExec.findByPk(body.id);
+      const le: any = await sql.contact.models.LawExec.findByPk(body.id);
       for (const value of data) {
         le[value] = body[value];
       }
@@ -160,7 +152,7 @@ export const call = (fastify, sql) => {
           doc_name,
           body.template_typ
         );
-        const doc = await sql.contact.models.DocAttach.create(data.sql);
+        const doc:any = await sql.contact.models.DocAttach.create(data.sql);
         await le.createLawExecProtokol({
           r_user_id: OpUser.id,
           typ: 8,

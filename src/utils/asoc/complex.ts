@@ -1,22 +1,17 @@
-/**
- * @typedef {import("@contact/sequelize").ModelCtor<import("@contact/sequelize").Model<any, any>>} ModelK
- */
-/**
- * @typedef {Object} Params
- * @property {Object} options.join
- * @property {string} options.join.key
- * @property {string} options.join.value
- * @property {Object} options.where
- * @property {string} options.where.key
- * @property {string} options.where.value
- */
-/**
- * @param {ModelK} DBfrom
- * @param {ModelK} DBto
- * @param {Params} params
- */
-export const complex = (DBfrom, DBto, params) => {
-  const options_has = {
+import { HasOneOptions } from "@contact/sequelize";
+import { ModelK } from "./types";
+
+export type ParamsComplex = {
+  name: string;
+  join: { key: string; value: string };
+  where: { key: string; value: string };
+};
+export const complex = (
+  DBfrom: ModelK,
+  DBto: ModelK,
+  params: ParamsComplex
+) => {
+  const options_has:HasOneOptions = {
     scope: { [params?.where?.key]: params?.where?.value },
     constraints: false,
     foreignKey: params?.join?.key,
