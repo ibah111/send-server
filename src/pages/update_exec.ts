@@ -3,6 +3,22 @@ import moment from "moment";
 import download from "../utils/download";
 import help from "../utils/help";
 import { Sql } from "../utils/sql";
+const tranform = (name: string, value: any) => {
+  switch (name) {
+    case "load_dt":
+      return moment(value).zone("+03:00").toDate();
+    case "court_date":
+      return moment(value).zone("+03:00").startOf("day").toDate();
+    case "entry_force_dt":
+      return moment(value).zone("+03:00").startOf("day").toDate();
+    case "receipt_recover_dt":
+      return moment(value).zone("+03:00").startOf("day").toDate();
+    case "fssp_date":
+      return moment(value).zone("+03:00").startOf("day").toDate();
+    default:
+      return value;
+  }
+};
 const data = [
   "total_sum",
   "load_dt",
@@ -37,18 +53,15 @@ const t = (value: string) => {
 export const call = (fastify: FastifyInstance, sql: Sql) => {
   const downloadFile = download(sql);
   const h = help(sql);
-  return async (
-    req: FastifyRequest<{ Body: any }>,
-    user: any
-  ) => {
+  return async (req: FastifyRequest<{ Body: any }>, user: any) => {
     const body = req.body;
-    const OpUser:any = await sql.contact.models.User.findOne({
+    const OpUser: any = await sql.contact.models.User.findOne({
       where: { email: user.loged.login },
     });
     if (OpUser !== null) {
       const le: any = await sql.contact.models.LawExec.findByPk(body.id);
       for (const value of data) {
-        le[value] = body[value];
+        le[value] = tranform(value, body[value]);
       }
       const changes = le.changed();
       if (changes) {
@@ -152,7 +165,7 @@ export const call = (fastify: FastifyInstance, sql: Sql) => {
           doc_name,
           body.template_typ
         );
-        const doc:any = await sql.contact.models.DocAttach.create(data.sql);
+        const doc: any = await sql.contact.models.DocAttach.create(data.sql);
         await le.createLawExecProtokol({
           r_user_id: OpUser.id,
           typ: 8,
