@@ -1,4 +1,4 @@
-import { HasManyOptions } from "@contact/Sequelize";
+import { HasManyOptions } from "@contact/sequelize";
 import { ModelK } from "./types";
 
 export const simple = (DBfrom: ModelK, DBto: ModelK, key: string) => {

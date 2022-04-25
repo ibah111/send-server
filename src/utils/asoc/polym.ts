@@ -1,4 +1,4 @@
-import { HasManyOptions } from "@contact/sequelize/types";
+import { HasManyOptions } from "@contact/sequelize";
 import { ModelK } from "./types";
 export type ParamsPolym = {
   nameKey: string;
