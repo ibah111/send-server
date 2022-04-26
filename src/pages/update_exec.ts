@@ -7,15 +7,15 @@ const tranform = (name: string, value: any) => {
   if (value) {
     switch (name) {
       case "load_dt":
-        return moment(value).utcOffset(0).toDate();
+        return moment(value).toDate();
       case "court_date":
-        return moment(value).utcOffset(0).startOf("day").toDate();
+        return moment(value).startOf("day").toDate();
       case "entry_force_dt":
-        return moment(value).utcOffset(0).startOf("day").toDate();
+        return moment(value).startOf("day").toDate();
       case "receipt_recover_dt":
-        return moment(value).utcOffset(0).startOf("day").toDate();
+        return moment(value).startOf("day").toDate();
       case "fssp_date":
-        return moment(value).utcOffset(0).startOf("day").toDate();
+        return moment(value).startOf("day").toDate();
       default:
         return value;
     }
@@ -65,11 +65,7 @@ export const call = (fastify: FastifyInstance, sql: Sql) => {
     if (OpUser !== null) {
       const le: any = await sql.contact.models.LawExec.findByPk(body.id);
       for (const value of data) {
-        console.log(value);
-        console.log(body[value]);
-        const new_value = tranform(value, body[value]);
-        console.log(new_value);
-        le[value] = new_value;
+        le[value] = tranform(value, body[value]);
       }
       const changes = le.changed();
       if (changes) {

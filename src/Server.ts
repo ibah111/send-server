@@ -7,11 +7,13 @@ import pages from "./pages";
 import client from "./utils/client";
 import ServerCheck from "./utils/server_check";
 import https from "./utils/https";
+import {tz} from "moment-timezone";
 const fastify = Fastify({
   logger: true,
   https,
 });
 const demo = true;
+tz.setDefault("GMT");
 fastify.register(FastifyCors);
 fastify.register(FastifyMultipart);
 const sql = {
