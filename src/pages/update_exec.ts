@@ -4,19 +4,23 @@ import download from "../utils/download";
 import help from "../utils/help";
 import { Sql } from "../utils/sql";
 const tranform = (name: string, value: any) => {
-  switch (name) {
-    case "load_dt":
-      return moment(value).zone("+03:00").toDate();
-    case "court_date":
-      return moment(value).zone("+03:00").startOf("day").toDate();
-    case "entry_force_dt":
-      return moment(value).zone("+03:00").startOf("day").toDate();
-    case "receipt_recover_dt":
-      return moment(value).zone("+03:00").startOf("day").toDate();
-    case "fssp_date":
-      return moment(value).zone("+03:00").startOf("day").toDate();
-    default:
-      return value;
+  if (value) {
+    switch (name) {
+      case "load_dt":
+        return moment(value).utcOffset(0).toDate();
+      case "court_date":
+        return moment(value).utcOffset(0).startOf("day").toDate();
+      case "entry_force_dt":
+        return moment(value).utcOffset(0).startOf("day").toDate();
+      case "receipt_recover_dt":
+        return moment(value).utcOffset(0).startOf("day").toDate();
+      case "fssp_date":
+        return moment(value).utcOffset(0).startOf("day").toDate();
+      default:
+        return value;
+    }
+  } else {
+    return null;
   }
 };
 const data = [
@@ -61,17 +65,21 @@ export const call = (fastify: FastifyInstance, sql: Sql) => {
     if (OpUser !== null) {
       const le: any = await sql.contact.models.LawExec.findByPk(body.id);
       for (const value of data) {
-        le[value] = tranform(value, body[value]);
+        console.log(value);
+        console.log(body[value]);
+        const new_value = tranform(value, body[value]);
+        console.log(new_value);
+        le[value] = new_value;
       }
       const changes = le.changed();
       if (changes) {
         le.state = 9;
         const new_dsc = `${moment()
-          .zone("+03:00")
+          .utcOffset(3)
           .format("DD.MM.YYYY")} Сопровод к ИД ${le.court_doc_num} ${await h(
           "executive_typ",
           le.executive_typ
-        )} ${moment(le.court_date).zone("+03:00").format("DD.MM.YYYY")}`;
+        )} ${moment(le.court_date).utcOffset(3).format("DD.MM.YYYY")}`;
         if (le.dsc === 'Создается ИП из "Отправка"') {
           le.dsc = new_dsc;
         } else {
@@ -103,7 +111,7 @@ export const call = (fastify: FastifyInstance, sql: Sql) => {
           .replaceAll("/", "-")} ${await h(
           "executive_typ",
           le.executive_typ
-        )} ${moment(le.court_date).zone("+03:00").format("DD.MM.YYYY")}.pdf`;
+        )} ${moment(le.court_date).utcOffset(3).format("DD.MM.YYYY")}.pdf`;
         for (const change of changes) {
           switch (change) {
             case "r_court_id":
