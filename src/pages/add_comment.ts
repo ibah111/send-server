@@ -26,7 +26,7 @@ export const call = (fastify: FastifyInstance, sql: Sql) => {
         await le.save();
       }
       if (body.law_act && le.r_act_id) {
-        const la: any = await sql.contact.models.LawExec.findByPk(le.r_act_id);
+        const la: any = await sql.contact.models.LawAct.findByPk(le.r_act_id);
         if (!la.dsc) {
           la.dsc = "";
         } else {
