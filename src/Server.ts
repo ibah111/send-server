@@ -1,7 +1,7 @@
 import { Sequelize } from "@contact/sequelize";
 import Fastify from "fastify";
-import FastifyCors from "fastify-cors";
-import FastifyMultipart from "fastify-multipart";
+import FastifyCors from "@fastify/cors";
+import FastifyMultipart from "@fastify/multipart";
 import models from "./models";
 import pages from "./pages";
 import client from "./utils/client";

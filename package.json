@@ -13,6 +13,8 @@
   "packageManager": "yarn@3.2.0",
   "devDependencies": {
     "@contact/sequelize": "^6.19.1",
+    "@fastify/cors": "7.0.0",
+    "@fastify/multipart": "6.0.0",
     "@marsaud/smb2": "^0.18.0",
     "@motivation/sequelize-hierarchy": "^2.0.5",
     "@types/crypto-js": "^4.1.1",
@@ -25,8 +27,6 @@
     "crypto-js": "^4.1.1",
     "eslint": "^8.14.0",
     "fastify": "^3.29.0",
-    "fastify-cors": "6.0.3",
-    "fastify-multipart": "5.3.1",
     "moment": "^2.29.3",
     "prettier": "^2.6.2",
     "socket.io": "^4.5.0",

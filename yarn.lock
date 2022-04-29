@@ -288,10 +288,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fastify/cors@npm:7.0.0":
+  version: 7.0.0
+  resolution: "@fastify/cors@npm:7.0.0"
+  dependencies:
+    fastify-plugin: ^3.0.0
+    vary: ^1.1.2
+  checksum: 1885eb60b6a64dc91c8ca47708b60de371982d8224e801d7ed60bf821bd045d0c99917c0cb7544dccd9ad1a3dd72368244f2ec2f58bc5fa46d10fe95ad43283a
+  languageName: node
+  linkType: hard
+
 "@fastify/error@npm:^2.0.0":
   version: 2.0.0
   resolution: "@fastify/error@npm:2.0.0"
   checksum: ecf0834966b2bfb33ff834e3d55fe4dc04cbe9f822fda6c937b12cce4f162be4f8b0577ee665bc856d7012b1640c12472a1829a22ae38d287342c90b0f33a595
+  languageName: node
+  linkType: hard
+
+"@fastify/multipart@npm:6.0.0":
+  version: 6.0.0
+  resolution: "@fastify/multipart@npm:6.0.0"
+  dependencies:
+    "@fastify/busboy": ^1.0.0
+    "@fastify/error": ^2.0.0
+    deepmerge: ^4.2.2
+    end-of-stream: ^1.4.4
+    fastify-plugin: ^3.0.0
+    hexoid: ^1.0.0
+    secure-json-parse: ^2.4.0
+    stream-wormhole: ^1.1.0
+  checksum: 1c0ad54a6fccf5ae4030ae9a67677ce3351af79d5fe518d625c253434a12724bc0ca82cff1743ca48e338e92654c49b2d7dc1149d0d39678fc65ce4d6b491386
   languageName: node
   linkType: hard
 
@@ -1475,39 +1501,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-cors@npm:6.0.3":
-  version: 6.0.3
-  resolution: "fastify-cors@npm:6.0.3"
-  dependencies:
-    fastify-plugin: ^3.0.0
-    vary: ^1.1.2
-  checksum: 054cf4e1cf0b20778ac24d9995a99f44e9b026ca9a028db0cbb6093922bcc931dff5f5bb185d19e881014392bb5886a8b5f9da6af3d3ab5e62b7a68f4eca33c4
-  languageName: node
-  linkType: hard
-
-"fastify-error@npm:^0.3.0":
-  version: 0.3.1
-  resolution: "fastify-error@npm:0.3.1"
-  checksum: fd6a0f6f87b5e4ab59a4d3d66124bd13830a1cf85cf1987259dfb1175fc6a4bcae68b076ad78f6bb06654f72af133b44813090e9ce5502d2ef56ddcb2b0fa867
-  languageName: node
-  linkType: hard
-
-"fastify-multipart@npm:5.3.1":
-  version: 5.3.1
-  resolution: "fastify-multipart@npm:5.3.1"
-  dependencies:
-    "@fastify/busboy": ^1.0.0
-    deepmerge: ^4.2.2
-    end-of-stream: ^1.4.4
-    fastify-error: ^0.3.0
-    fastify-plugin: ^3.0.0
-    hexoid: ^1.0.0
-    secure-json-parse: ^2.4.0
-    stream-wormhole: ^1.1.0
-  checksum: e471f7b01bb8c9b61c89dcd469c8846043285cfb7d4d594641397908408474059caaca4f5b5bba74cfd41e3d7f40af2b932340d047110962f7bd3de2c15ed373
-  languageName: node
-  linkType: hard
-
 "fastify-plugin@npm:^3.0.0":
   version: 3.0.1
   resolution: "fastify-plugin@npm:3.0.1"
@@ -2576,6 +2569,8 @@ __metadata:
   resolution: "motivation_server@workspace:."
   dependencies:
     "@contact/sequelize": ^6.19.1
+    "@fastify/cors": 7.0.0
+    "@fastify/multipart": 6.0.0
     "@marsaud/smb2": ^0.18.0
     "@motivation/sequelize-hierarchy": ^2.0.5
     "@types/crypto-js": ^4.1.1
@@ -2588,8 +2583,6 @@ __metadata:
     crypto-js: ^4.1.1
     eslint: ^8.14.0
     fastify: ^3.29.0
-    fastify-cors: 6.0.3
-    fastify-multipart: 5.3.1
     moment: ^2.29.3
     prettier: ^2.6.2
     socket.io: ^4.5.0
