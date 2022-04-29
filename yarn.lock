@@ -1475,23 +1475,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-cors-deprecated@npm:fastify-cors@6.0.3":
+"fastify-cors@npm:6.0.3":
   version: 6.0.3
   resolution: "fastify-cors@npm:6.0.3"
   dependencies:
     fastify-plugin: ^3.0.0
     vary: ^1.1.2
   checksum: 054cf4e1cf0b20778ac24d9995a99f44e9b026ca9a028db0cbb6093922bcc931dff5f5bb185d19e881014392bb5886a8b5f9da6af3d3ab5e62b7a68f4eca33c4
-  languageName: node
-  linkType: hard
-
-"fastify-cors@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "fastify-cors@npm:6.1.0"
-  dependencies:
-    fastify-cors-deprecated: "npm:fastify-cors@6.0.3"
-    process-warning: ^1.0.0
-  checksum: dca7c39b4e515ea896aa07ad5c05c70100f427e4c92e3e0fae7cab7d8ccfc824c946723a7e90b4859a5802244932d0af5ee70d753f686092e8c47fca6700e370
   languageName: node
   linkType: hard
 
@@ -1502,7 +1492,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-multipart-deprecated@npm:fastify-multipart@5.3.1":
+"fastify-multipart@npm:5.3.1":
   version: 5.3.1
   resolution: "fastify-multipart@npm:5.3.1"
   dependencies:
@@ -1515,16 +1505,6 @@ __metadata:
     secure-json-parse: ^2.4.0
     stream-wormhole: ^1.1.0
   checksum: e471f7b01bb8c9b61c89dcd469c8846043285cfb7d4d594641397908408474059caaca4f5b5bba74cfd41e3d7f40af2b932340d047110962f7bd3de2c15ed373
-  languageName: node
-  linkType: hard
-
-"fastify-multipart@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "fastify-multipart@npm:5.4.0"
-  dependencies:
-    fastify-multipart-deprecated: "npm:fastify-multipart@5.3.1"
-    process-warning: ^1.0.0
-  checksum: ad4a4b2719b8083953011265bae1373dc9cc89306943ca8446f02b155bd226b181d7a89fbea50d6906fdfe17269ca0429474d7eb21028d6416b1e0e4b5126487
   languageName: node
   linkType: hard
 
@@ -2608,13 +2588,13 @@ __metadata:
     crypto-js: ^4.1.1
     eslint: ^8.14.0
     fastify: ^3.29.0
-    fastify-cors: ^6.1.0
-    fastify-multipart: ^5.4.0
+    fastify-cors: 6.0.3
+    fastify-multipart: 5.3.1
     moment: ^2.29.3
     prettier: ^2.6.2
     socket.io: ^4.5.0
     sqlite3: ^5.0.6
-    tedious: ^14.5.0
+    tedious: ^14.4.0
     ts-node: ^10.7.0
     typescript: ^4.6.4
     uuid: ^8.3.2
@@ -3413,7 +3393,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tedious@npm:^14.5.0":
+"tedious@npm:^14.4.0":
   version: 14.5.0
   resolution: "tedious@npm:14.5.0"
   dependencies:
