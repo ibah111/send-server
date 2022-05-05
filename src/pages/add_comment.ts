@@ -19,9 +19,7 @@ export const call = (fastify: FastifyInstance, sql: Sql) => {
         await le.createLawExecProtokol({
           r_user_id: OpUser.id,
           typ: 2,
-          dsc: `Комментарий. Новое значение: "${
-            le.dsc
-          }". Старое значение: "${le.previous("dsc")}".`,
+          dsc: `Комментарий. Добавлена строка: "${body.value}".`,
         });
         await le.save();
       }
@@ -36,9 +34,7 @@ export const call = (fastify: FastifyInstance, sql: Sql) => {
         await la.createLawActProtokol({
           r_user_id: OpUser.id,
           typ: 2,
-          dsc: `Комментарий. Новое значение: "${
-            la.dsc
-          }". Старое значение: "${la.previous("dsc")}".`,
+          dsc: `Комментарий. Добавлена строка: "${body.value}".`,
         });
         await la.save();
       }
