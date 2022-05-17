@@ -14,14 +14,14 @@ export class Helper {
         if (value) return moment(value).format('DD.MM.YYYY');
       case 'state':
         if (value) {
-          const data: any = await this.ModelDict.findOne({
+          const data = await this.ModelDict.findOne({
             where: { parent_id: 77, code: value },
           });
           if (data) return data.name;
         }
       case 'executive_typ':
         if (value) {
-          const data: any = await this.ModelDict.findOne({
+          const data = await this.ModelDict.findOne({
             where: { parent_id: 124, code: value },
           });
           if (data) return data.name;
@@ -30,7 +30,7 @@ export class Helper {
         if (value) return moment(value).format('DD.MM.YYYY');
       case 'DELIVERY_TYP':
         if (value) {
-          const data: any = await this.ModelDict.findOne({
+          const data = await this.ModelDict.findOne({
             where: { parent_id: 16, code: value },
           });
           if (data) return data.name;
@@ -43,7 +43,7 @@ export class Helper {
         if (value) return moment(value).format('DD.MM.YYYY');
       case 'r_court_id':
         if (value) {
-          const data: any = await this.ModelLawCourt.findByPk(value);
+          const data = await this.ModelLawCourt.findByPk(value);
           if (data) return data.name;
         }
       default:

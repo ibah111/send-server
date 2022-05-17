@@ -38,7 +38,7 @@ const data = [
   'fssp_date',
   'r_court_id',
 ];
-const translate: any = {
+const translate = {
   state: 'Статус',
   total_sum: 'Общая сумма',
   load_dt: 'Дата создания ИП',

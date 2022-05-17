@@ -3,14 +3,14 @@ import axios from 'axios';
 import moment from 'moment';
 import server from './server';
 import { Sequelize } from '@contact/sequelize-typescript';
-import { ConstValue, DocAttach } from '@contact/models';
+import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
 import { InjectModel, SequelizeModule } from '@contact/nestjs-sequelize';
 import { SMB, SmbModule } from './smb';
 import { Injectable, Module } from '@nestjs/common';
 type uploads = {
   name: string;
   filename: string;
-  r_user_id: any;
+  r_user_id: number;
   r_id: number;
   SAVE_MODE: number;
   CHANGE_DT: Date;
@@ -40,7 +40,7 @@ export class Downloader {
     save_path: string,
     path: string,
     file: Buffer,
-    OpUser: any,
+    OpUser: User,
     id: number,
   ) {
     return new Promise<uploads>((resolve) => {
@@ -86,8 +86,8 @@ export class Downloader {
     });
   }
   async downloadFile(
-    OpUser: any,
-    le: any,
+    OpUser: User,
+    le: LawExec,
     doc_name: string,
     template_id: number,
   ) {
