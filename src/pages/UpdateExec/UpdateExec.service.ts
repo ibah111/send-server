@@ -2,7 +2,7 @@ import { DocAttach, LawExec, User } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import moment from 'moment';
-import { AuthUser } from 'src/utils/auth.guard';
+import { AuthUserSuccess } from 'src/utils/auth.guard';
 import { Downloader } from 'src/utils/downloader';
 import { Helper } from 'src/utils/helper';
 
@@ -65,7 +65,7 @@ export class UpdateExecService {
     private readonly downloader: Downloader,
     private readonly helper: Helper,
   ) {}
-  async update(body: any, user: AuthUser) {
+  async update(body: any, user: AuthUserSuccess) {
     const OpUser = await this.ModelUser.findOne({
       where: { email: user.login },
     });

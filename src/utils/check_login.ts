@@ -1,6 +1,8 @@
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import client from './client';
+import { AuthUserError, AuthUserSuccess } from './auth.guard';
+import { UnauthorizedException } from '@nestjs/common';
 const CryptoJSAesJson = {
   stringify: function (cipherParams: CryptoJS.lib.CipherParams) {
     const j: { ct?: string; iv?: string; s?: string } = {
@@ -41,20 +43,24 @@ export const checkLogin = async (token: string) => {
         format: CryptoJSAesJson,
       }).toString(CryptoJS.enc.Utf8),
     );
-  } catch (err) {}
+  } catch (err) {
+    throw new UnauthorizedException({
+      message: 'Не удалось прочитать токен доступа',
+      code: 'error_token',
+    });
+  }
   const result = await axios({
     url: 'https://chat.nbkfinance.ru/scripts/login-api.php',
     method: 'POST',
     params: { ...body },
   });
-  if (
-    result.data === undefined ||
-    result.data === null ||
-    result.data === '' ||
-    result.data.login_result !== true
-  ) {
+  if (result.data === undefined || result.data === null) {
     return false;
   } else {
-    return result.data;
+    if (result.data.login_result === true) {
+      return result.data as AuthUserSuccess;
+    } else {
+      return result.data as AuthUserError;
+    }
   }
 };

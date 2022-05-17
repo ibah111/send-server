@@ -1,7 +1,7 @@
 import { LawAct, LawExec, User } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
-import { AuthUser } from 'src/utils/auth.guard';
+import { AuthUserSuccess } from 'src/utils/auth.guard';
 @Injectable()
 export class CreateExecService {
   constructor(
@@ -10,7 +10,7 @@ export class CreateExecService {
     @InjectModel(LawAct)
     private ModelLawAct: typeof LawAct,
   ) {}
-  async CreateExec(body: any, user: AuthUser) {
+  async CreateExec(body: any, user: AuthUserSuccess) {
     const OpUser = await this.ModelUser.findOne({
       where: { email: user.login },
     });
