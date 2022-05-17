@@ -1,6 +1,6 @@
-import CryptoJS from "crypto-js";
-import axios from "axios";
-import client from "./client";
+import CryptoJS from 'crypto-js';
+import axios from 'axios';
+import client from './client';
 const CryptoJSAesJson = {
   stringify: function (cipherParams: CryptoJS.lib.CipherParams) {
     const j: { ct?: string; iv?: string; s?: string } = {
@@ -22,35 +22,35 @@ const CryptoJSAesJson = {
 };
 export const checkLogin = async (token: string) => {
   // Тестируем систему................................
-  if (client("demo"))
+  if (client('demo'))
     return !Number.isNaN(token)
       ? {
           login_result: Boolean(token),
           id: token,
-          login: "smorkalov@zakon43.ru",
+          login: 'smorkalov@zakon43.ru',
         }
       : { login_result: false };
   let body = {};
   try {
     const encrypted = CryptoJS.enc.Base64.parse(token).toString(
-      CryptoJS.enc.Utf8
+      CryptoJS.enc.Utf8,
     );
-    const pass = CryptoJS.SHA512("Irjlf123!").toString();
+    const pass = CryptoJS.SHA512('Irjlf123!').toString();
     body = JSON.parse(
       CryptoJS.AES.decrypt(encrypted, pass, {
         format: CryptoJSAesJson,
-      }).toString(CryptoJS.enc.Utf8)
+      }).toString(CryptoJS.enc.Utf8),
     );
   } catch (err) {}
   const result = await axios({
-    url: "https://chat.nbkfinance.ru/scripts/login-api.php",
-    method: "POST",
+    url: 'https://chat.nbkfinance.ru/scripts/login-api.php',
+    method: 'POST',
     params: { ...body },
   });
   if (
     result.data === undefined ||
     result.data === null ||
-    result.data === "" ||
+    result.data === '' ||
     result.data.login_result !== true
   ) {
     return false;

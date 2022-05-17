@@ -1,7 +1,7 @@
-import { Sequelize } from "@contact/sequelize-typescript";
-import { Op } from "@contact/sequelize";
-import dottie from "dottie";
-import { InjectModel } from "@contact/nestjs-sequelize";
+import { Sequelize } from '@contact/sequelize-typescript';
+import { Op } from '@contact/sequelize';
+import dottie from 'dottie';
+import { InjectModel } from '@contact/nestjs-sequelize';
 import {
   Person,
   Portfolio,
@@ -10,8 +10,8 @@ import {
   Dict,
   Address,
   LawAct,
-} from "@contact/models";
-import { Injectable } from "@nestjs/common";
+} from '@contact/models';
+import { Injectable } from '@nestjs/common';
 @Injectable()
 export class SearchService {
   constructor(
@@ -21,24 +21,24 @@ export class SearchService {
     @InjectModel(LawExec) private ModelLawExec: typeof LawExec,
     @InjectModel(Dict) private ModelDict: typeof Dict,
     @InjectModel(Address) private ModelAddress: typeof Address,
-    @InjectModel(LawAct) private ModelLawAct: typeof LawAct
+    @InjectModel(LawAct) private ModelLawAct: typeof LawAct,
   ) {}
   async search(body: any) {
     const result = await this.ModelLawExec.findAll({
       where: { state: { [Op.notIn]: [5] } },
       attributes: [
-        "id",
-        "court_doc_num",
-        "executive_typ",
-        "fssp_doc_num",
-        "court_date",
-        "entry_force_dt",
+        'id',
+        'court_doc_num',
+        'executive_typ',
+        'fssp_doc_num',
+        'court_date',
+        'entry_force_dt',
       ],
       include: [
         {
           model: this.ModelDict,
-          as: "StateDict",
-          attributes: ["name"],
+          as: 'StateDict',
+          attributes: ['name'],
         },
         {
           model: this.ModelLawAct,
@@ -54,22 +54,22 @@ export class SearchService {
           include: [
             {
               model: this.ModelDict,
-              as: "StatusDict",
-              attributes: ["name"],
+              as: 'StatusDict',
+              attributes: ['name'],
             },
             {
               model: this.ModelDict,
-              as: "ActStatusDict",
-              attributes: ["name"],
+              as: 'ActStatusDict',
+              attributes: ['name'],
             },
           ],
-          attributes: ["id", "typ"],
+          attributes: ['id', 'typ'],
         },
-        { model: this.ModelPortfolio, attributes: ["name"] },
-        { model: this.ModelDict, as: "ExecutiveTyp", attributes: ["name"] },
+        { model: this.ModelPortfolio, attributes: ['name'] },
+        { model: this.ModelDict, as: 'ExecutiveTyp', attributes: ['name'] },
         {
           model: this.ModelDebt,
-          attributes: ["id", "contract", "debt_sum"],
+          attributes: ['id', 'contract', 'debt_sum'],
           where: {
             status: { [Op.notIn]: [7] },
             ...(body.contract ? { contract: body.contract } : {}),
@@ -77,8 +77,8 @@ export class SearchService {
           include: [
             {
               model: this.ModelDict,
-              as: "StatusDict",
-              attributes: ["name"],
+              as: 'StatusDict',
+              attributes: ['name'],
             },
           ],
         },
@@ -87,31 +87,31 @@ export class SearchService {
           include: [
             {
               model: this.ModelAddress,
-              as: "Addresses",
-              attributes: ["full_adr"],
+              as: 'Addresses',
+              attributes: ['full_adr'],
               limit: 1,
             },
           ],
           where: body.name
             ? Sequelize.where(
                 Sequelize.fn(
-                  "concat",
-                  Sequelize.col("f"),
-                  " ",
-                  Sequelize.col("i"),
-                  " ",
-                  Sequelize.col("o")
+                  'concat',
+                  Sequelize.col('f'),
+                  ' ',
+                  Sequelize.col('i'),
+                  ' ',
+                  Sequelize.col('o'),
                 ),
-                { [Op.like]: `%${body.name}%` }
+                { [Op.like]: `%${body.name}%` },
               )
             : {},
-          attributes: ["id", "f", "i", "o", [Sequelize.literal("''"), "fio"]],
+          attributes: ['id', 'f', 'i', 'o', [Sequelize.literal("''"), 'fio']],
         },
       ],
       limit: 25,
     });
     return JSON.parse(JSON.stringify(result)).map((res: LawExec) =>
-      dottie.flatten(res)
+      dottie.flatten(res),
     );
   }
 }

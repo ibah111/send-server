@@ -4,8 +4,8 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from "@nestjs/common";
-import { checkLogin } from "./check_login";
+} from '@nestjs/common';
+import { checkLogin } from './check_login';
 export const Auth = createParamDecorator(
   async (_data: string, ctx: ExecutionContext) => {
     const { token } = ctx.switchToHttp().getRequest().body;
@@ -15,7 +15,7 @@ export const Auth = createParamDecorator(
     } else {
       throw new UnauthorizedException();
     }
-  }
+  },
 );
 @Injectable()
 export class AuthGuard implements CanActivate {

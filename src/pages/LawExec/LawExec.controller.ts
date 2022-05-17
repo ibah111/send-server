@@ -1,8 +1,8 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "src/utils/auth.guard";
-import { LawExecService } from "./LawExec.service";
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/utils/auth.guard';
+import { LawExecService } from './LawExec.service';
 
-@Controller("law_exec")
+@Controller('law_exec')
 @UseGuards(AuthGuard)
 export class LawExecController {
   constructor(private readonly lawExecService: LawExecService) {}

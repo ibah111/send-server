@@ -1,7 +1,7 @@
-import { LawCourt } from "@contact/models";
-import { InjectModel } from "@contact/nestjs-sequelize";
-import { Op } from "@contact/sequelize";
-import { Injectable } from "@nestjs/common";
+import { LawCourt } from '@contact/models';
+import { InjectModel } from '@contact/nestjs-sequelize';
+import { Op } from '@contact/sequelize';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CourtService {
@@ -19,7 +19,7 @@ export class CourtService {
 
     return await this.ModelLawCourt.findAll({
       where: { typ: 2, ...where },
-      attributes: ["id", "name", "address"],
+      attributes: ['id', 'name', 'address'],
       limit: 25,
     });
   }

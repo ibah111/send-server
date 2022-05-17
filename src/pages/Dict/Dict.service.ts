@@ -1,6 +1,6 @@
-import { Dict } from "@contact/models";
-import { InjectModel } from "@contact/nestjs-sequelize";
-import { Injectable } from "@nestjs/common";
+import { Dict } from '@contact/models';
+import { InjectModel } from '@contact/nestjs-sequelize';
+import { Injectable } from '@nestjs/common';
 @Injectable()
 export class DictService {
   constructor(@InjectModel(Dict) private ModelDict: typeof Dict) {}

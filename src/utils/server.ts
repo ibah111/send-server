@@ -1,25 +1,25 @@
-import config from "../config/server.json";
-export default (name = "url") => {
+import config from '../config/server.json';
+export default (name = 'url') => {
   let prot;
   switch (name) {
-    case "token":
+    case 'token':
       return config.token;
-    case "fastreport":
+    case 'fastreport':
       return config.fastreport;
     default:
       switch (config.protocol) {
-        case "http":
-          prot = "http";
+        case 'http':
+          prot = 'http';
           break;
-        case "ssl":
-          prot = "https";
+        case 'ssl':
+          prot = 'https';
           break;
         default:
-          prot = "http";
+          prot = 'http';
           break;
       }
       return `${prot}://${config.server}${
-        config.port === "80" ? "" : `:${config.port}`
+        config.port === '80' ? '' : `:${config.port}`
       }`;
   }
 };

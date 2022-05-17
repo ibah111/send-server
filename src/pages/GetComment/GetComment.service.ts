@@ -1,6 +1,6 @@
-import { LawAct, LawExec } from "@contact/models";
-import { InjectModel } from "@contact/nestjs-sequelize";
-import { Injectable } from "@nestjs/common";
+import { LawAct, LawExec } from '@contact/models';
+import { InjectModel } from '@contact/nestjs-sequelize';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class GetCommentService {
@@ -8,20 +8,20 @@ export class GetCommentService {
     @InjectModel(LawExec)
     private ModelLawExec: typeof LawExec,
     @InjectModel(LawAct)
-    private ModelLawAct: typeof LawAct
+    private ModelLawAct: typeof LawAct,
   ) {}
   async GetComment(body: any) {
     switch (body.type) {
-      case "law_act":
+      case 'law_act':
         return await this.ModelLawAct.findOne({
           where: { id: body.id },
-          attributes: ["dsc"],
+          attributes: ['dsc'],
         });
-      case "law_exec":
+      case 'law_exec':
         return await this.ModelLawExec.findOne({
           where: { id: body.id },
-          include: { model: this.ModelLawAct, attributes: ["dsc"] },
-          attributes: ["dsc"],
+          include: { model: this.ModelLawAct, attributes: ['dsc'] },
+          attributes: ['dsc'],
         });
     }
   }

@@ -1,12 +1,12 @@
-import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
-import moment from "moment";
-import server from "./server";
-import { Sequelize } from "@contact/sequelize-typescript";
-import { ConstValue, DocAttach } from "@contact/models";
-import { InjectModel, SequelizeModule } from "@contact/nestjs-sequelize";
-import { SMB, SmbModule } from "./smb";
-import { Injectable, Module } from "@nestjs/common";
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import moment from 'moment';
+import server from './server';
+import { Sequelize } from '@contact/sequelize-typescript';
+import { ConstValue, DocAttach } from '@contact/models';
+import { InjectModel, SequelizeModule } from '@contact/nestjs-sequelize';
+import { SMB, SmbModule } from './smb';
+import { Injectable, Module } from '@nestjs/common';
 type uploads = {
   name: string;
   filename: string;
@@ -33,7 +33,7 @@ export class Downloader {
   constructor(
     @InjectModel(DocAttach) private ModelDocAttach: typeof DocAttach,
     @InjectModel(ConstValue) private ModelConstValue: typeof ConstValue,
-    private readonly smb: SMB
+    private readonly smb: SMB,
   ) {}
   uploadSmb(
     doc_name: string,
@@ -41,9 +41,9 @@ export class Downloader {
     path: string,
     file: Buffer,
     OpUser: any,
-    id: number
+    id: number,
   ) {
-    return new Promise<uploads>((resolve, reject) => {
+    return new Promise<uploads>((resolve) => {
       const data = {
         name: doc_name,
         filename: doc_name,
@@ -55,7 +55,7 @@ export class Downloader {
         REL_SERVER_PATH: `\\${path}\\`,
         FILE_SERVER_NAME: `${uuidv4().toUpperCase()}..pdf`,
       };
-      let tmp = save_path.split("\\");
+      const tmp = save_path.split('\\');
       const dir = tmp[tmp.length - 1];
       const client = this.smb.get();
       client.exists(`${dir}\\${path}`, (err, exists) => {
@@ -67,7 +67,7 @@ export class Downloader {
             (err: any) => {
               if (err) throw err;
               resolve(data);
-            }
+            },
           );
         } else {
           client.mkdir(`${dir}\\${path}`, (err) => {
@@ -78,7 +78,7 @@ export class Downloader {
               (err: any) => {
                 if (err) throw err;
                 resolve(data);
-              }
+              },
             );
           });
         }
@@ -89,18 +89,18 @@ export class Downloader {
     OpUser: any,
     le: any,
     doc_name: string,
-    template_id: number
+    template_id: number,
   ) {
     const count: DocAttach & { count?: number } =
       await this.ModelDocAttach.findOne({
         attributes: [
-          "REL_SERVER_PATH",
-          [Sequelize.fn("COUNT", Sequelize.col("id")), "count"],
+          'REL_SERVER_PATH',
+          [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
         ],
-        group: "REL_SERVER_PATH",
-        order: [[Sequelize.fn("MAX", Sequelize.col("id")), "DESC"]],
+        group: 'REL_SERVER_PATH',
+        order: [[Sequelize.fn('MAX', Sequelize.col('id')), 'DESC']],
       });
-    let path: number | string = count.REL_SERVER_PATH.replaceAll("\\", "");
+    let path: number | string = count.REL_SERVER_PATH.replaceAll('\\', '');
     path = Number(path);
     if (count.count === 1000) {
       path += 1;
@@ -108,14 +108,14 @@ export class Downloader {
     path = String(path);
     const save_path: string = (
       (await this.ModelConstValue.findOne({
-        where: { name: "DocAttach.SavePath" },
+        where: { name: 'DocAttach.SavePath' },
       })) as any
     ).value;
-    const url = `${server("fastreport")}/report=${template(
-      template_id
+    const url = `${server('fastreport')}/report=${template(
+      template_id,
     )}.fr3&id=${le.id}&format=pdf`;
     const file = await axios.get<Buffer>(url, {
-      responseType: "arraybuffer",
+      responseType: 'arraybuffer',
     });
     const data = await this.uploadSmb(
       doc_name,
@@ -123,7 +123,7 @@ export class Downloader {
       path,
       file.data,
       OpUser,
-      le.id
+      le.id,
     );
     return { file: file, sql: data };
   }
