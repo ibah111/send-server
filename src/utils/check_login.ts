@@ -1,7 +1,6 @@
 import CryptoJS from "crypto-js";
 import axios from "axios";
 import client from "./client";
-import { Sql } from "./sql";
 const CryptoJSAesJson = {
   stringify: function (cipherParams: CryptoJS.lib.CipherParams) {
     const j: { ct?: string; iv?: string; s?: string } = {
@@ -21,12 +20,16 @@ const CryptoJSAesJson = {
     return cipherParams;
   },
 };
-export const request = async (token: string) => {
+export const checkLogin = async (token: string) => {
   // Тестируем систему................................
   if (client("demo"))
-    return token
-      ? { login_result: true, id: token, login: "smorkalov@zakon43.ru" }
-      : false;
+    return !Number.isNaN(token)
+      ? {
+          login_result: Boolean(token),
+          id: token,
+          login: "smorkalov@zakon43.ru",
+        }
+      : { login_result: false };
   let body = {};
   try {
     const encrypted = CryptoJS.enc.Base64.parse(token).toString(
@@ -53,25 +56,5 @@ export const request = async (token: string) => {
     return false;
   } else {
     return result.data;
-  }
-};
-export default async (token: string, sql: Sql) => {
-  const loged = await request(token);
-  if (loged?.login_result) {
-    const OpUser = await sql.contact.models.User.findOne({
-      where: { email: loged.login },
-    });
-    if (OpUser) {
-      return {
-        loged,
-        /*db: await sql.local.models.User.findOne({
-        where: { bitrix_id: loged.id },
-      }),*/
-      };
-    } else {
-      return false;
-    }
-  } else {
-    return false;
   }
 };

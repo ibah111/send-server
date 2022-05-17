@@ -1,14 +1,17 @@
-import local from "./local";
-import contact from "./contact";
-import { Sequelize } from "@contact/sequelize";
-type types = "local" | "contact";
-export default function Models(sql: Sequelize, type: types) {
-  switch (type) {
-    case "local":
-      return local(sql);
-    case "contact":
-      return contact(sql);
-    default:
-      return "Error";
-  }
-}
+import { Module } from "@nestjs/common";
+import { SequelizeModule } from "@contact/nestjs-sequelize";
+import Models from "@contact/models";
+@Module({
+  imports: [
+    SequelizeModule.forRoot({
+      host: "newct.usb.ru",
+      dialect: "mssql",
+      username: "contact",
+      password: "contact",
+      database: "i_collect",
+      models: Models,
+      logging: false,
+    }),
+  ],
+})
+export class ModelsModule {}

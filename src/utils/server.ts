@@ -1,4 +1,4 @@
-import config from "../../config/server.json";
+import config from "../config/server.json";
 export default (name = "url") => {
   let prot;
   switch (name) {
