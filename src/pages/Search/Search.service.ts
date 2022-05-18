@@ -87,7 +87,7 @@ export class SearchService {
           include: [
             {
               model: this.ModelAddress,
-              as: 'Addresses',
+              where: { typ: 1 },
               attributes: ['full_adr'],
               limit: 1,
             },

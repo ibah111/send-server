@@ -46,6 +46,7 @@ export class SearchLawActService {
           include: [
             {
               model: this.ModelAddress,
+              where: { typ: 1 },
               attributes: ['full_adr'],
               limit: 1,
             },
