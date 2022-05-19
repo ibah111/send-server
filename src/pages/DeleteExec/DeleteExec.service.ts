@@ -19,7 +19,7 @@ export class DeleteExecService {
       const le = await this.ModelLawExec.findByPk(body.id);
       if (le !== null) {
         le.state = 6;
-        le.save();
+        await le.save();
         await le.$create('LawExecProtokol', {
           r_user_id: OpUser.id,
           typ: 23,
