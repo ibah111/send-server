@@ -8,7 +8,7 @@ export class DeleteExecService {
   constructor(
     @InjectModel(User)
     private ModelUser: typeof User,
-    @InjectModel(User)
+    @InjectModel(LawExec)
     private ModelLawExec: typeof LawExec,
   ) {}
   async DeleteExec(body: any, user: AuthUserSuccess) {
