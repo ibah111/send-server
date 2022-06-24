@@ -1,1 +1,1 @@
-{ "version": "0.1.5", "httpPort": 3006, "wsPort": 3007, "demo": false }
+{ "httpPort": 3006, "wsPort": 3007, "demo": false }
