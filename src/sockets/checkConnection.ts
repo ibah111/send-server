@@ -3,15 +3,16 @@ import {
   SubscribeMessage,
   MessageBody,
 } from '@nestjs/websockets';
-import client from 'src/utils/client';
+import { VersionService } from './version/version.service';
 @WebSocketGateway({
   cors: {
     origin: '*',
   },
 })
 export class checkConnection {
+  constructor(private readonly versionService:VersionService){}
   @SubscribeMessage('version')
   check_client(@MessageBody() version: string) {
-    if (version !== client('version')) return { event: 'new_version' };
+    if (version !== this.versionService.version) return { event: 'new_version' };
   }
 }
