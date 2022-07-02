@@ -1,7 +1,7 @@
 import { LawAct, LawExec, User } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
-import { AuthUserSuccess } from 'src/utils/auth.guard';
+import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
 @Injectable()
 export class AddCommentService {
   constructor(
@@ -25,7 +25,7 @@ export class AddCommentService {
           le.dsc += '\r\n';
         }
         le.dsc += body.value;
-        await le.$create("LawExecProtokol",{
+        await le.$create('LawExecProtokol', {
           r_user_id: OpUser.id,
           typ: 2,
           dsc: `Комментарий. Добавлена строка: "${body.value}".`,
@@ -40,7 +40,7 @@ export class AddCommentService {
           la.dsc += '\r\n';
         }
         la.dsc += body.value;
-        await la.$create("LawActProtokol",{
+        await la.$create('LawActProtokol', {
           r_user_id: OpUser.id,
           typ: 2,
           dsc: `Комментарий. Добавлена строка: "${body.value}".`,

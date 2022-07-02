@@ -1,7 +1,12 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { Auth, AuthUserSuccess } from 'src/utils/auth.guard';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import {
+  Auth,
+  AuthGuard,
+  AuthUserSuccess,
+} from 'src/Modules/Guards/auth.guard';
 import { UpdateExecService } from './UpdateExec.service';
 @Controller('update_exec')
+@UseGuards(AuthGuard)
 export class UpdateExecController {
   constructor(private readonly updateExecService: UpdateExecService) {}
   @Post()

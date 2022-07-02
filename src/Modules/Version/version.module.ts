@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { async } from 'rxjs';
 import { VersionService } from './version.service';
 
 @Module({

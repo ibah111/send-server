@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/utils/auth.guard';
+import { AuthGuard } from 'src/Modules/Guards/auth.guard';
 import { LawExecService } from './LawExec.service';
 
 @Controller('law_exec')

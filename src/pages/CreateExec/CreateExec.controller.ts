@@ -1,7 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { Auth, AuthUserSuccess } from 'src/utils/auth.guard';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Auth,
+  AuthGuard,
+  AuthUserSuccess,
+} from 'src/Modules/Guards/auth.guard';
 import { CreateExecService } from './CreateExec.service';
 @Controller('create_exec')
+@UseGuards(AuthGuard)
 export class CreateExecController {
   constructor(private readonly createExecService: CreateExecService) {}
   @Post()

@@ -1,8 +1,13 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { Auth, AuthUserSuccess } from 'src/utils/auth.guard';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import {
+  Auth,
+  AuthGuard,
+  AuthUserSuccess,
+} from 'src/Modules/Guards/auth.guard';
 import { DeleteExecService } from './DeleteExec.service';
 
 @Controller('delete_exec')
+@UseGuards(AuthGuard)
 export class DeleteExecController {
   constructor(private readonly deleteExecService: DeleteExecService) {}
   @Post()

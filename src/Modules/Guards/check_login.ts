@@ -1,8 +1,8 @@
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
-import client from './client';
 import { AuthUserError, AuthUserSuccess } from './auth.guard';
 import { UnauthorizedException } from '@nestjs/common';
+import client from 'src/utils/client';
 const CryptoJSAesJson = {
   stringify: function (cipherParams: CryptoJS.lib.CipherParams) {
     const j: { ct?: string; iv?: string; s?: string } = {
@@ -23,13 +23,18 @@ const CryptoJSAesJson = {
   },
 };
 export const checkLogin = async (token: string) => {
+  if (!token) {
+    return false;
+  }
   // Тестируем систему................................
   if (client('demo'))
     return !Number.isNaN(token)
       ? {
           login_result: Boolean(token),
-          id: token,
+          id: 1465,
           login: 'smorkalov@zakon43.ru',
+          firstname: 'Фамилия',
+          position: 'Должность',
         }
       : { login_result: false };
   let body = {};

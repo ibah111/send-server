@@ -18,41 +18,40 @@ export class AuthUser<T> {
   firstname: T extends true ? string : never;
   secondname: T extends true ? string : never;
   thirdname: T extends true ? string : never;
+  avatar: T extends true ? string : never;
 }
 export class AuthUserSuccess extends AuthUser<true> {}
 export class AuthUserError extends AuthUser<false> {}
 export const Auth = createParamDecorator(
   async (_data: string, ctx: ExecutionContext) => {
-    const { token } = ctx.switchToHttp().getRequest().body;
-    const result = await checkLogin(token);
-    if (result) {
-      if (result?.login_result) {
-        return result as AuthUserSuccess;
-      } else {
-        throw new UnauthorizedException(result as AuthUserError);
-      }
-    } else {
-      throw new UnauthorizedException({
-        message: 'Пустой или неправильный токен',
-      });
+    const data = ctx.switchToHttp().getRequest();
+    if (data.user) {
+      return data.user;
     }
+    throw new UnauthorizedException({
+      message: 'Вы не авторизованы',
+    });
   },
 );
 @Injectable()
 export class AuthGuard implements CanActivate {
   async canActivate(ctx: ExecutionContext) {
-    const { token } = ctx.switchToHttp().getRequest().body;
-    const result = await checkLogin(token);
-    if (result) {
-      if (result?.login_result) {
-        return true
-      } else {
-        throw new UnauthorizedException(result as AuthUserError);
+    const data = ctx.switchToHttp().getRequest();
+    const body = data.body;
+    if (body) {
+      const { token } = body;
+      const result = await checkLogin(token);
+      if (result) {
+        if (result?.login_result) {
+          data.user = result;
+          return true;
+        } else {
+          throw new UnauthorizedException(result as AuthUserError);
+        }
       }
-    } else {
-      throw new UnauthorizedException({
-        message: 'Пустой или неправильный токен',
-      });
     }
+    throw new UnauthorizedException({
+      message: 'Пустой или неправильный токен',
+    });
   }
 }

@@ -1,8 +1,13 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { Auth, AuthUserSuccess } from 'src/utils/auth.guard';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Auth,
+  AuthGuard,
+  AuthUserSuccess,
+} from 'src/Modules/Guards/auth.guard';
 import { AddCommentService } from './AddComment.service';
 
 @Controller('add_comment')
+@UseGuards(AuthGuard)
 export class AddCommentController {
   constructor(private readonly addCommentService: AddCommentService) {}
   @Post()
