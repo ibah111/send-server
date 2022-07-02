@@ -14,7 +14,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({ https }),
   );
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors();
   await app.listen(client('port'), '0.0.0.0');
   console.log(`Application is running on: ${await app.getUrl()}`);
