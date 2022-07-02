@@ -11,6 +11,7 @@ import {
   Portfolio,
 } from '@contact/models';
 import { Injectable } from '@nestjs/common';
+import { SearchLawActInput } from './SearchLawAct.input';
 @Injectable()
 export class SearchLawActService {
   constructor(
@@ -21,7 +22,7 @@ export class SearchLawActService {
     @InjectModel(Portfolio) private ModelPortfolio: typeof Portfolio,
     @InjectModel(Debt) private ModelDebt: typeof Debt,
   ) {}
-  async searchLawAct(body: any) {
+  async searchLawAct(body: SearchLawActInput) {
     const result = await this.ModelLawAct.findAll({
       attributes: ['id', 'typ'],
       where: {

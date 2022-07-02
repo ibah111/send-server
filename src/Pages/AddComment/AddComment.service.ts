@@ -2,6 +2,7 @@ import { LawAct, LawExec, User } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
+import { AddCommentInput } from './AddComment.input';
 @Injectable()
 export class AddCommentService {
   constructor(
@@ -12,7 +13,7 @@ export class AddCommentService {
     @InjectModel(LawAct)
     private ModelLawAct: typeof LawAct,
   ) {}
-  async AddComment(body: any, user: AuthUserSuccess) {
+  async AddComment(body: AddCommentInput, user: AuthUserSuccess) {
     const OpUser = await this.ModelUser.findOne({
       where: { email: user.login },
     });

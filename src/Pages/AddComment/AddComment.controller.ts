@@ -4,6 +4,7 @@ import {
   AuthGuard,
   AuthUserSuccess,
 } from 'src/Modules/Guards/auth.guard';
+import { AddCommentInput } from './AddComment.input';
 import { AddCommentService } from './AddComment.service';
 
 @Controller('add_comment')
@@ -11,7 +12,10 @@ import { AddCommentService } from './AddComment.service';
 export class AddCommentController {
   constructor(private readonly addCommentService: AddCommentService) {}
   @Post()
-  async AddComment(@Body() body: any, @Auth() user: AuthUserSuccess) {
+  async AddComment(
+    @Body() body: AddCommentInput,
+    @Auth() user: AuthUserSuccess,
+  ) {
     return await this.addCommentService.AddComment(body, user);
   }
 }

@@ -2,12 +2,13 @@ import { LawCourt } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { FindOptions, Op } from '@contact/sequelize';
 import { Injectable } from '@nestjs/common';
+import { CourtInput } from './Court.input';
 
 @Injectable()
 export class CourtService {
   constructor(@InjectModel(LawCourt) private ModelLawCourt: typeof LawCourt) {}
-  async court(body: any) {
-    const where: FindOptions["where"] = {};
+  async court(body: CourtInput) {
+    const where: FindOptions['where'] = {};
     if (body.id) where.id = body.id;
     if (body.name) {
       where.name = { [Op.like]: `%${body.name}%` };

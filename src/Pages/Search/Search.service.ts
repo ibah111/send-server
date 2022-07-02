@@ -12,6 +12,7 @@ import {
   LawAct,
 } from '@contact/models';
 import { Injectable } from '@nestjs/common';
+import { SearchInput } from './Search.input';
 @Injectable()
 export class SearchService {
   constructor(
@@ -23,7 +24,7 @@ export class SearchService {
     @InjectModel(Address) private ModelAddress: typeof Address,
     @InjectModel(LawAct) private ModelLawAct: typeof LawAct,
   ) {}
-  async search(body: any) {
+  async search(body: SearchInput) {
     const result = await this.ModelLawExec.findAll({
       where: { state: { [Op.notIn]: [5] } },
       attributes: [

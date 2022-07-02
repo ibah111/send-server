@@ -5,6 +5,7 @@ import moment from 'moment';
 import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
 import { Downloader } from 'src/utils/downloader';
 import { Helper } from 'src/utils/helper';
+import { UpdateExecInput } from './UpdateExec.input';
 
 const tranform = (name: string, value: any) => {
   if (value) {
@@ -65,7 +66,7 @@ export class UpdateExecService {
     private readonly downloader: Downloader,
     private readonly helper: Helper,
   ) {}
-  async update(body: any, user: AuthUserSuccess) {
+  async update(body: UpdateExecInput, user: AuthUserSuccess) {
     const OpUser = await this.ModelUser.findOne({
       where: { email: user.login },
     });

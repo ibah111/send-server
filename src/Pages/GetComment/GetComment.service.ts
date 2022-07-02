@@ -1,6 +1,7 @@
 import { LawAct, LawExec } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
+import { GetCommentInput } from './GetComment.input';
 
 @Injectable()
 export class GetCommentService {
@@ -10,7 +11,7 @@ export class GetCommentService {
     @InjectModel(LawAct)
     private ModelLawAct: typeof LawAct,
   ) {}
-  async GetComment(body: any) {
+  async GetComment(body: GetCommentInput) {
     switch (body.type) {
       case 'law_act':
         return await this.ModelLawAct.findOne({
