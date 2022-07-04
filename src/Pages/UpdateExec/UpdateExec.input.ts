@@ -46,6 +46,7 @@ export class UpdateExecInput {
   @IsNumber()
   @IsNotEmpty()
   r_court_id: number;
+  @IsOptional()
   @IsNumber()
   template_typ: number;
 }
