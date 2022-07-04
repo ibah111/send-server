@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UpdateExecInput {
   @IsNumber()
@@ -29,6 +35,7 @@ export class UpdateExecInput {
   @IsNotEmpty()
   @Type(() => Date)
   entry_force_dt: Date;
+  @IsOptional()
   @IsDate()
   @Type(() => Date)
   receipt_recover_dt: Date;
