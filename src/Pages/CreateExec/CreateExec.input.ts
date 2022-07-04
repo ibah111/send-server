@@ -3,6 +3,7 @@ import {
   IsDate,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -27,6 +28,7 @@ export class CreateExecInput {
   @IsNotEmpty()
   @IsNumber()
   id: number;
+  @IsOptional()
   @Type(() => CreateExecOld)
   @ValidateNested()
   old: CreateExecOld;
