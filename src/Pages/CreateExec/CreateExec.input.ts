@@ -9,20 +9,20 @@ import {
 } from 'class-validator';
 
 export class CreateExecOld {
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  court_doc_num: string;
-  @IsNotEmpty()
+  court_doc_num?: string;
+  @IsOptional()
   @IsNumber()
-  executive_typ: number;
-  @IsNotEmpty()
+  executive_typ?: number;
+  @IsOptional()
   @IsDate()
   @Type(() => Date)
-  court_date: Date;
-  @IsNotEmpty()
+  court_date?: Date;
+  @IsOptional()
   @IsDate()
   @Type(() => Date)
-  entry_force_dt: Date;
+  entry_force_dt?: Date;
 }
 export class CreateExecInput {
   @IsNotEmpty()
