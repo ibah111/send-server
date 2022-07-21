@@ -70,9 +70,9 @@ export class SearchService {
         { model: this.ModelDict, as: 'ExecutiveTyp', attributes: ['name'] },
         {
           model: this.ModelDebt,
-          attributes: ['id', 'contract', 'debt_sum'],
+          attributes: ['id', 'contract', 'debt_sum', 'status'],
           where: {
-            status: { [Op.notIn]: [7] },
+            status: { [Op.notIn]: [] },
             ...(body.contract ? { contract: body.contract } : {}),
           },
           include: [
