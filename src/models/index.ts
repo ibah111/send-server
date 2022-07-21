@@ -8,7 +8,7 @@ import Models from '@contact/models';
       dialect: 'mssql',
       username: 'contact',
       password: 'contact',
-      database: 'i_collect',
+      database: 'i_collect_test',
       models: Models,
       logging: false,
     }),

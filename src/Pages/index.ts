@@ -8,6 +8,8 @@ import { GetCommentModule } from './GetComment/GetComment.module';
 import { LawExecModule } from './LawExec/LawExec.module';
 import { LoginModule } from './Login/Login.module';
 import { SearchModule } from './Search/Search.module';
+import { SearchDebtModule } from './SearchDebt/SearchDebt.module';
+import { UpdateDebtModule } from './UpdateDebt/UpdateDebt.module';
 import { SearchLawActModule } from './SearchLawAct/SearchLawAct.module';
 import { UpdateExecModule } from './UpdateExec/UpdateExec.module';
 
@@ -24,6 +26,8 @@ import { UpdateExecModule } from './UpdateExec/UpdateExec.module';
     DeleteExecModule,
     CreateExecModule,
     AddCommentModule,
+    SearchDebtModule,
+    UpdateDebtModule,
   ],
 })
 export class PagesModule {}
