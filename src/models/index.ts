@@ -10,7 +10,7 @@ import Models from '@contact/models';
       password: 'contact',
       database: 'i_collect',
       models: Models,
-      logging: false,
+      logging: true,
     }),
   ],
 })

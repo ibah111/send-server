@@ -192,6 +192,7 @@ export class UpdateExecService {
         });
         return { file: data.file.data, name: data.sql.name };
       }
+      return null;
     } else {
       return false;
     }

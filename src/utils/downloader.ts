@@ -114,6 +114,7 @@ export class Downloader {
     const url = `${server('fastreport')}/report=${template(
       template_id,
     )}.fr3&id=${le.id}&format=pdf`;
+    console.log(url);
     const file = await axios.get<Buffer>(url, {
       responseType: 'arraybuffer',
     });
