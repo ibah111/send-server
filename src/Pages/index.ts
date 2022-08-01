@@ -12,6 +12,7 @@ import { SearchDebtModule } from './SearchDebt/SearchDebt.module';
 import { UpdateDebtModule } from './UpdateDebt/UpdateDebt.module';
 import { SearchLawActModule } from './SearchLawAct/SearchLawAct.module';
 import { UpdateExecModule } from './UpdateExec/UpdateExec.module';
+import { DebtCalcModule } from './DebtCalc/DebtCalc.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UpdateExecModule } from './UpdateExec/UpdateExec.module';
     AddCommentModule,
     SearchDebtModule,
     UpdateDebtModule,
+    DebtCalcModule,
   ],
 })
 export class PagesModule {}

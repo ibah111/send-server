@@ -641,13 +641,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contact/models@npm:^0.0.21":
-  version: 0.0.21
-  resolution: "@contact/models@npm:0.0.21::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.0.21.tgz"
+"@contact/models@npm:^0.0.24":
+  version: 0.0.24
+  resolution: "@contact/models@npm:0.0.24::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.0.24.tgz"
   peerDependencies:
-    "@contact/sequelize": ^6.21.2
+    "@contact/sequelize": ^6.21.3
     "@contact/sequelize-typescript": ^2.1.4
-  checksum: a955159d9faf253b7d0fd456faa588a6d58925e730eb8a37eb989456d3317ab56c0ee5a2149b20e1e680d99bc9f044a88a111c2c30bfed5653a19206bfb8f583
+  checksum: b165a66381e4b761df160369d6b1aedc0b3f191d3787da35df65877585e78e49170a7b0112feb71b75413876489b9f22bf2ef79c1c6c2446f765170fa8b96187
   languageName: node
   linkType: hard
 
@@ -691,28 +691,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contact/sequelize@npm:^6.21.2":
-  version: 6.21.2
-  resolution: "@contact/sequelize@npm:6.21.2::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F54%2Fpackages%2Fnpm%2F%40contact%2Fsequelize%2F-%2F%40contact%2Fsequelize-6.21.2.tgz"
+"@contact/sequelize@npm:^6.21.3":
+  version: 6.21.3
+  resolution: "@contact/sequelize@npm:6.21.3::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F54%2Fpackages%2Fnpm%2F%40contact%2Fsequelize%2F-%2F%40contact%2Fsequelize-6.21.3.tgz"
   dependencies:
     "@motivation/sequelize-hierarchy": ^2.0.5
     "@types/debug": ^4.1.7
-    "@types/validator": ^13.7.1
-    debug: ^4.3.3
+    "@types/validator": ^13.7.4
+    debug: ^4.3.4
     dottie: ^2.0.2
     inflection: ^1.13.2
     lodash: ^4.17.21
-    moment: ^2.29.1
+    moment: ^2.29.4
     moment-timezone: ^0.5.34
     pg-connection-string: ^2.5.0
-    retry-as-promised: ^5.0.0
-    semver: ^7.3.5
+    retry-as-promised: ^6.0.0
+    semver: ^7.3.7
     sequelize-pool: ^7.1.0
     toposort-class: ^1.0.1
     uuid: ^8.3.2
     validator: ^13.7.0
     wkx: ^0.5.0
-  checksum: 9dd63be29c69500902551e70e53d7ec911b6db7331ebdf7f2f4c49f88b6e2227bac2e0c30789548b6418906fffc768399c16494b486995554477afa427d06130
+  checksum: 1c3d347a1b89d20f6a44ac948bd75446784e2035bee783684949d825ca7e86e5a9fe1ff19412fb9cbb69a9fda263426783fd3447bc9e572ff89b38099c85d7fd
   languageName: node
   linkType: hard
 
@@ -1864,7 +1864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.7.1":
+"@types/validator@npm:^13.7.4":
   version: 13.7.4
   resolution: "@types/validator@npm:13.7.4"
   checksum: 718e72d86c897861bc7f35e7918e0305d4efa5891ffdce6a8b77dbdc6fd10a70c2c6851f716a7f75ab2b0c12b5534f74e6d6b1040ac6eb8ab40d918c022283e5
@@ -6016,7 +6016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:>= 2.9.0, moment@npm:^2.29.1":
+"moment@npm:>= 2.9.0, moment@npm:^2.29.4":
   version: 2.29.4
   resolution: "moment@npm:2.29.4"
   checksum: 0ec3f9c2bcba38dc2451b1daed5daded747f17610b92427bebe1d08d48d8b7bdd8d9197500b072d14e326dd0ccf3e326b9e3d07c5895d3d49e39b6803b76e80e
@@ -6027,9 +6027,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "motivation_server@workspace:."
   dependencies:
-    "@contact/models": ^0.0.21
+    "@contact/models": ^0.0.24
     "@contact/nestjs-sequelize": ^9.0.0
-    "@contact/sequelize": ^6.21.2
+    "@contact/sequelize": ^6.21.3
     "@contact/sequelize-typescript": ^2.1.4
     "@contact/smb2": ^0.19.0
     "@nestjs/cli": ^9.0.0
@@ -6928,10 +6928,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"retry-as-promised@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "retry-as-promised@npm:5.0.0"
-  checksum: 4d17e0597f967db0516714f0f2b085e2d1e8ea592450b013a1e0cd41dad74a9c3d1eb3c45351887de4bca1c3ac5f74dd07ef9942a3fb0e4db996a83bb28cb46e
+"retry-as-promised@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "retry-as-promised@npm:6.0.0"
+  checksum: f87f9d30712bb3d56906b6066b2c6fc5b579f0667d79e06f77c76cd5a21e8118c2b822105c10ada47de00e670adc57c9f9c730bdf574aa62bbcf1baea69e82c6
   languageName: node
   linkType: hard
 
