@@ -641,13 +641,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contact/models@npm:^0.0.24":
-  version: 0.0.24
-  resolution: "@contact/models@npm:0.0.24::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.0.24.tgz"
+"@contact/models@npm:^0.0.26":
+  version: 0.0.26
+  resolution: "@contact/models@npm:0.0.26::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.0.26.tgz"
   peerDependencies:
     "@contact/sequelize": ^6.21.3
     "@contact/sequelize-typescript": ^2.1.4
-  checksum: b165a66381e4b761df160369d6b1aedc0b3f191d3787da35df65877585e78e49170a7b0112feb71b75413876489b9f22bf2ef79c1c6c2446f765170fa8b96187
+  checksum: 8ee5baab8416a2dd3922af7946890afb2c16becd4ff815565192f5f6bb78d83d69449a7ca8ddf143ed06be42d1fc633d38360b82f52993e014fb047dd83b5591
   languageName: node
   linkType: hard
 
@@ -6027,7 +6027,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "motivation_server@workspace:."
   dependencies:
-    "@contact/models": ^0.0.24
+    "@contact/models": ^0.0.26
     "@contact/nestjs-sequelize": ^9.0.0
     "@contact/sequelize": ^6.21.3
     "@contact/sequelize-typescript": ^2.1.4

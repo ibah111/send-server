@@ -13,6 +13,7 @@ import { UpdateDebtModule } from './UpdateDebt/UpdateDebt.module';
 import { SearchLawActModule } from './SearchLawAct/SearchLawAct.module';
 import { UpdateExecModule } from './UpdateExec/UpdateExec.module';
 import { DebtCalcModule } from './DebtCalc/DebtCalc.module';
+import { DocumentsModule } from './Documents/Documents.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { DebtCalcModule } from './DebtCalc/DebtCalc.module';
     SearchDebtModule,
     UpdateDebtModule,
     DebtCalcModule,
+    DocumentsModule,
   ],
 })
 export class PagesModule {}
