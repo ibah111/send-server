@@ -5,6 +5,8 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Max,
+  Min,
 } from 'class-validator';
 
 export class UpdateExecInput {
@@ -13,6 +15,8 @@ export class UpdateExecInput {
   id: number;
   @IsNumber()
   @IsNotEmpty()
+  @Min(0)
+  @Max(10000000)
   total_sum: number;
   @IsDate()
   @IsNotEmpty()
