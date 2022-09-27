@@ -20,7 +20,7 @@ export class CourtService {
 
     return await this.ModelLawCourt.findAll({
       where: { typ: 2, ...where },
-      attributes: ['id', 'name', 'address'],
+      attributes: ['id', 'name', 'address', 'district'],
       limit: 25,
     });
   }
