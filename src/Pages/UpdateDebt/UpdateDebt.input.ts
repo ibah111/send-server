@@ -1,7 +1,10 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class UpdateDebtInput {
-  @IsNotEmpty()
+  @IsOptional()
+  @IsNumber()
+  law_act_id: number;
+  @IsOptional()
   @IsNumber()
   law_exec_id: number;
   @IsNotEmpty()
