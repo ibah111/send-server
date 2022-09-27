@@ -72,7 +72,7 @@ export class SearchLawActService {
           model: this.ModelDebt,
           attributes: ['id', 'contract', 'debt_sum'],
           where: {
-            status: { [Op.notIn]: [7] },
+            status: { [Op.notIn]: [] },
             ...(body.contract ? { contract: body.contract } : {}),
           },
           include: [
