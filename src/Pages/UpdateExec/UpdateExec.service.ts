@@ -190,6 +190,9 @@ export class UpdateExecService {
           r_doc_attach_id: doc.id,
           dsc: `Вложение: ${doc.name}`,
         });
+        const debt = await le.$get("Debt");
+        debt.law_exec_flag = 1;
+        await debt.save();
         return { file: data.file.data, name: data.sql.name };
       }
       return null;
