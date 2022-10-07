@@ -41,8 +41,8 @@ export class UpdateDebtService {
       await law_act.save();
       return true;
     }
-    if (body.law_exec_id) {
-      const law_act = await this.ModelLawAct.findByPk(body.law_exec_id);
+    if (body.law_act_id) {
+      const law_act = await this.ModelLawAct.findByPk(body.law_act_id);
       const debt_old = await law_act.$get('Debt');
       const debt_new = await this.ModelDebt.findByPk(body.debt_id);
       law_act.r_person_id = debt_new.parent_id;
