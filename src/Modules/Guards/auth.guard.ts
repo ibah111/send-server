@@ -12,6 +12,7 @@ export class AuthUser<T> {
   id: T extends true ? number : never;
   login: T extends true ? string : never;
   login_result: T;
+  token: string;
   birthdate: T extends true ? string : never;
   department: T extends true ? string : never;
   position: T extends true ? string : never;
@@ -42,6 +43,7 @@ export class AuthGuard implements CanActivate {
       const { token } = body;
       const result = await checkLogin(token);
       if (result) {
+        result.token = token;
         if (result?.login_result) {
           data.user = result;
           return true;

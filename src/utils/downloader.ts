@@ -143,11 +143,13 @@ export class Downloader {
     doc_name: string,
     template_id: number,
     params: { addInterests: boolean },
+    token: string,
   ) {
     const file = await axios.get<Buffer>(
       `${server('fastreport')}/print/${template_id}`,
       {
         responseType: 'arraybuffer',
+        headers: { token },
         params: { ...params, id: le.id },
       },
     );

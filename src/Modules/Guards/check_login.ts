@@ -29,14 +29,14 @@ export const checkLogin = async (token: string) => {
   // Тестируем систему................................
   if (client('demo'))
     return !Number.isNaN(token)
-      ? {
+      ? ({
           login_result: Boolean(token),
           id: 1465,
           login: 'smorkalov@zakon43.ru',
           firstname: 'Фамилия',
           position: 'Должность',
-        }
-      : { login_result: false };
+        } as AuthUserSuccess)
+      : ({ login_result: false } as AuthUserError);
   let body = {};
   try {
     const encrypted = CryptoJS.enc.Base64.parse(token).toString(

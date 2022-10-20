@@ -183,6 +183,7 @@ export class UpdateExecService {
           doc_name,
           body.template_typ,
           { addInterests: body.add_interests },
+          user.token,
         );
         const doc = await this.ModelDocAttach.create(data.sql);
         await le.$create('LawExecProtokol', {
