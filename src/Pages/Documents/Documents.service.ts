@@ -77,7 +77,7 @@ export class DocumentsService {
         });
         try {
           await this.downloader.removeFile(doc);
-
+          await doc.destroy();
           return true;
         } catch (e) {
           if (e instanceof NotFoundException) {
