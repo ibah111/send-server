@@ -7,7 +7,7 @@ import { DocumentsService } from './Documents.service';
 @UseGuards(AuthGuard)
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
-  @Post()
+  @Post('get')
   async get(@Body() body: DocumentsInput) {
     if (body.id) {
       return await this.documentsService.get(body.id);
