@@ -142,14 +142,13 @@ export class Downloader {
     le: LawExec,
     doc_name: string,
     template_id: number,
+    params: { addInterests: boolean },
   ) {
     const file = await axios.get<Buffer>(
       `${server('fastreport')}/print/${template_id}`,
       {
         responseType: 'arraybuffer',
-        params: {
-          id: le.id,
-        },
+        params: { ...params, id: le.id },
       },
     );
     const data = await this.uploadFile(doc_name, file.data, OpUser, le.id);

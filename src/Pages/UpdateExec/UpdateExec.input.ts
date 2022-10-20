@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsDate,
   IsNotEmpty,
   IsNumber,
@@ -53,4 +54,7 @@ export class UpdateExecInput {
   @IsOptional()
   @IsNumber()
   template_typ: number;
+  @IsOptional()
+  @IsBoolean()
+  add_interests: boolean;
 }

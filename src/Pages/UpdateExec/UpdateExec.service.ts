@@ -182,6 +182,7 @@ export class UpdateExecService {
           le,
           doc_name,
           body.template_typ,
+          { addInterests: body.add_interests },
         );
         const doc = await this.ModelDocAttach.create(data.sql);
         await le.$create('LawExecProtokol', {
@@ -190,7 +191,7 @@ export class UpdateExecService {
           r_doc_attach_id: doc.id,
           dsc: `Вложение: ${doc.name}`,
         });
-        const debt = await le.$get("Debt");
+        const debt = await le.$get('Debt');
         debt.law_exec_flag = 1;
         await debt.save();
         return { file: data.file.data, name: data.sql.name };
