@@ -10,6 +10,7 @@ import https from './utils/https';
 import client from './utils/client';
 import { contentParser } from 'fastify-multer';
 tz.setDefault('GMT');
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
