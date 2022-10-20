@@ -85,12 +85,7 @@ export class Downloader {
       });
     });
   }
-  async downloadFile(
-    OpUser: User,
-    le: LawExec,
-    doc_name: string,
-    template_id: number,
-  ) {
+  async uploadFile(doc_name: string, file: Buffer, OpUser: User, id: number) {
     const count: DocAttach & { count?: number } =
       await this.ModelDocAttach.findOne({
         attributes: [
@@ -111,20 +106,21 @@ export class Downloader {
         where: { name: 'DocAttach.SavePath' },
       })) as any
     ).value;
+    return await this.uploadSmb(doc_name, save_path, path, file, OpUser, id);
+  }
+  async downloadFile(
+    OpUser: User,
+    le: LawExec,
+    doc_name: string,
+    template_id: number,
+  ) {
     const url = `${server('fastreport')}/report=${template(
       template_id,
     )}.fr3&id=${le.id}&format=pdf`;
     const file = await axios.get<Buffer>(url, {
       responseType: 'arraybuffer',
     });
-    const data = await this.uploadSmb(
-      doc_name,
-      save_path,
-      path,
-      file.data,
-      OpUser,
-      le.id,
-    );
+    const data = await this.uploadFile(doc_name, file.data, OpUser, le.id);
     return { file: file, sql: data };
   }
 }
