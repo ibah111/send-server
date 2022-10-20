@@ -8,12 +8,14 @@ import {
 import { AppModule } from './app.module';
 import https from './utils/https';
 import client from './utils/client';
+import { contentParser } from 'fastify-multer';
 tz.setDefault('GMT');
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({ https }),
   );
+  app.register(contentParser);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors();
   await app.listen(client('port'), '0.0.0.0');
