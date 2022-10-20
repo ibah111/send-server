@@ -3,5 +3,5 @@
   "server": "chat.nbkfinance.ru",
   "port": "80",
   "token": "sl1HjBxOWIScFIMUCy2x4AbtfnkK4alc",
-  "fastreport": "http://winapps.usb.ru:80"
+  "fastreport": "https://apps.usb.ru:3009"
 }

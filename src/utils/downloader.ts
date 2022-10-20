@@ -143,12 +143,15 @@ export class Downloader {
     doc_name: string,
     template_id: number,
   ) {
-    const url = `${server('fastreport')}/report=${template(
-      template_id,
-    )}.fr3&id=${le.id}&format=pdf`;
-    const file = await axios.get<Buffer>(url, {
-      responseType: 'arraybuffer',
-    });
+    const file = await axios.get<Buffer>(
+      `${server('fastreport')}/print/${template_id}`,
+      {
+        responseType: 'arraybuffer',
+        params: {
+          id: le.id,
+        },
+      },
+    );
     const data = await this.uploadFile(doc_name, file.data, OpUser, le.id);
     return { file: file, sql: data };
   }
