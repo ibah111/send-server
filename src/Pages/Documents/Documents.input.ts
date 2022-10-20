@@ -10,3 +10,8 @@ export class DocumentsInput {
   @IsNumber()
   id: number;
 }
+export class DocumentsRemoveInput {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
+}

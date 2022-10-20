@@ -6,7 +6,7 @@ import { Sequelize } from '@contact/sequelize-typescript';
 import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
 import { InjectModel, SequelizeModule } from '@contact/nestjs-sequelize';
 import { SMB, SmbModule } from './smb';
-import { Injectable, Module } from '@nestjs/common';
+import { Injectable, Module, NotFoundException } from '@nestjs/common';
 type uploads = {
   name: string;
   filename: string;
@@ -43,7 +43,7 @@ export class Downloader {
     OpUser: User,
     id: number,
   ) {
-    return new Promise<uploads>((resolve) => {
+    return new Promise<uploads>((resolve, reject) => {
       const data = {
         name: doc_name,
         filename: doc_name,
@@ -59,24 +59,24 @@ export class Downloader {
       const dir = tmp[tmp.length - 1];
       const client = this.smb.get();
       client.exists(`${dir}\\${path}`, (err, exists) => {
-        if (err) throw err;
+        if (err) reject(err);
         if (exists) {
           client.writeFile(
             `${dir}\\${path}\\${data.FILE_SERVER_NAME}`,
             file,
             (err: any) => {
-              if (err) throw err;
+              if (err) reject(err);
               resolve(data);
             },
           );
         } else {
           client.mkdir(`${dir}\\${path}`, (err) => {
-            if (err) throw err;
+            if (err) reject(err);
             client.writeFile(
               `${dir}\\${path}\\${data.FILE_SERVER_NAME}`,
               file,
               (err: any) => {
-                if (err) throw err;
+                if (err) reject(err);
                 resolve(data);
               },
             );
@@ -84,6 +84,35 @@ export class Downloader {
         }
       });
     });
+  }
+  removeSmb(save_path: string, path: string, file: string) {
+    return new Promise<boolean>((resolve, reject) => {
+      const tmp = save_path.split('\\');
+      const dir = tmp[tmp.length - 1];
+      const client = this.smb.get();
+      client.exists(`${dir}\\${path}`, (err, exists) => {
+        if (err) reject(err);
+        if (exists) {
+          client.unlink(`${dir}\\${path}\\${file}`, (err) => {
+            if (err) reject(err);
+            resolve(true);
+          });
+        } else {
+          reject(new NotFoundException('Файл не найден в папке сервера'));
+        }
+      });
+    });
+  }
+  async removeFile(doc: DocAttach) {
+    const save_path: string = (
+      await this.ModelConstValue.findOne({
+        where: { name: 'DocAttach.SavePath' },
+      })
+    ).value;
+    let path: number | string = doc.REL_SERVER_PATH.replaceAll('\\', '');
+    path = String(path);
+    const result = await this.removeSmb(save_path, path, doc.FILE_SERVER_NAME);
+    return result;
   }
   async uploadFile(doc_name: string, file: Buffer, OpUser: User, id: number) {
     const count: DocAttach & { count?: number } =
