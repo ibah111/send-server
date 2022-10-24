@@ -27,7 +27,7 @@ const tranform = (name: string, value: any) => {
     return null;
   }
 };
-const data = [
+const strings = [
   'total_sum',
   'load_dt',
   'court_doc_num',
@@ -72,7 +72,7 @@ export class UpdateExecService {
     });
     if (OpUser !== null) {
       const le = await this.ModelLawExec.findByPk(body.id);
-      for (const value of data) {
+      for (const value of strings) {
         le[value] = tranform(value, body[value]);
       }
       const changes = le.changed();
@@ -112,13 +112,6 @@ export class UpdateExecService {
           });
         }
         const changes = le.changed();
-
-        const doc_name = `Сопровод к ИД ${le.court_doc_num
-          .replaceAll('\\', '-')
-          .replaceAll('/', '-')} ${await this.helper.help(
-          'executive_typ',
-          le.executive_typ,
-        )} ${moment(le.court_date).utcOffset(3).format('DD.MM.YYYY')}.pdf`;
         if (changes)
           for (const change of changes) {
             switch (change) {
@@ -132,6 +125,16 @@ export class UpdateExecService {
                   )}". Старое значение: "${await this.helper.help(
                     change,
                     le.previous(change),
+                  )}".`,
+                });
+                break;
+              case 'dsc':
+                await le.$create('LawExecProtokol', {
+                  r_user_id: OpUser.id,
+                  typ: 62,
+                  dsc: `${t(change)}. Новое значение: "${await this.helper.help(
+                    change,
+                    le[change],
                   )}".`,
                 });
                 break;
@@ -177,14 +180,22 @@ export class UpdateExecService {
             }
           }
         await le.save();
-        const data = await this.downloader.downloadFile(
-          OpUser,
-          le,
-          doc_name,
-          body.template_typ,
-          { addInterests: body.add_interests },
-          user.token,
-        );
+      }
+      const doc_name = `Сопровод к ИД ${le.court_doc_num
+        .replaceAll('\\', '-')
+        .replaceAll('/', '-')} ${await this.helper.help(
+        'executive_typ',
+        le.executive_typ,
+      )} ${moment(le.court_date).utcOffset(3).format('DD.MM.YYYY')}.pdf`;
+      const data = await this.downloader.downloadFile(
+        OpUser,
+        le,
+        doc_name,
+        body.template_typ,
+        { addInterests: body.add_interests },
+        user.token,
+      );
+      if (data.file) {
         const doc = await this.ModelDocAttach.create(data.sql);
         await le.$create('LawExecProtokol', {
           r_user_id: OpUser.id,
