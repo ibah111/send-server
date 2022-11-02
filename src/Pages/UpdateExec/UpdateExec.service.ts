@@ -1,4 +1,4 @@
-import { DocAttach, LawExec, User } from '@contact/models';
+import { DocAttach, LawExec, LawExecAttributes, User } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import moment from 'moment';
@@ -111,7 +111,7 @@ export class UpdateExecService {
             dsc: `Перевод исполнительного документа на исполнительное производство. ID исп. док-та = ${le.id}`,
           });
         }
-        const changes = le.changed();
+        const changes = le.changed() as (keyof LawExecAttributes)[];
         if (changes)
           for (const change of changes) {
             switch (change) {

@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@contact/models": "^0.0.26",
+    "@contact/models": "^0.0.38",
     "@contact/nestjs-sequelize": "^9.0.0",
     "@contact/sequelize": "^6.24.0",
     "@contact/sequelize-typescript": "^2.1.4",
