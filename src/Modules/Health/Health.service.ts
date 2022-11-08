@@ -4,12 +4,14 @@ import {
   HealthCheckService,
   HttpHealthIndicator,
 } from '@nestjs/terminus';
+import { SequelizeHealthIndicator } from 'src/Modules/Health/sequelize.Health';
 import server from 'src/utils/server';
 @Injectable()
 export class HealthService {
   constructor(
     private readonly health: HealthCheckService,
     private readonly http: HttpHealthIndicator,
+    private readonly db: SequelizeHealthIndicator,
   ) {}
   async check() {
     return await this.health.check([
@@ -19,6 +21,7 @@ export class HealthService {
           server('fastreport') + '/health',
           (res) => res.data.status === 'ok',
         ),
+      async () => await this.db.pingCheck('database'),
     ]);
   }
 }
