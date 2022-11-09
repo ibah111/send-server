@@ -1,13 +1,13 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
+import { ToolsTerminusModule } from '@tools/terminus-indicators';
 import { HealthController } from './Health.controller';
 import { HealthService } from './Health.service';
-import { SequelizeHealthIndicator } from './sequelize.Health';
 
 @Module({
-  imports: [TerminusModule, HttpModule],
+  imports: [TerminusModule, HttpModule, ToolsTerminusModule],
   controllers: [HealthController],
-  providers: [HealthService, SequelizeHealthIndicator],
+  providers: [HealthService],
 })
 export class HealthModule {}

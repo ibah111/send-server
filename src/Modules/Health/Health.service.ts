@@ -4,7 +4,7 @@ import {
   HealthCheckService,
   HttpHealthIndicator,
 } from '@nestjs/terminus';
-import { SequelizeHealthIndicator } from 'src/Modules/Health/sequelize.Health';
+import { SequelizeHealthIndicator } from '@tools/terminus-indicators';
 import server from 'src/utils/server';
 @Injectable()
 export class HealthService {
