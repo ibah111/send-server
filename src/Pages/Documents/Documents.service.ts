@@ -5,9 +5,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { SMBService } from '@tools/nestjs-smb2';
 import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
 import { Downloader } from 'src/utils/downloader';
-import { SMB } from 'src/utils/smb';
 @Injectable()
 export class DocumentsService {
   constructor(
@@ -16,7 +16,7 @@ export class DocumentsService {
     @InjectModel(User) private readonly ModelUser: typeof User,
     @InjectModel(ConstValue)
     private readonly ModelConstValue: typeof ConstValue,
-    private readonly smb: SMB,
+    private readonly smb: SMBService,
     private downloader: Downloader,
   ) {}
   async get(id: number) {

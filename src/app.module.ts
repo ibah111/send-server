@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { ModelsModule } from './models';
 import { ModulesModule } from './Modules/Modules.module';
 import { PagesModule } from './Pages';
-import { SmbModule } from './utils/smb';
 
 @Module({
-  imports: [ModelsModule, SmbModule, PagesModule, ModulesModule],
+  imports: [ModelsModule, PagesModule, ModulesModule],
 })
 export class AppModule {}

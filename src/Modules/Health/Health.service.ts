@@ -4,7 +4,10 @@ import {
   HealthCheckService,
   HttpHealthIndicator,
 } from '@nestjs/terminus';
-import { SequelizeHealthIndicator } from '@tools/terminus-indicators';
+import {
+  SequelizeHealthIndicator,
+  SmbIndicator,
+} from '@tools/terminus-indicators';
 import server from 'src/utils/server';
 @Injectable()
 export class HealthService {
@@ -12,16 +15,18 @@ export class HealthService {
     private readonly health: HealthCheckService,
     private readonly http: HttpHealthIndicator,
     private readonly db: SequelizeHealthIndicator,
+    private readonly smb: SmbIndicator,
   ) {}
-  async check() {
-    return await this.health.check([
-      async () =>
-        await this.http.responseCheck<HealthCheckResult>(
+  check() {
+    return this.health.check([
+      () =>
+        this.http.responseCheck<HealthCheckResult>(
           'templates',
           server('fastreport') + '/health',
           (res) => res.data.status === 'ok',
         ),
-      async () => await this.db.pingCheck('database'),
+      () => this.db.pingCheck('database'),
+      () => this.smb.check('smb', 'DocAttach'),
     ]);
   }
 }

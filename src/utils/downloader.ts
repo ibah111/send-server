@@ -5,8 +5,9 @@ import server from './server';
 import { Sequelize } from '@contact/sequelize-typescript';
 import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
 import { InjectModel, SequelizeModule } from '@contact/nestjs-sequelize';
-import { SMB, SmbModule } from './smb';
 import { Injectable, Module, NotFoundException } from '@nestjs/common';
+import { SmbModule, SMBService } from '@tools/nestjs-smb2';
+import config from '../config/smb.json';
 type uploads = {
   name: string;
   filename: string;
@@ -33,7 +34,7 @@ export class Downloader {
   constructor(
     @InjectModel(DocAttach) private ModelDocAttach: typeof DocAttach,
     @InjectModel(ConstValue) private ModelConstValue: typeof ConstValue,
-    private readonly smb: SMB,
+    private readonly smb: SMBService,
   ) {}
   uploadSmb(
     doc_name: string,
@@ -158,7 +159,10 @@ export class Downloader {
   }
 }
 @Module({
-  imports: [SmbModule, SequelizeModule.forFeature([DocAttach, ConstValue])],
+  imports: [
+    SmbModule.register(config),
+    SequelizeModule.forFeature([DocAttach, ConstValue]),
+  ],
   providers: [Downloader],
   exports: [Downloader],
 })
