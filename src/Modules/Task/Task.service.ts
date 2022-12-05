@@ -22,6 +22,9 @@ export class TaskService {
       for (const protokol of await act.$get('LawExecProtokols')) {
         await protokol.destroy();
       }
+      for (const log of await act.$get('LawExecColumnLogs')) {
+        await log.destroy();
+      }
       await (await act.$get('LawExecPersonLink'))?.destroy();
       await act.destroy();
     }
