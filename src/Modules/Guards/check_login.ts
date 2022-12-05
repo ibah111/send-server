@@ -54,11 +54,13 @@ export const checkLogin = async (token: string) => {
       code: 'error_token',
     });
   }
-  const result = await axios({
-    url: 'https://chat.nbkfinance.ru/scripts/login-api.php',
-    method: 'POST',
-    params: { ...body },
-  });
+  const result = await axios.get(
+    'https://chat.nbkfinance.ru/scripts/login-api.php',
+    {
+      params: body,
+      headers: { 'accept-encoding': '*' },
+    },
+  );
   if (result.data === undefined || result.data === null) {
     return false;
   } else {
