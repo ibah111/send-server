@@ -681,15 +681,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contact/models@npm:^0.0.41":
-  version: 0.0.41
-  resolution: "@contact/models@npm:0.0.41::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.0.41.tgz"
+"@contact/models@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@contact/models@npm:0.1.1::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.1.1.tgz"
   dependencies:
     reflect-metadata: ^0.1.13
   peerDependencies:
     "@contact/sequelize": ^6.21.3
     "@contact/sequelize-typescript": ^2.1.4
-  checksum: 26c892d03e89cc2c81d6d73eac6f750581f3f97e332e634dda91f37bd17c1ea0bf9f7ad1bc13ce425665c4c25d238a825c4c30a7c1ca9331648afa08387bece8
+  checksum: 00907f3fd0fdf59ddae113e9b71d6881542e4686cc0304456007798d92ec971b5a43610af87967acad783fb4b20471fbf4ad6b78b8d0f07c2a4a0167e8ed9519
   languageName: node
   linkType: hard
 
@@ -2011,6 +2011,13 @@ __metadata:
   dependencies:
     "@types/superagent": "*"
   checksum: f0e2b44f86bec2f708d6a3d0cb209055b487922040773049b0f8c6b557af52d4b5fa904e17dfaa4ce6e610172206bbec7b62420d158fa57b6ffc2de37b1730d3
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@types/uuid@npm:9.0.0"
+  checksum: 59ae56d9547c8758588659da2a2b4c97cce79c2aae1798c892bb29452ef08e87859dea2ec3a66bfa88d0d2153147520be2b1893be920f9f0bc9c53a3207ea6aa
   languageName: node
   linkType: hard
 
@@ -7557,7 +7564,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "send_server@workspace:."
   dependencies:
-    "@contact/models": ^0.0.41
+    "@contact/models": ^0.1.1
     "@contact/nestjs-sequelize": ^9.0.0
     "@contact/sequelize": ^6.25.5
     "@contact/sequelize-typescript": ^2.1.4
@@ -7585,6 +7592,7 @@ __metadata:
     "@types/node": ^18.11.10
     "@types/semver": ^7.3.13
     "@types/supertest": ^2.0.12
+    "@types/uuid": ^9.0.0
     "@typescript-eslint/eslint-plugin": ^5.45.0
     "@typescript-eslint/parser": ^5.45.0
     axios: ^1.2.0

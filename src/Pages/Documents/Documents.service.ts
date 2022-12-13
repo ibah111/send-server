@@ -28,33 +28,37 @@ export class DocumentsService {
     const tmp = save_path.split('\\');
     const dir = tmp[tmp.length - 1];
     const doc = await this.ModelDocAttach.findByPk(id);
-    const path = doc.REL_SERVER_PATH.replaceAll('\\', '');
+    const path = doc!.REL_SERVER_PATH.replaceAll('\\', '');
     const client = this.smb.get();
     const file = await client.readFile(
-      `${dir}\\${path}\\${doc.FILE_SERVER_NAME}`,
+      `${dir}\\${path}\\${doc!.FILE_SERVER_NAME}`,
     );
     return file;
   }
-  async getAll(id: number) {
+  async getAll(id: number): Promise<DocAttach[]> {
     const law_exec = await this.ModelLawExec.findOne({
       where: { id },
       include: [{ model: this.ModelDocAttach, include: [this.ModelUser] }],
     });
-    return law_exec.DocAttachs;
+    return law_exec!.DocAttachs!;
   }
-  async upload(file: Express.Multer.File, id: number, auth: AuthUserSuccess) {
+  async upload(
+    file: Express.Multer.File,
+    id: number,
+    auth: AuthUserSuccess,
+  ): Promise<number> {
     const user = await this.ModelUser.findOne({ where: { email: auth.login } });
     const le = await this.ModelLawExec.findByPk(id);
     if (le) {
       const data = await this.downloader.uploadFile(
         file.originalname,
         file.buffer,
-        user,
+        user!,
         id,
       );
       const doc = await this.ModelDocAttach.create(data);
       await le.$create('LawExecProtokol', {
-        r_user_id: user.id,
+        r_user_id: user!.id,
         typ: 8,
         r_doc_attach_id: doc.id,
         dsc: `Вложение: ${doc.name}`,
@@ -70,8 +74,8 @@ export class DocumentsService {
     if (doc) {
       if (doc.obj_id === 47) {
         const le = await this.ModelLawExec.findByPk(doc.r_id);
-        await le.$create('LawExecProtokol', {
-          r_user_id: user.id,
+        await le!.$create('LawExecProtokol', {
+          r_user_id: user!.id,
           typ: 10,
           dsc: `Вложение: ${doc.name}, версия: ${doc.vers1}.${doc.vers2}`,
         });

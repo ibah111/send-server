@@ -10,7 +10,7 @@ export class DebtCalcService {
     @InjectModel(DebtCalc) private readonly ModelDebtCalc: typeof DebtCalc,
     @InjectModel(Dict) private readonly ModelDict: typeof Dict,
   ) {}
-  async get(id: number) {
+  async get(id: number): Promise<DebtCalc[]> {
     const result = await this.ModelLawExec.findOne({
       where: { id },
       attributes: ['r_debt_id'],
@@ -31,6 +31,6 @@ export class DebtCalcService {
         },
       ],
     });
-    return result.Debt.DebtCalcs;
+    return result!.Debt!.DebtCalcs!;
   }
 }

@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 
 export class UpdateExecInput {
+  [key: string]: number | string | Date | boolean | null;
   @IsNumber()
   @IsNotEmpty()
   id: number;

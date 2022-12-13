@@ -1,6 +1,6 @@
 export default function transliterate(word: string) {
   let answer = '';
-  const a = {};
+  const a: Record<string, string> = {};
 
   a['Ё'] = 'YO';
   a['Й'] = 'I';

@@ -1,13 +1,16 @@
-import { DocAttach, LawExec, LawExecAttributes, User } from '@contact/models';
+import { DocAttach, LawExec, User } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
+import { Attributes } from '@contact/sequelize';
 import { Injectable } from '@nestjs/common';
 import moment from 'moment';
 import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
 import { Downloader } from 'src/utils/downloader';
 import { Helper } from 'src/utils/helper';
 import { UpdateExecInput } from './UpdateExec.input';
-
-const tranform = (name: string, value: any) => {
+function transform<T extends keyof Attributes<LawExec>>(
+  name: T,
+  value: any,
+): LawExec[T] {
   if (value) {
     switch (name) {
       case 'load_dt':
@@ -26,8 +29,8 @@ const tranform = (name: string, value: any) => {
   } else {
     return null;
   }
-};
-const strings = [
+}
+const strings: (keyof Attributes<LawExec>)[] = [
   'total_sum',
   'load_dt',
   'court_doc_num',
@@ -39,7 +42,7 @@ const strings = [
   'fssp_date',
   'r_court_id',
 ];
-const translate = {
+const translate: Record<string, string> = {
   state: 'Статус',
   total_sum: 'Общая сумма',
   load_dt: 'Дата создания ИП',
@@ -71,9 +74,9 @@ export class UpdateExecService {
       where: { email: user.login },
     });
     if (OpUser !== null) {
-      const le = await this.ModelLawExec.findByPk(body.id);
+      const le = (await this.ModelLawExec.findByPk(body.id))!;
       for (const value of strings) {
-        le[value] = tranform(value, body[value]);
+        le[value] = transform(value, body[value]);
       }
       const changes = le.changed();
       if (changes) {
@@ -111,7 +114,7 @@ export class UpdateExecService {
             dsc: `Перевод исполнительного документа на исполнительное производство. ID исп. док-та = ${le.id}`,
           });
         }
-        const changes = le.changed() as (keyof LawExecAttributes)[];
+        const changes = le.changed() as (keyof Attributes<LawExec>)[];
         if (changes)
           for (const change of changes) {
             switch (change) {
@@ -181,8 +184,8 @@ export class UpdateExecService {
           }
         await le.save();
       }
-      const doc_name = `Сопровод к ИД ${le.court_doc_num
-        .replaceAll('\\', '-')
+      const doc_name = `Сопровод к ИД ${le
+        .court_doc_num!.replaceAll('\\', '-')
         .replaceAll('/', '-')} ${await this.helper.help(
         'executive_typ',
         le.executive_typ,
@@ -204,8 +207,8 @@ export class UpdateExecService {
           dsc: `Вложение: ${doc.name}`,
         });
         const debt = await le.$get('Debt');
-        debt.law_exec_flag = 1;
-        await debt.save();
+        debt!.law_exec_flag = 1;
+        await debt!.save();
         return { file: data.file.data, name: data.sql.name };
       }
       return null;

@@ -105,11 +105,9 @@ export class Downloader {
     });
   }
   async removeFile(doc: DocAttach) {
-    const save_path: string = (
-      await this.ModelConstValue.findOne({
-        where: { name: 'DocAttach.SavePath' },
-      })
-    ).value;
+    const save_path: string = (await this.ModelConstValue.findOne({
+      where: { name: 'DocAttach.SavePath' },
+    }))!.value!;
     let path: number | string = doc.REL_SERVER_PATH.replaceAll('\\', '');
     path = String(path);
     const result = await this.removeSmb(save_path, path, doc.FILE_SERVER_NAME);
@@ -117,14 +115,14 @@ export class Downloader {
   }
   async uploadFile(doc_name: string, file: Buffer, OpUser: User, id: number) {
     const count: DocAttach & { count?: number } =
-      await this.ModelDocAttach.findOne({
+      (await this.ModelDocAttach.findOne({
         attributes: [
           'REL_SERVER_PATH',
           [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
         ],
         group: 'REL_SERVER_PATH',
         order: [[Sequelize.fn('MAX', Sequelize.col('id')), 'DESC']],
-      });
+      }))!;
     let path: number | string = count.REL_SERVER_PATH.replaceAll('\\', '');
     path = Number(path);
     if (count.count === 1000) {

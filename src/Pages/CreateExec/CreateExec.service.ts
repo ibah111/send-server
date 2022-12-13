@@ -11,15 +11,18 @@ export class CreateExecService {
     @InjectModel(LawAct)
     private ModelLawAct: typeof LawAct,
   ) {}
-  async CreateExec(body: CreateExecInput, user: AuthUserSuccess) {
+  async CreateExec(
+    body: CreateExecInput,
+    user: AuthUserSuccess,
+  ): Promise<boolean | number> {
     const OpUser = await this.ModelUser.findOne({
       where: { email: user.login },
     });
     if (OpUser !== null) {
       const la = await this.ModelLawAct.findByPk(body.id);
-      const debt = await la.$get('Debt');
+      const debt = await la!.$get('Debt');
       let user_id = 17;
-      const work_task = await debt.$get('WorkTasks');
+      const work_task = await debt!.$get('WorkTasks');
       if (work_task.length > 0)
         if (work_task[0].r_user_id !== null) user_id = work_task[0].r_user_id;
       if (la !== null) {
@@ -30,7 +33,7 @@ export class CreateExecService {
           state: 5,
           r_user_id: user_id,
           DELIVERY_TYP: 3,
-          contract: debt.contract,
+          contract: debt!.contract,
           currency: 1,
           ...body.old,
           dsc: 'Создается ИП из "Отправка"',
@@ -39,7 +42,9 @@ export class CreateExecService {
         await le.$create('LawExecProtokol', {
           r_user_id: OpUser.id,
           typ: 1,
-          dsc: `Создание ИД из "Отправки" со значениями: Статус - (5) Аннулировано, Тип доставки - (3) Курьером, Договор - ${debt.contract}`,
+          dsc: `Создание ИД из "Отправки" со значениями: Статус - (5) Аннулировано, Тип доставки - (3) Курьером, Договор - ${
+            debt!.contract
+          }`,
         });
         return le.id;
       } else {
