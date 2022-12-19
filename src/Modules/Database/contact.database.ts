@@ -14,4 +14,4 @@ import Models from '@contact/models';
     }),
   ],
 })
-export class ModelsModule {}
+export class ContactDatabase {}
