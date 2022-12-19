@@ -5,7 +5,7 @@ import { CreateExecController } from './CreateExec.controller';
 import { CreateExecService } from './CreateExec.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, LawAct], 'contact')],
+  imports: [SequelizeModule.forFeature([LawAct], 'contact')],
   providers: [CreateExecService],
   controllers: [CreateExecController],
 })

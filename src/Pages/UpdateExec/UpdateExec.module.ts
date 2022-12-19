@@ -10,7 +10,7 @@ import { UpdateExecService } from './UpdateExec.service';
   imports: [
     DownloaderModule,
     HelperModule,
-    SequelizeModule.forFeature([User, LawExec, DocAttach], 'contact'),
+    SequelizeModule.forFeature([LawExec, DocAttach], 'contact'),
   ],
   controllers: [UpdateExecController],
   providers: [UpdateExecService],

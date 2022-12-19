@@ -5,7 +5,6 @@ import { LoginController } from './Login.controller';
 import { LoginService } from './Login.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User], 'contact')],
   controllers: [LoginController],
   providers: [LoginService],
 })

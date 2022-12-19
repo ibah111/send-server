@@ -4,15 +4,10 @@ import {
   Param,
   Post,
   UploadedFile,
-  UploadedFiles,
   UseGuards,
 } from '@nestjs/common';
 import { FastifyFileInterceptor } from 'nest-fastify-multer';
-import {
-  Auth,
-  AuthGuard,
-  AuthUserSuccess,
-} from 'src/Modules/Guards/auth.guard';
+import { Auth, AuthGuard, AuthResult } from 'src/Modules/Guards/auth.guard';
 import { DocumentsInput, DocumentsRemoveInput } from './Documents.input';
 import { DocumentsService } from './Documents.service';
 
@@ -34,15 +29,12 @@ export class DocumentsController {
   async upload(
     @UploadedFile() file: Express.Multer.File,
     @Param('id') id: number,
-    @Auth() user: AuthUserSuccess,
+    @Auth() auth: AuthResult,
   ) {
-    return await this.documentsService.upload(file, id, user);
+    return await this.documentsService.upload(file, id, auth);
   }
   @Post('remove')
-  async remove(
-    @Body() body: DocumentsRemoveInput,
-    @Auth() user: AuthUserSuccess,
-  ) {
-    return this.documentsService.remove(body.id, user);
+  async remove(@Body() body: DocumentsRemoveInput, @Auth() auth: AuthResult) {
+    return this.documentsService.remove(body.id, auth);
   }
 }

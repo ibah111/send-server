@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { SMBService } from '@tools/nestjs-smb2';
-import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
+import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { Downloader } from 'src/utils/downloader';
 @Injectable()
 export class DocumentsService {
@@ -47,20 +47,19 @@ export class DocumentsService {
   async upload(
     file: Express.Multer.File,
     id: number,
-    auth: AuthUserSuccess,
+    auth: AuthResult,
   ): Promise<number> {
-    const user = await this.ModelUser.findOne({ where: { email: auth.login } });
     const le = await this.ModelLawExec.findByPk(id);
     if (le) {
       const data = await this.downloader.uploadFile(
         file.originalname,
         file.buffer,
-        user!,
+        auth.userContact!,
         id,
       );
       const doc = await this.ModelDocAttach.create(data);
       await le.$create('LawExecProtokol', {
-        r_user_id: user!.id,
+        r_user_id: auth.userContact!.id,
         typ: 8,
         r_doc_attach_id: doc.id,
         dsc: `Вложение: ${doc.name}`,
@@ -70,14 +69,13 @@ export class DocumentsService {
       throw new NotFoundException('Такое дело не найдено');
     }
   }
-  async remove(id: number, auth: AuthUserSuccess) {
-    const user = await this.ModelUser.findOne({ where: { email: auth.login } });
+  async remove(id: number, auth: AuthResult) {
     const doc = await this.ModelDocAttach.findByPk(id);
     if (doc) {
       if (doc.obj_id === 47) {
         const le = await this.ModelLawExec.findByPk(doc.r_id);
         await le!.$create('LawExecProtokol', {
-          r_user_id: user!.id,
+          r_user_id: auth.userContact!.id,
           typ: 10,
           dsc: `Вложение: ${doc.name}, версия: ${doc.vers1}.${doc.vers2}`,
         });

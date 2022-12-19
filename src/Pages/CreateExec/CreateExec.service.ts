@@ -1,24 +1,19 @@
 import { LawAct, LawExec, User } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
-import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
+import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { CreateExecInput } from './CreateExec.input';
 @Injectable()
 export class CreateExecService {
   constructor(
-    @InjectModel(User, 'contact')
-    private ModelUser: typeof User,
     @InjectModel(LawAct, 'contact')
     private ModelLawAct: typeof LawAct,
   ) {}
   async CreateExec(
     body: CreateExecInput,
-    user: AuthUserSuccess,
+    auth: AuthResult,
   ): Promise<boolean | number> {
-    const OpUser = await this.ModelUser.findOne({
-      where: { email: user.login },
-    });
-    if (OpUser !== null) {
+    if (auth.userContact !== null) {
       const la = await this.ModelLawAct.findByPk(body.id);
       const debt = await la!.$get('Debt');
       let user_id = 17;
@@ -40,7 +35,7 @@ export class CreateExecService {
         });
         await le.$create('LawExecPersonLink', { PERSON_ID: la.r_person_id });
         await le.$create('LawExecProtokol', {
-          r_user_id: OpUser.id,
+          r_user_id: auth.userContact.id,
           typ: 1,
           dsc: `Создание ИД из "Отправки" со значениями: Статус - (5) Аннулировано, Тип доставки - (3) Курьером, Договор - ${
             debt!.contract

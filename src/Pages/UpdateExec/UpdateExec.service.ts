@@ -1,9 +1,9 @@
-import { DocAttach, LawExec, User } from '@contact/models';
+import { DocAttach, LawExec } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Attributes } from '@contact/sequelize';
 import { Injectable } from '@nestjs/common';
 import moment from 'moment';
-import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
+import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { Downloader } from 'src/utils/downloader';
 import { Helper } from 'src/utils/helper';
 import { UpdateExecInput } from './UpdateExec.input';
@@ -63,17 +63,13 @@ const t = (value: string) => {
 @Injectable()
 export class UpdateExecService {
   constructor(
-    @InjectModel(User, 'contact') private ModelUser: typeof User,
     @InjectModel(LawExec, 'contact') private ModelLawExec: typeof LawExec,
     @InjectModel(DocAttach, 'contact') private ModelDocAttach: typeof DocAttach,
     private readonly downloader: Downloader,
     private readonly helper: Helper,
   ) {}
-  async update(body: UpdateExecInput, user: AuthUserSuccess) {
-    const OpUser = await this.ModelUser.findOne({
-      where: { email: user.login },
-    });
-    if (OpUser !== null) {
+  async update(body: UpdateExecInput, auth: AuthResult) {
+    if (auth.userContact !== null) {
       const le = (await this.ModelLawExec.findByPk(body.id))!;
       for (const value of strings) {
         le[value] = transform(value, body[value]);
@@ -109,7 +105,7 @@ export class UpdateExecService {
           }
           await la.save();
           await la.$create('LawActProtokol', {
-            r_user_id: OpUser.id,
+            r_user_id: auth.userContact.id,
             typ: 36,
             dsc: `Перевод исполнительного документа на исполнительное производство. ID исп. док-та = ${le.id}`,
           });
@@ -120,7 +116,7 @@ export class UpdateExecService {
             switch (change) {
               case 'r_court_id':
                 await le.$create('LawExecProtokol', {
-                  r_user_id: OpUser.id,
+                  r_user_id: auth.userContact.id,
                   typ: 62,
                   dsc: `${t(change)}. Новое значение: "${await this.helper.help(
                     change,
@@ -133,7 +129,7 @@ export class UpdateExecService {
                 break;
               case 'dsc':
                 await le.$create('LawExecProtokol', {
-                  r_user_id: OpUser.id,
+                  r_user_id: auth.userContact.id,
                   typ: 62,
                   dsc: `${t(change)}. Новое значение: "${await this.helper.help(
                     change,
@@ -145,14 +141,14 @@ export class UpdateExecService {
                 switch (le.previous(change)) {
                   case 13:
                     await le.$create('LawExecProtokol', {
-                      r_user_id: OpUser.id,
+                      r_user_id: auth.userContact.id,
                       typ: 30,
                       dsc: `Перевод исполнительного документа на исполнительное производство`,
                     });
                     break;
                   default:
                     await le.$create('LawExecProtokol', {
-                      r_user_id: OpUser.id,
+                      r_user_id: auth.userContact.id,
                       typ: 2,
                       dsc: `${t(
                         change,
@@ -169,7 +165,7 @@ export class UpdateExecService {
                 break;
               default:
                 await le.$create('LawExecProtokol', {
-                  r_user_id: OpUser.id,
+                  r_user_id: auth.userContact.id,
                   typ: 2,
                   dsc: `${t(change)}. Новое значение: "${await this.helper.help(
                     change,
@@ -191,17 +187,17 @@ export class UpdateExecService {
         le.executive_typ,
       )} ${moment(le.court_date).utcOffset(3).format('DD.MM.YYYY')}.pdf`;
       const data = await this.downloader.downloadFile(
-        OpUser,
+        auth.userContact,
         le,
         doc_name,
         body.template_typ,
         { addInterests: body.add_interests },
-        user.token,
+        auth.user.token,
       );
       if (data.file) {
         const doc = await this.ModelDocAttach.create(data.sql);
         await le.$create('LawExecProtokol', {
-          r_user_id: OpUser.id,
+          r_user_id: auth.userContact.id,
           typ: 8,
           r_doc_attach_id: doc.id,
           dsc: `Вложение: ${doc.name}`,

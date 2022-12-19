@@ -5,7 +5,7 @@ import { DeleteExecController } from './DeleteExec.controller';
 import { DeleteExecService } from './DeleteExec.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, LawExec], 'contact')],
+  imports: [SequelizeModule.forFeature([LawExec], 'contact')],
   controllers: [DeleteExecController],
   providers: [DeleteExecService],
 })

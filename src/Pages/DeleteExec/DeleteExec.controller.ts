@@ -1,9 +1,5 @@
 import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
-import {
-  Auth,
-  AuthGuard,
-  AuthUserSuccess,
-} from 'src/Modules/Guards/auth.guard';
+import { Auth, AuthGuard, AuthResult } from 'src/Modules/Guards/auth.guard';
 import { DeleteExecInput } from './DeleteExec.input';
 import { DeleteExecService } from './DeleteExec.service';
 
@@ -13,10 +9,7 @@ export class DeleteExecController {
   constructor(private readonly deleteExecService: DeleteExecService) {}
   @Post()
   @HttpCode(200)
-  async DeleteExec(
-    @Body() body: DeleteExecInput,
-    @Auth() user: AuthUserSuccess,
-  ) {
-    return await this.deleteExecService.DeleteExec(body, user);
+  async DeleteExec(@Body() body: DeleteExecInput, @Auth() auth: AuthResult) {
+    return await this.deleteExecService.DeleteExec(body, auth);
   }
 }

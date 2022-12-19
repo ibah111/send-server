@@ -1,22 +1,17 @@
 import { LawAct, LawExec, User } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
-import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
+import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { AddCommentInput } from './AddComment.input';
 @Injectable()
 export class AddCommentService {
   constructor(
-    @InjectModel(User, 'contact')
-    private ModelUser: typeof User,
     @InjectModel(LawExec, 'contact')
     private ModelLawExec: typeof LawExec,
     @InjectModel(LawAct, 'contact')
     private ModelLawAct: typeof LawAct,
   ) {}
-  async AddComment(body: AddCommentInput, user: AuthUserSuccess) {
-    const OpUser = await this.ModelUser.findOne({
-      where: { email: user.login },
-    });
+  async AddComment(body: AddCommentInput, auth: AuthResult) {
     if (body.id && body.value) {
       const le = await this.ModelLawExec.findByPk(body.id);
       if (le) {
@@ -28,7 +23,7 @@ export class AddCommentService {
           }
           le.dsc += body.value;
           await le.$create('LawExecProtokol', {
-            r_user_id: OpUser!.id,
+            r_user_id: auth.userContact!.id,
             typ: 2,
             dsc: `Комментарий. Добавлена строка: "${body.value}".`,
           });
@@ -45,7 +40,7 @@ export class AddCommentService {
             }
             la.dsc += body.value;
             await la.$create('LawActProtokol', {
-              r_user_id: OpUser!.id,
+              r_user_id: auth.userContact!.id,
               typ: 2,
               dsc: `Комментарий. Добавлена строка: "${body.value}".`,
             });
