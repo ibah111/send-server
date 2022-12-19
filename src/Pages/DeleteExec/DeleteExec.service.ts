@@ -12,7 +12,10 @@ export class DeleteExecService {
     @InjectModel(LawExec)
     private ModelLawExec: typeof LawExec,
   ) {}
-  async DeleteExec(body: DeleteExecInput, user: AuthUserSuccess) {
+  async DeleteExec(
+    body: DeleteExecInput,
+    user: AuthUserSuccess,
+  ): Promise<number | false> {
     const OpUser = await this.ModelUser.findOne({
       where: { email: user.login },
     });
