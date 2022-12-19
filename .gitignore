@@ -2,5 +2,4 @@ node_modules
 .yarn
 .yarnrc.yml
 dist
-database.db
-example.db
+database.sqlite

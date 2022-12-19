@@ -48,6 +48,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.7",
     "semver": "^7.3.8",
+    "sqlite3": "^5.1.4",
     "tedious": "^15.1.2"
   },
   "devDependencies": {
