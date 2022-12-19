@@ -5,7 +5,7 @@ import { AuthUserSuccess } from 'src/Modules/Guards/auth.guard';
 
 @Injectable()
 export class LoginService {
-  constructor(@InjectModel(User) private ModelUser: typeof User) {}
+  constructor(@InjectModel(User, 'contact') private ModelUser: typeof User) {}
   async login(user: AuthUserSuccess) {
     const OpUser = await this.ModelUser.findOne({
       where: { email: user.login },

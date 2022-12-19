@@ -16,13 +16,13 @@ import { SearchInput } from './Search.input';
 @Injectable()
 export class SearchService {
   constructor(
-    @InjectModel(Person) private ModelPerson: typeof Person,
-    @InjectModel(Portfolio) private ModelPortfolio: typeof Portfolio,
-    @InjectModel(Debt) private ModelDebt: typeof Debt,
-    @InjectModel(LawExec) private ModelLawExec: typeof LawExec,
-    @InjectModel(Dict) private ModelDict: typeof Dict,
-    @InjectModel(Address) private ModelAddress: typeof Address,
-    @InjectModel(LawAct) private ModelLawAct: typeof LawAct,
+    @InjectModel(Person, 'contact') private ModelPerson: typeof Person,
+    @InjectModel(Portfolio, 'contact') private ModelPortfolio: typeof Portfolio,
+    @InjectModel(Debt, 'contact') private ModelDebt: typeof Debt,
+    @InjectModel(LawExec, 'contact') private ModelLawExec: typeof LawExec,
+    @InjectModel(Dict, 'contact') private ModelDict: typeof Dict,
+    @InjectModel(Address, 'contact') private ModelAddress: typeof Address,
+    @InjectModel(LawAct, 'contact') private ModelLawAct: typeof LawAct,
   ) {}
   async search(body: SearchInput) {
     const result = await this.ModelLawExec.findAll({

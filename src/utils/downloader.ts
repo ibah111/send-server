@@ -32,8 +32,9 @@ const template = (id: number) => {
 @Injectable()
 export class Downloader {
   constructor(
-    @InjectModel(DocAttach) private ModelDocAttach: typeof DocAttach,
-    @InjectModel(ConstValue) private ModelConstValue: typeof ConstValue,
+    @InjectModel(DocAttach, 'contact') private ModelDocAttach: typeof DocAttach,
+    @InjectModel(ConstValue, 'contact')
+    private ModelConstValue: typeof ConstValue,
     private readonly smb: SMBService,
   ) {}
   uploadSmb(
@@ -159,7 +160,7 @@ export class Downloader {
 @Module({
   imports: [
     SmbModule.register(config),
-    SequelizeModule.forFeature([DocAttach, ConstValue]),
+    SequelizeModule.forFeature([DocAttach, ConstValue], 'contact'),
   ],
   providers: [Downloader],
   exports: [Downloader],

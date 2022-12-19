@@ -6,7 +6,9 @@ import { CourtInput } from './Court.input';
 
 @Injectable()
 export class CourtService {
-  constructor(@InjectModel(LawCourt) private ModelLawCourt: typeof LawCourt) {}
+  constructor(
+    @InjectModel(LawCourt, 'contact') private ModelLawCourt: typeof LawCourt,
+  ) {}
   async court(body: CourtInput) {
     const where: FindOptions['where'] = {};
     if (body.id) where.id = body.id;

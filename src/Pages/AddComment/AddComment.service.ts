@@ -6,11 +6,11 @@ import { AddCommentInput } from './AddComment.input';
 @Injectable()
 export class AddCommentService {
   constructor(
-    @InjectModel(User)
+    @InjectModel(User, 'contact')
     private ModelUser: typeof User,
-    @InjectModel(LawExec)
+    @InjectModel(LawExec, 'contact')
     private ModelLawExec: typeof LawExec,
-    @InjectModel(LawAct)
+    @InjectModel(LawAct, 'contact')
     private ModelLawAct: typeof LawAct,
   ) {}
   async AddComment(body: AddCommentInput, user: AuthUserSuccess) {

@@ -5,7 +5,9 @@ import { LawExecController } from './LawExec.controller';
 import { LawExecService } from './LawExec.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([LawExec, Person, Debt, Portfolio])],
+  imports: [
+    SequelizeModule.forFeature([LawExec, Person, Debt, Portfolio], 'contact'),
+  ],
   controllers: [LawExecController],
   providers: [LawExecService],
 })

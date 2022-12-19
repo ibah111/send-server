@@ -5,7 +5,7 @@ import { CourtController } from './Court.controller';
 import { CourtService } from './Court.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([LawCourt])],
+  imports: [SequelizeModule.forFeature([LawCourt], 'contact')],
   controllers: [CourtController],
   providers: [CourtService],
 })

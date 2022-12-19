@@ -11,10 +11,12 @@ import { Downloader } from 'src/utils/downloader';
 @Injectable()
 export class DocumentsService {
   constructor(
-    @InjectModel(LawExec) private readonly ModelLawExec: typeof LawExec,
-    @InjectModel(DocAttach) private readonly ModelDocAttach: typeof DocAttach,
-    @InjectModel(User) private readonly ModelUser: typeof User,
-    @InjectModel(ConstValue)
+    @InjectModel(LawExec, 'contact')
+    private readonly ModelLawExec: typeof LawExec,
+    @InjectModel(DocAttach, 'contact')
+    private readonly ModelDocAttach: typeof DocAttach,
+    @InjectModel(User, 'contact') private readonly ModelUser: typeof User,
+    @InjectModel(ConstValue, 'contact')
     private readonly ModelConstValue: typeof ConstValue,
     private readonly smb: SMBService,
     private downloader: Downloader,

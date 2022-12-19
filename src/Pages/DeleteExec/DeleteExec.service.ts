@@ -7,9 +7,9 @@ import { DeleteExecInput } from './DeleteExec.input';
 @Injectable()
 export class DeleteExecService {
   constructor(
-    @InjectModel(User)
+    @InjectModel(User, 'contact')
     private ModelUser: typeof User,
-    @InjectModel(LawExec)
+    @InjectModel(LawExec, 'contact')
     private ModelLawExec: typeof LawExec,
   ) {}
   async DeleteExec(

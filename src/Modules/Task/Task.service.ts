@@ -7,7 +7,8 @@ import moment from 'moment-timezone';
 @Injectable()
 export class TaskService {
   constructor(
-    @InjectModel(LawExec) private readonly modelLawExec: typeof LawExec,
+    @InjectModel(LawExec, 'contact')
+    private readonly modelLawExec: typeof LawExec,
   ) {}
   @Cron('*/30 * * * * *')
   async removeNotCreated() {

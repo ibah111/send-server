@@ -9,6 +9,7 @@ import Models from '@contact/models';
       username: 'contact',
       password: 'contact',
       database: 'i_collect',
+      name: 'contact',
       models: Models,
       logging: false,
     }),

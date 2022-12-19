@@ -5,7 +5,9 @@ import { DebtCalcController } from './DebtCalc.controller';
 import { DebtCalcService } from './DebtCalc.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Dict, LawExec, Debt, DebtCalc])],
+  imports: [
+    SequelizeModule.forFeature([Dict, LawExec, Debt, DebtCalc], 'contact'),
+  ],
   controllers: [DebtCalcController],
   providers: [DebtCalcService],
 })

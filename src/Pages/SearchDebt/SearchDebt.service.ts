@@ -8,10 +8,10 @@ import { SearchDebtInput } from './SearchDebt.input';
 @Injectable()
 export class SearchDebtService {
   constructor(
-    @InjectModel(Dict) private ModelDict: typeof Dict,
-    @InjectModel(Person) private ModelPerson: typeof Person,
-    @InjectModel(Portfolio) private ModelPortfolio: typeof Portfolio,
-    @InjectModel(Debt) private ModelDebt: typeof Debt,
+    @InjectModel(Dict, 'contact') private ModelDict: typeof Dict,
+    @InjectModel(Person, 'contact') private ModelPerson: typeof Person,
+    @InjectModel(Portfolio, 'contact') private ModelPortfolio: typeof Portfolio,
+    @InjectModel(Debt, 'contact') private ModelDebt: typeof Debt,
   ) {}
   async search(body: SearchDebtInput) {
     const result = await this.ModelDebt.findAll({

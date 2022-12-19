@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { TaskService } from './Task.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([LawExec])],
+  imports: [SequelizeModule.forFeature([LawExec], 'contact')],
   providers: [TaskService],
 })
 export class TaskModule {}

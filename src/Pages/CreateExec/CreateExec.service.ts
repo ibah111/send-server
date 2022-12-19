@@ -6,9 +6,9 @@ import { CreateExecInput } from './CreateExec.input';
 @Injectable()
 export class CreateExecService {
   constructor(
-    @InjectModel(User)
+    @InjectModel(User, 'contact')
     private ModelUser: typeof User,
-    @InjectModel(LawAct)
+    @InjectModel(LawAct, 'contact')
     private ModelLawAct: typeof LawAct,
   ) {}
   async CreateExec(

@@ -5,7 +5,7 @@ import { DictController } from './Dict.controller';
 import { DictService } from './Dict.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Dict])],
+  imports: [SequelizeModule.forFeature([Dict], 'contact')],
   controllers: [DictController],
   providers: [DictService],
 })

@@ -5,7 +5,7 @@ import { GetCommentController } from './GetComment.controller';
 import { GetCommentService } from './GetComment.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([LawExec, LawAct])],
+  imports: [SequelizeModule.forFeature([LawExec, LawAct], 'contact')],
   controllers: [GetCommentController],
   providers: [GetCommentService],
 })

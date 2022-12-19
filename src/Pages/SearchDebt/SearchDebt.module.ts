@@ -5,7 +5,9 @@ import { SearchDebtController } from './SearchDebt.controller';
 import { SearchDebtService } from './SearchDebt.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Dict, Person, Portfolio, Debt])],
+  imports: [
+    SequelizeModule.forFeature([Dict, Person, Portfolio, Debt], 'contact'),
+  ],
   controllers: [SearchDebtController],
   providers: [SearchDebtService],
 })

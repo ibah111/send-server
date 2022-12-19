@@ -5,7 +5,9 @@ import { UpdateDebtController } from './UpdateDebt.controller';
 import { UpdateDebtService } from './UpdateDebt.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User, Debt, LawExec, LawAct])],
+  imports: [
+    SequelizeModule.forFeature([User, Debt, LawExec, LawAct], 'contact'),
+  ],
   controllers: [UpdateDebtController],
   providers: [UpdateDebtService],
 })

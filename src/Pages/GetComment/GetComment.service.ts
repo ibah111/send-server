@@ -6,9 +6,9 @@ import { GetCommentInput } from './GetComment.input';
 @Injectable()
 export class GetCommentService {
   constructor(
-    @InjectModel(LawExec)
+    @InjectModel(LawExec, 'contact')
     private ModelLawExec: typeof LawExec,
-    @InjectModel(LawAct)
+    @InjectModel(LawAct, 'contact')
     private ModelLawAct: typeof LawAct,
   ) {}
   async GetComment(body: GetCommentInput) {

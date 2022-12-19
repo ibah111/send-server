@@ -13,14 +13,10 @@ import { SearchLawActService } from './SearchLawAct.service';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([
-      LawAct,
-      Dict,
-      Address,
-      Person,
-      Portfolio,
-      Debt,
-    ]),
+    SequelizeModule.forFeature(
+      [LawAct, Dict, Address, Person, Portfolio, Debt],
+      'contact',
+    ),
   ],
   controllers: [SearchLawActController],
   providers: [SearchLawActService],

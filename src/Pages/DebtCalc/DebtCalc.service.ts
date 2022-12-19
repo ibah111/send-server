@@ -5,10 +5,12 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class DebtCalcService {
   constructor(
-    @InjectModel(LawExec) private readonly ModelLawExec: typeof LawExec,
-    @InjectModel(Debt) private readonly ModelDebt: typeof Debt,
-    @InjectModel(DebtCalc) private readonly ModelDebtCalc: typeof DebtCalc,
-    @InjectModel(Dict) private readonly ModelDict: typeof Dict,
+    @InjectModel(LawExec, 'contact')
+    private readonly ModelLawExec: typeof LawExec,
+    @InjectModel(Debt, 'contact') private readonly ModelDebt: typeof Debt,
+    @InjectModel(DebtCalc, 'contact')
+    private readonly ModelDebtCalc: typeof DebtCalc,
+    @InjectModel(Dict, 'contact') private readonly ModelDict: typeof Dict,
   ) {}
   async get(id: number): Promise<DebtCalc[]> {
     const result = await this.ModelLawExec.findOne({

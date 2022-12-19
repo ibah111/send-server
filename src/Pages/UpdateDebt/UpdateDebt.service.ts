@@ -7,10 +7,11 @@ import { UpdateDebtInput } from './UpdateDebt.input';
 @Injectable()
 export class UpdateDebtService {
   constructor(
-    @InjectModel(Debt) private readonly ModelDebt: typeof Debt,
-    @InjectModel(LawExec) private readonly ModelLawExec: typeof LawExec,
-    @InjectModel(LawAct) private readonly ModelLawAct: typeof LawAct,
-    @InjectModel(User) private readonly ModelUser: typeof User,
+    @InjectModel(Debt, 'contact') private readonly ModelDebt: typeof Debt,
+    @InjectModel(LawExec, 'contact')
+    private readonly ModelLawExec: typeof LawExec,
+    @InjectModel(LawAct, 'contact') private readonly ModelLawAct: typeof LawAct,
+    @InjectModel(User, 'contact') private readonly ModelUser: typeof User,
   ) {}
   async update(body: UpdateDebtInput, user: AuthUserSuccess) {
     const OpUser = await this.ModelUser.findOne({

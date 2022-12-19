@@ -5,10 +5,10 @@ import { LawExecInput } from './LawExec.input';
 @Injectable()
 export class LawExecService {
   constructor(
-    @InjectModel(LawExec) private ModelLawExec: typeof LawExec,
-    @InjectModel(Person) private ModelPerson: typeof Person,
-    @InjectModel(Debt) private ModelDebt: typeof Debt,
-    @InjectModel(Portfolio) private ModelPortfolio: typeof Portfolio,
+    @InjectModel(LawExec, 'contact') private ModelLawExec: typeof LawExec,
+    @InjectModel(Person, 'contact') private ModelPerson: typeof Person,
+    @InjectModel(Debt, 'contact') private ModelDebt: typeof Debt,
+    @InjectModel(Portfolio, 'contact') private ModelPortfolio: typeof Portfolio,
   ) {}
   async law_exec(body: LawExecInput) {
     return await this.ModelLawExec.findOne({

@@ -63,9 +63,9 @@ const t = (value: string) => {
 @Injectable()
 export class UpdateExecService {
   constructor(
-    @InjectModel(User) private ModelUser: typeof User,
-    @InjectModel(LawExec) private ModelLawExec: typeof LawExec,
-    @InjectModel(DocAttach) private ModelDocAttach: typeof DocAttach,
+    @InjectModel(User, 'contact') private ModelUser: typeof User,
+    @InjectModel(LawExec, 'contact') private ModelLawExec: typeof LawExec,
+    @InjectModel(DocAttach, 'contact') private ModelDocAttach: typeof DocAttach,
     private readonly downloader: Downloader,
     private readonly helper: Helper,
   ) {}

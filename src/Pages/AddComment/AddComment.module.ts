@@ -5,7 +5,7 @@ import { AddCommentController } from './AddComment.controller';
 import { AddCommentService } from './AddComment.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([LawExec, LawAct, User])],
+  imports: [SequelizeModule.forFeature([LawExec, LawAct, User], 'contact')],
   controllers: [AddCommentController],
   providers: [AddCommentService],
 })

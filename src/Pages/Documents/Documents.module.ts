@@ -9,7 +9,10 @@ import { SmbModule } from '@tools/nestjs-smb2';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([ConstValue, LawExec, DocAttach, User]),
+    SequelizeModule.forFeature(
+      [ConstValue, LawExec, DocAttach, User],
+      'contact',
+    ),
     SmbModule.register(config),
     DownloaderModule,
   ],

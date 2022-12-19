@@ -14,15 +14,10 @@ import { SearchService } from './Search.service';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([
-      Person,
-      Portfolio,
-      Debt,
-      LawExec,
-      Dict,
-      Address,
-      LawAct,
-    ]),
+    SequelizeModule.forFeature(
+      [Person, Portfolio, Debt, LawExec, Dict, Address, LawAct],
+      'contact',
+    ),
   ],
   controllers: [SearchController],
   providers: [SearchService],

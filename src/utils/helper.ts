@@ -5,8 +5,8 @@ import moment from 'moment';
 @Injectable()
 export class Helper {
   constructor(
-    @InjectModel(Dict) private ModelDict: typeof Dict,
-    @InjectModel(LawCourt) private ModelLawCourt: typeof LawCourt,
+    @InjectModel(Dict, 'contact') private ModelDict: typeof Dict,
+    @InjectModel(LawCourt, 'contact') private ModelLawCourt: typeof LawCourt,
   ) {}
   async help(typ: string, value: any) {
     switch (typ) {
@@ -53,7 +53,7 @@ export class Helper {
   }
 }
 @Module({
-  imports: [SequelizeModule.forFeature([Dict, LawCourt])],
+  imports: [SequelizeModule.forFeature([Dict, LawCourt], 'contact')],
   providers: [Helper],
   exports: [Helper],
 })
