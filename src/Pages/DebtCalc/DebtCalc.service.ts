@@ -1,4 +1,4 @@
-import { Debt, DebtCalc, Dict, LawExec, User } from '@contact/models';
+import { Debt, DebtCalc, Dict, LawExec } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 

@@ -1,4 +1,4 @@
-import { DocAttach, LawExec, User } from '@contact/models';
+import { DocAttach, LawExec } from '@contact/models';
 import { SequelizeModule } from '@contact/nestjs-sequelize';
 import { Module } from '@nestjs/common';
 import { DownloaderModule } from 'src/utils/downloader';

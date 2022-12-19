@@ -34,7 +34,6 @@ export class LocalSeed {
       const user = await this.modelUser.create({
         login: 'smorkalov@zakon43.ru',
       });
-      console.log(user);
       await this.modelUser_Role.create({
         user_id: user.id,
         role_id: role_admin.id,

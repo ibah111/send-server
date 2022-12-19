@@ -1,4 +1,4 @@
-import { LawExec, User } from '@contact/models';
+import { LawExec } from '@contact/models';
 import { SequelizeModule } from '@contact/nestjs-sequelize';
 import { Module } from '@nestjs/common';
 import { DeleteExecController } from './DeleteExec.controller';

@@ -1,4 +1,4 @@
-import { LawExec, User } from '@contact/models';
+import { LawExec } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';

@@ -19,16 +19,6 @@ type uploads = {
   REL_SERVER_PATH: string;
   FILE_SERVER_NAME: string;
 };
-const template = (id: number) => {
-  switch (id) {
-    case 16:
-      return 16;
-    case 17:
-      return 17;
-    default:
-      return 16;
-  }
-};
 @Injectable()
 export class Downloader {
   constructor(

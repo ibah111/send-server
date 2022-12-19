@@ -10,7 +10,6 @@ import {
   BelongsToMany,
   Column,
   DataType,
-  HasMany,
   Model,
   PrimaryKey,
   Table,

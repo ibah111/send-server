@@ -1,4 +1,4 @@
-import { LawAct, LawExec, User } from '@contact/models';
+import { LawAct, LawExec } from '@contact/models';
 import { SequelizeModule } from '@contact/nestjs-sequelize';
 import { Module } from '@nestjs/common';
 import { AddCommentController } from './AddComment.controller';

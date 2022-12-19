@@ -1,4 +1,4 @@
-import { Address, Debt, Dict, Person, Portfolio } from '@contact/models';
+import { Debt, Dict, Person, Portfolio } from '@contact/models';
 import { InjectModel } from '@contact/nestjs-sequelize';
 import { Op } from '@contact/sequelize';
 import { Sequelize } from '@contact/sequelize-typescript';
