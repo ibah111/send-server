@@ -1,5 +1,5 @@
 import { Dict } from '@contact/models';
-import { SequelizeModule } from '@contact/nestjs-sequelize';
+import { SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import { Module } from '@nestjs/common';
 import { DictController } from './Dict.controller';
 import { DictService } from './Dict.service';

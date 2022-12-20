@@ -1,5 +1,5 @@
 import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
-import { InjectModel } from '@contact/nestjs-sequelize';
+import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import {
   BadRequestException,
   Injectable,

@@ -1,6 +1,6 @@
-import { InjectConnection, InjectModel } from '@contact/nestjs-sequelize';
-import { CreationAttributes } from '@contact/sequelize';
-import { Sequelize } from '@contact/sequelize-typescript';
+import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
+import { CreationAttributes } from '@sql-tools/sequelize';
+import { Sequelize } from '@sql-tools/sequelize-typescript';
 import { Injectable } from '@nestjs/common';
 import { Role } from './models/Role.model';
 import { User } from './models/User.model';

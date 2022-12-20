@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SequelizeModule } from '@contact/nestjs-sequelize';
+import { SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import Models from '@contact/models';
 @Module({
   imports: [

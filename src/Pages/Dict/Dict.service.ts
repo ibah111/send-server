@@ -1,5 +1,5 @@
 import { Dict } from '@contact/models';
-import { InjectModel } from '@contact/nestjs-sequelize';
+import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import { DictInput } from './Dict.input';
 @Injectable()

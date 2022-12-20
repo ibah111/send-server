@@ -1,6 +1,6 @@
 import { LawExec } from '@contact/models';
-import { InjectModel } from '@contact/nestjs-sequelize';
-import { Op } from '@contact/sequelize';
+import { InjectModel } from '@sql-tools/nestjs-sequelize';
+import { Op } from '@sql-tools/sequelize';
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import moment from 'moment-timezone';

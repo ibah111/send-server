@@ -1,5 +1,5 @@
 import { Debt, LawExec, Person, Portfolio } from '@contact/models';
-import { InjectModel } from '@contact/nestjs-sequelize';
+import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import { LawExecInput } from './LawExec.input';
 @Injectable()

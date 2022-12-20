@@ -3,7 +3,7 @@ import type {
   InferAttributes,
   InferCreationAttributes,
   NonAttribute,
-} from '@contact/sequelize';
+} from '@sql-tools/sequelize';
 import {
   AutoIncrement,
   BelongsToMany,
@@ -12,7 +12,7 @@ import {
   Model,
   PrimaryKey,
   Table,
-} from '@contact/sequelize-typescript';
+} from '@sql-tools/sequelize-typescript';
 import { Role } from './Role.model';
 import { User_Role } from './User_Role.model';
 

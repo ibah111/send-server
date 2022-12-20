@@ -1,7 +1,7 @@
 import { Debt, Dict, Person, Portfolio } from '@contact/models';
-import { InjectModel } from '@contact/nestjs-sequelize';
-import { Op } from '@contact/sequelize';
-import { Sequelize } from '@contact/sequelize-typescript';
+import { InjectModel } from '@sql-tools/nestjs-sequelize';
+import { Op } from '@sql-tools/sequelize';
+import { Sequelize } from '@sql-tools/sequelize-typescript';
 import { Injectable } from '@nestjs/common';
 import dottie from 'dottie';
 import { SearchDebtInput } from './SearchDebt.input';

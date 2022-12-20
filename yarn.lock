@@ -681,31 +681,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contact/models@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@contact/models@npm:0.1.1::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.1.1.tgz"
+"@contact/models@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@contact/models@npm:0.2.0::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.2.0.tgz"
   dependencies:
     reflect-metadata: ^0.1.13
   peerDependencies:
-    "@contact/sequelize": ^6.21.3
-    "@contact/sequelize-typescript": ^2.1.4
-  checksum: 00907f3fd0fdf59ddae113e9b71d6881542e4686cc0304456007798d92ec971b5a43610af87967acad783fb4b20471fbf4ad6b78b8d0f07c2a4a0167e8ed9519
-  languageName: node
-  linkType: hard
-
-"@contact/nestjs-sequelize@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "@contact/nestjs-sequelize@npm:9.0.0::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F56%2Fpackages%2Fnpm%2F%40contact%2Fnestjs-sequelize%2F-%2F%40contact%2Fnestjs-sequelize-9.0.0.tgz"
-  dependencies:
-    uuid: 8.3.2
-  peerDependencies:
-    "@contact/sequelize": ^6.21.2
-    "@contact/sequelize-typescript": ^2.1.4
-    "@nestjs/common": ^8.0.0 || ^9.0.0
-    "@nestjs/core": ^8.0.0 || ^9.0.0
-    reflect-metadata: ^0.1.13
-    rxjs: ^7.2.0
-  checksum: f2fbc7f4e7c3e8d89939f6fd6ad004c3c32f64a7b014d720f445e144dfe1c152e49c315124fadba8a54b504830a9d5c30959e79c492e0a3bdc4f4d658af52f46
+    "@sql-tools/sequelize": ^6.21.3
+    "@sql-tools/sequelize-typescript": ^2.1.4
+  checksum: b31cd97acda50517805c13a9ea8befbb0c1ef5f477b46f3700b98c056f410eec85089efb2bb3b873639c4db5fd04b87f4939353e9e96f13807a99dca91a6d3f8
   languageName: node
   linkType: hard
 
@@ -715,45 +699,6 @@ __metadata:
   dependencies:
     crypto-js: ^4.1.1
   checksum: dccf2cd664cf9245d402083cd4f22bf0469207b5659ff58f81e11749729c29fb8e0c2f67f835642a2aa24f6486f340153c689a6cf3700b517b7587d90904ce5d
-  languageName: node
-  linkType: hard
-
-"@contact/sequelize-typescript@npm:^2.1.4":
-  version: 2.1.4
-  resolution: "@contact/sequelize-typescript@npm:2.1.4::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F55%2Fpackages%2Fnpm%2F%40contact%2Fsequelize-typescript%2F-%2F%40contact%2Fsequelize-typescript-2.1.4.tgz"
-  dependencies:
-    cross-env: 7.0.3
-    glob: 7.2.0
-  peerDependencies:
-    "@contact/sequelize": "*"
-    "@types/node": "*"
-    "@types/validator": "*"
-    reflect-metadata: "*"
-  checksum: 2b453afa1ebfce8920e79306a3d2334fa6159e2b60c802d7b332402ef5af5a3968ec3cc6fe77068b60805960c30cd29f8f522e9fb5402fdfae15a40755f87b87
-  languageName: node
-  linkType: hard
-
-"@contact/sequelize@npm:^6.25.5":
-  version: 6.25.5
-  resolution: "@contact/sequelize@npm:6.25.5::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F54%2Fpackages%2Fnpm%2F%40contact%2Fsequelize%2F-%2F%40contact%2Fsequelize-6.25.5.tgz"
-  dependencies:
-    "@types/debug": ^4.1.7
-    "@types/validator": ^13.7.7
-    debug: ^4.3.4
-    dottie: ^2.0.2
-    inflection: ^1.13.4
-    lodash: ^4.17.21
-    moment: ^2.29.4
-    moment-timezone: ^0.5.37
-    pg-connection-string: ^2.5.0
-    retry-as-promised: ^6.1.0
-    semver: ^7.3.8
-    sequelize-pool: ^8.0.0
-    toposort-class: ^1.0.1
-    uuid: ^9.0.0
-    validator: ^13.7.0
-    wkx: ^0.5.0
-  checksum: 833040105dba0218ef3b580d295e346ba7b34440c61a6e5db5636f4a328527bd38541c1ffe8b2b139083510cec74bc22e940da5dc8a8240f6f1f986467f36ea4
   languageName: node
   linkType: hard
 
@@ -1641,6 +1586,61 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sql-tools/nestjs-sequelize@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@sql-tools/nestjs-sequelize@npm:9.0.0::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F181%2Fpackages%2Fnpm%2F%40sql-tools%2Fnestjs-sequelize%2F-%2F%40sql-tools%2Fnestjs-sequelize-9.0.0.tgz"
+  dependencies:
+    uuid: 8.3.2
+  peerDependencies:
+    "@nestjs/common": ^8.0.0 || ^9.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0
+    "@sql-tools/sequelize": ^6.25.6
+    "@sql-tools/sequelize-typescript": ^2.1.4
+    reflect-metadata: ^0.1.13
+    rxjs: ^7.2.0
+  checksum: fff52f9b579d20a952d65ec0d5e6a88816c936ed9ed0949372b71085b3f6c9efbbe0379bccb47f671c3644d314aa4e6ab19133cb9036d4ccdb0016f5f86f9082
+  languageName: node
+  linkType: hard
+
+"@sql-tools/sequelize-typescript@npm:^2.1.4":
+  version: 2.1.4
+  resolution: "@sql-tools/sequelize-typescript@npm:2.1.4::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F180%2Fpackages%2Fnpm%2F%40sql-tools%2Fsequelize-typescript%2F-%2F%40sql-tools%2Fsequelize-typescript-2.1.4.tgz"
+  dependencies:
+    cross-env: 7.0.3
+    glob: 7.2.0
+  peerDependencies:
+    "@sql-tools/sequelize": "*"
+    "@types/node": "*"
+    "@types/validator": "*"
+    reflect-metadata: "*"
+  checksum: b02f5ec3055a55473332b35d5fd86bbd55231600159d80349919087cea2dac58ab3670a6386d2666a874aa42f722d5313a1f3b884102ddf3227e182b5767a114
+  languageName: node
+  linkType: hard
+
+"@sql-tools/sequelize@npm:^6.25.6":
+  version: 6.27.0
+  resolution: "@sql-tools/sequelize@npm:6.27.0::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F178%2Fpackages%2Fnpm%2F%40sql-tools%2Fsequelize%2F-%2F%40sql-tools%2Fsequelize-6.27.0.tgz"
+  dependencies:
+    "@types/debug": ^4.1.7
+    "@types/validator": ^13.7.7
+    debug: ^4.3.4
+    dottie: ^2.0.2
+    inflection: ^1.13.4
+    lodash: ^4.17.21
+    moment: ^2.29.4
+    moment-timezone: ^0.5.37
+    pg-connection-string: ^2.5.0
+    retry-as-promised: ^6.1.0
+    semver: ^7.3.8
+    sequelize-pool: ^8.0.0
+    toposort-class: ^1.0.1
+    uuid: ^9.0.0
+    validator: ^13.7.0
+    wkx: ^0.5.0
+  checksum: 090570b64e7de071abd5ec5df420d2c15ea26bb5ed8e5cbaf4c63ca3a17ba25a33c33c26fcdebe61b8266e053d51fcd508deea8b971ae848c2f425a499281520
+  languageName: node
+  linkType: hard
+
 "@tools/nestjs-smb2@npm:^0.0.3":
   version: 0.0.3
   resolution: "@tools/nestjs-smb2@npm:0.0.3::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F160%2Fpackages%2Fnpm%2F%40tools%2Fnestjs-smb2%2F-%2F%40tools%2Fnestjs-smb2-0.0.3.tgz"
@@ -1654,16 +1654,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tools/terminus-indicators@npm:^0.0.19":
-  version: 0.0.19
-  resolution: "@tools/terminus-indicators@npm:0.0.19::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F156%2Fpackages%2Fnpm%2F%40tools%2Fterminus-indicators%2F-%2F%40tools%2Fterminus-indicators-0.0.19.tgz"
+"@tools/terminus-indicators@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@tools/terminus-indicators@npm:0.1.0::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F156%2Fpackages%2Fnpm%2F%40tools%2Fterminus-indicators%2F-%2F%40tools%2Fterminus-indicators-0.1.0.tgz"
   peerDependencies:
     "@nestjs/common": 9.x
     "@nestjs/core": 9.x
     "@nestjs/terminus": 9.*
     reflect-metadata: 0.1.x
     rxjs: 7.x
-  checksum: ec48846d4bd2f7af73a7e704870e1fead5eb22880cc07aec66055df4f5af4e39732b8c77064ec51514c7b3692a6b0b70e3f9cac6254b0c93410e6e8e15e1a065
+  checksum: 106edb9931409fb5a3ebab040a5c6f7be1f456b6bc7d9d6e2d854a5f27eb2feb3c28315e417a561a45c65114fdb0d87027b4a0d295c2f681dd55efbce0a1c77e
   languageName: node
   linkType: hard
 
@@ -7781,10 +7781,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "send_server@workspace:."
   dependencies:
-    "@contact/models": ^0.1.1
-    "@contact/nestjs-sequelize": ^9.0.0
-    "@contact/sequelize": ^6.25.5
-    "@contact/sequelize-typescript": ^2.1.4
+    "@contact/models": ^0.2.0
     "@contact/smb2": ^0.19.0
     "@nestjs/axios": ^1.0.0
     "@nestjs/cli": ^9.1.5
@@ -7797,8 +7794,11 @@ __metadata:
     "@nestjs/terminus": ^9.1.4
     "@nestjs/testing": ^9.2.1
     "@nestjs/websockets": ^9.2.1
+    "@sql-tools/nestjs-sequelize": ^9.0.0
+    "@sql-tools/sequelize": ^6.25.6
+    "@sql-tools/sequelize-typescript": ^2.1.4
     "@tools/nestjs-smb2": ^0.0.3
-    "@tools/terminus-indicators": ^0.0.19
+    "@tools/terminus-indicators": ^0.1.0
     "@types/cron": ^2.0.0
     "@types/crypto-js": ^4.1.1
     "@types/dottie": ^2.0.4

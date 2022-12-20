@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { checkLogin } from './check_login';
 import { ClassConstructor } from 'class-transformer';
-import { getConnectionToken } from '@contact/nestjs-sequelize';
-import { Model } from '@contact/sequelize-typescript';
+import { getConnectionToken } from '@sql-tools/nestjs-sequelize';
+import { Model } from '@sql-tools/sequelize-typescript';
 import { ModuleRef } from '@nestjs/core';
 export class AuthUser<T> {
   output: T extends true ? 'Вы вошли' : 'Вы не вошли';

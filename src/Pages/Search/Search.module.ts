@@ -7,7 +7,7 @@ import {
   Person,
   Portfolio,
 } from '@contact/models';
-import { SequelizeModule } from '@contact/nestjs-sequelize';
+import { SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import { Module } from '@nestjs/common';
 import { SearchController } from './Search.controller';
 import { SearchService } from './Search.service';

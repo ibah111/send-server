@@ -1,6 +1,6 @@
 import { LawCourt } from '@contact/models';
-import { InjectModel } from '@contact/nestjs-sequelize';
-import { FindOptions, Op } from '@contact/sequelize';
+import { InjectModel } from '@sql-tools/nestjs-sequelize';
+import { FindOptions, Op } from '@sql-tools/sequelize';
 import { Injectable } from '@nestjs/common';
 import { CourtInput } from './Court.input';
 

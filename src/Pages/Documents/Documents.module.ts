@@ -1,5 +1,5 @@
 import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
-import { SequelizeModule } from '@contact/nestjs-sequelize';
+import { SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import { Module } from '@nestjs/common';
 import { DownloaderModule } from 'src/utils/downloader';
 import { DocumentsController } from './Documents.controller';

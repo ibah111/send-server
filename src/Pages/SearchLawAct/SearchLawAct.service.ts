@@ -1,7 +1,7 @@
-import { Sequelize } from '@contact/sequelize-typescript';
-import { Op } from '@contact/sequelize';
+import { Sequelize } from '@sql-tools/sequelize-typescript';
+import { Op } from '@sql-tools/sequelize';
 import dottie from 'dottie';
-import { InjectModel } from '@contact/nestjs-sequelize';
+import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import {
   Address,
   Debt,

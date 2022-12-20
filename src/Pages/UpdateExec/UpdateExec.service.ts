@@ -1,6 +1,6 @@
 import { DocAttach, LawExec } from '@contact/models';
-import { InjectModel } from '@contact/nestjs-sequelize';
-import { Attributes } from '@contact/sequelize';
+import { InjectModel } from '@sql-tools/nestjs-sequelize';
+import { Attributes } from '@sql-tools/sequelize';
 import { Injectable } from '@nestjs/common';
 import moment from 'moment';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';

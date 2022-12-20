@@ -1,5 +1,5 @@
 import { LawAct, LawExec } from '@contact/models';
-import { InjectModel } from '@contact/nestjs-sequelize';
+import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { AddCommentInput } from './AddComment.input';

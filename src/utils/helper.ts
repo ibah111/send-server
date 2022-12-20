@@ -1,5 +1,5 @@
 import { Dict, LawCourt } from '@contact/models';
-import { InjectModel, SequelizeModule } from '@contact/nestjs-sequelize';
+import { InjectModel, SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import { Injectable, Module } from '@nestjs/common';
 import moment from 'moment';
 @Injectable()
