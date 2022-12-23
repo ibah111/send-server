@@ -1,5 +1,5 @@
 import { DocAttach, LawExec } from '@contact/models';
-import { InjectModel } from '@sql-tools/nestjs-sequelize';
+import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Attributes } from '@sql-tools/sequelize';
 import { Injectable } from '@nestjs/common';
 import moment from 'moment';
@@ -7,6 +7,8 @@ import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { Downloader } from 'src/utils/downloader';
 import { Helper } from 'src/utils/helper';
 import { UpdateExecInput } from './UpdateExec.input';
+import { Sequelize } from '@sql-tools/sequelize-typescript';
+import getContextTransaction from 'src/utils/getContextTransaction';
 function transform<T extends keyof Attributes<LawExec>>(
   name: T,
   value: any,
@@ -63,8 +65,11 @@ const t = (value: string) => {
 @Injectable()
 export class UpdateExecService {
   constructor(
-    @InjectModel(LawExec, 'contact') private ModelLawExec: typeof LawExec,
-    @InjectModel(DocAttach, 'contact') private ModelDocAttach: typeof DocAttach,
+    @InjectConnection('contact') private readonly sequelize: Sequelize,
+    @InjectModel(LawExec, 'contact')
+    private readonly ModelLawExec: typeof LawExec,
+    @InjectModel(DocAttach, 'contact')
+    private readonly ModelDocAttach: typeof DocAttach,
     private readonly downloader: Downloader,
     private readonly helper: Helper,
   ) {}
@@ -76,6 +81,10 @@ export class UpdateExecService {
       }
       const changes = le.changed();
       if (changes) {
+        const transaction = await getContextTransaction(
+          this.sequelize,
+          auth.userContact.id,
+        );
         le.state = 9;
         const new_dsc = `${moment()
           .utcOffset(3)
@@ -103,7 +112,8 @@ export class UpdateExecService {
           } else {
             la.status = 9;
           }
-          await la.save();
+          await la.save({ transaction });
+          await transaction.commit();
           await la.$create('LawActProtokol', {
             r_user_id: auth.userContact.id,
             typ: 36,
@@ -111,7 +121,11 @@ export class UpdateExecService {
           });
         }
         const changes = le.changed() as (keyof Attributes<LawExec>)[];
-        if (changes)
+        if (changes) {
+          const transaction = await getContextTransaction(
+            this.sequelize,
+            auth.userContact.id,
+          );
           for (const change of changes) {
             switch (change) {
               case 'r_court_id':
@@ -178,7 +192,9 @@ export class UpdateExecService {
                 break;
             }
           }
-        await le.save();
+          await le.save({ transaction });
+          await transaction.commit();
+        }
       }
       const doc_name = `Сопровод к ИД ${le
         .court_doc_num!.replaceAll('\\', '-')
@@ -203,8 +219,13 @@ export class UpdateExecService {
           dsc: `Вложение: ${doc.name}`,
         });
         const debt = await le.$get('Debt');
+        const transaction = await getContextTransaction(
+          this.sequelize,
+          auth.userContact.id,
+        );
         debt!.law_exec_flag = 1;
-        await debt!.save();
+        await debt!.save({ transaction });
+        await transaction.commit();
         return { file: data.file.data, name: data.sql.name };
       }
       return null;
