@@ -64,7 +64,7 @@ export class AuthGuard implements CanActivate {
   }
   async canActivate(ctx: ExecutionContext) {
     const data = ctx.switchToHttp().getRequest();
-    const body = data.body;
+    const body = data.headers;
     if (body) {
       const { token } = body;
       const result = await checkLogin(token);
@@ -77,7 +77,7 @@ export class AuthGuard implements CanActivate {
               include: ['Roles'],
             }),
             userContact: await this.modelUserContact.findOne({
-              where: { login: result.login },
+              where: { email: result.login },
             }),
           };
           data.auth = user;
