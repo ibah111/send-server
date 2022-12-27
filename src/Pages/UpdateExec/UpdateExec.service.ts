@@ -162,7 +162,7 @@ export class UpdateExecService {
               case 'r_court_id':
                 await le.createLawExecProtokol({
                   r_user_id: auth.userContact.id,
-                  typ: 62,
+                  typ: 2,
                   dsc: `${t(change)}. Новое значение: "${await this.helper.help(
                     change,
                     le[change],
@@ -175,7 +175,7 @@ export class UpdateExecService {
               case 'dsc':
                 await le.createLawExecProtokol({
                   r_user_id: auth.userContact.id,
-                  typ: 62,
+                  typ: 2,
                   dsc: `${t(change)}. Новое значение: "${await this.helper.help(
                     change,
                     le[change],
