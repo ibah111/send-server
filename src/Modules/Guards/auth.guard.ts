@@ -69,6 +69,7 @@ export class AuthGuard implements CanActivate {
       const { token } = body;
       const result = await checkLogin(token);
       if (result) {
+        result.token = token;
         if (result?.login_result) {
           const user: AuthResult = {
             user: result,
