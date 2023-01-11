@@ -17,13 +17,15 @@ export class DeleteExecService {
     if (auth.userContact !== null) {
       const le = await this.ModelLawExec.findByPk(body.id);
       if (le !== null) {
-        le.state = 6;
-        await le.save();
-        await le.$create('LawExecProtokol', {
-          r_user_id: auth.userContact.id,
-          typ: 23,
-          dsc: `Перевод в архив`,
-        });
+        if (![4, 5, 6].includes(le.state)) {
+          le.state = 6;
+          await le.save();
+          await le.$create('LawExecProtokol', {
+            r_user_id: auth.userContact.id,
+            typ: 23,
+            dsc: `Перевод в архив`,
+          });
+        }
         return le.id;
       } else {
         return false;
