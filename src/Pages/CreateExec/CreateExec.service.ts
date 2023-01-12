@@ -18,9 +18,8 @@ export class CreateExecService {
       const la = await this.ModelLawAct.findByPk(body.id);
       const debt = await la!.$get('Debt');
       let user_id = 17;
-      const work_task = await debt!.$get('WorkTasks');
-      if (work_task.length > 0)
-        if (work_task[0].r_user_id !== null) user_id = work_task[0].r_user_id;
+      const work_task = await debt!.$get('WorkTask');
+      if (work_task!.r_user_id !== null) user_id = work_task!.r_user_id;
       if (la !== null) {
         const data: CreationAttributes<LawExec> = {
           r_person_id: la.r_person_id,
@@ -28,7 +27,6 @@ export class CreateExecService {
           r_portfolio_id: la.r_portfolio_id,
           state: 5,
           r_user_id: user_id,
-          load_dt: new Date(),
           DELIVERY_TYP: 3,
           contract: debt!.contract,
           currency: 1,
