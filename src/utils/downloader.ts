@@ -105,18 +105,17 @@ export class Downloader {
     return result;
   }
   async uploadFile(doc_name: string, file: Buffer, OpUser: User, id: number) {
-    const count: DocAttach & { count?: number } =
-      (await this.ModelDocAttach.findOne({
-        attributes: [
-          'REL_SERVER_PATH',
-          [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
-        ],
-        group: 'REL_SERVER_PATH',
-        order: [[Sequelize.fn('MAX', Sequelize.col('id')), 'DESC']],
-      }))!;
+    const count = (await this.ModelDocAttach.findOne({
+      attributes: [
+        'REL_SERVER_PATH',
+        [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
+      ],
+      group: 'REL_SERVER_PATH',
+      order: [[Sequelize.fn('MAX', Sequelize.col('id')), 'DESC']],
+    }))! as DocAttach & { dataValues: { count?: number } };
     let path: number | string = count.REL_SERVER_PATH.replaceAll('\\', '');
     path = Number(path);
-    if (count.count === 1000) {
+    if (count.dataValues.count === 1000) {
       path += 1;
     }
     path = String(path);
