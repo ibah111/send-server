@@ -58,7 +58,7 @@ export class DocumentsService {
         id,
       );
       const doc = await this.ModelDocAttach.create(data);
-      await le.$create('LawExecProtokol', {
+      await le.createLawExecProtokol({
         r_user_id: auth.userContact!.id,
         typ: 8,
         r_doc_attach_id: doc.id,
@@ -74,7 +74,7 @@ export class DocumentsService {
     if (doc) {
       if (doc.obj_id === 47) {
         const le = await this.ModelLawExec.findByPk(doc.r_id);
-        await le!.$create('LawExecProtokol', {
+        await le!.createLawExecProtokol({
           r_user_id: auth.userContact!.id,
           typ: 10,
           dsc: `Вложение: ${doc.name}, версия: ${doc.vers1}.${doc.vers2}`,

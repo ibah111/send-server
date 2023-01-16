@@ -22,7 +22,7 @@ export class AddCommentService {
             le.dsc += '\r\n';
           }
           le.dsc += body.value;
-          await le.$create('LawExecProtokol', {
+          await le.createLawExecProtokol({
             r_user_id: auth.userContact!.id,
             typ: 2,
             dsc: `Комментарий. Добавлена строка: "${body.value}".`,
@@ -39,7 +39,7 @@ export class AddCommentService {
               la.dsc += '\r\n';
             }
             la.dsc += body.value;
-            await la.$create('LawActProtokol', {
+            await la.createLawActProtokol({
               r_user_id: auth.userContact!.id,
               typ: 2,
               dsc: `Комментарий. Добавлена строка: "${body.value}".`,

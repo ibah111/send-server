@@ -105,7 +105,7 @@ export class UpdateExecService {
           }
           le.dsc += new_dsc;
         }
-        const la = await le.$get('LawAct');
+        const la = await le.getLawAct();
         if (la !== null) {
           if (la.typ !== 1) {
             la.act_status = 13;
@@ -114,7 +114,7 @@ export class UpdateExecService {
           }
           await la.save({ transaction });
           await transaction.commit();
-          await la.$create('LawActProtokol', {
+          await la.createLawActProtokol({
             r_user_id: auth.userContact.id,
             typ: 36,
             dsc: `Перевод исполнительного документа на исполнительное производство. ID исп. док-та = ${le.id}`,
@@ -129,7 +129,7 @@ export class UpdateExecService {
           for (const change of changes) {
             switch (change) {
               case 'r_court_id':
-                await le.$create('LawExecProtokol', {
+                await le.createLawExecProtokol({
                   r_user_id: auth.userContact.id,
                   typ: 62,
                   dsc: `${t(change)}. Новое значение: "${await this.helper.help(
@@ -142,7 +142,7 @@ export class UpdateExecService {
                 });
                 break;
               case 'dsc':
-                await le.$create('LawExecProtokol', {
+                await le.createLawExecProtokol({
                   r_user_id: auth.userContact.id,
                   typ: 62,
                   dsc: `${t(change)}. Новое значение: "${await this.helper.help(
@@ -154,14 +154,14 @@ export class UpdateExecService {
               case 'state':
                 switch (le.previous(change)) {
                   case 13:
-                    await le.$create('LawExecProtokol', {
+                    await le.createLawExecProtokol({
                       r_user_id: auth.userContact.id,
                       typ: 30,
                       dsc: `Перевод исполнительного документа на исполнительное производство`,
                     });
                     break;
                   default:
-                    await le.$create('LawExecProtokol', {
+                    await le.createLawExecProtokol({
                       r_user_id: auth.userContact.id,
                       typ: 2,
                       dsc: `${t(
@@ -178,7 +178,7 @@ export class UpdateExecService {
                 }
                 break;
               default:
-                await le.$create('LawExecProtokol', {
+                await le.createLawExecProtokol({
                   r_user_id: auth.userContact.id,
                   typ: 2,
                   dsc: `${t(change)}. Новое значение: "${await this.helper.help(
@@ -212,13 +212,13 @@ export class UpdateExecService {
       );
       if (data.file) {
         const doc = await this.ModelDocAttach.create(data.sql);
-        await le.$create('LawExecProtokol', {
+        await le.createLawExecProtokol({
           r_user_id: auth.userContact.id,
           typ: 8,
           r_doc_attach_id: doc.id,
           dsc: `Вложение: ${doc.name}`,
         });
-        const debt = await le.$get('Debt');
+        const debt = await le.getDebt();
         const transaction = await getContextTransaction(
           this.sequelize,
           auth.userContact.id,

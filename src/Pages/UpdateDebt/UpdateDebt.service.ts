@@ -15,13 +15,13 @@ export class UpdateDebtService {
   async update(body: UpdateDebtInput, auth: AuthResult) {
     if (body.law_exec_id) {
       const law_exec = await this.ModelLawExec.findByPk(body.law_exec_id);
-      const law_act = await law_exec!.$get('LawAct');
-      const debt_old = await law_act!.$get('Debt');
+      const law_act = await law_exec!.getLawAct();
+      const debt_old = await law_act!.getDebt();
       const debt_new = await this.ModelDebt.findByPk(body.debt_id);
       law_exec!.r_person_id = debt_new!.parent_id;
       law_exec!.r_portfolio_id = debt_new!.r_portfolio_id;
       law_exec!.r_debt_id = debt_new!.id;
-      await law_exec!.$create<LawExecProtokol>('LawExecProtokol', {
+      await law_exec!.createLawExecProtokol({
         r_user_id: auth.userContact!.id,
         typ: 6,
         dsc: `Была осуществлена перепривязка с долга ${debt_old!.id} на ${
@@ -32,7 +32,7 @@ export class UpdateDebtService {
       law_act!.r_person_id = debt_new!.parent_id;
       law_act!.r_portfolio_id = debt_new!.r_portfolio_id;
       law_act!.r_debt_id = debt_new!.id;
-      await law_act!.$create<LawExecProtokol>('LawActProtokol', {
+      await law_act!.createLawActProtokol({
         r_user_id: auth.userContact!.id,
         typ: 105,
         dsc: `Была осуществлена перепривязка с долга ${debt_old!.id} на ${
@@ -44,12 +44,12 @@ export class UpdateDebtService {
     }
     if (body.law_act_id) {
       const law_act = await this.ModelLawAct.findByPk(body.law_act_id);
-      const debt_old = await law_act!.$get('Debt');
+      const debt_old = await law_act!.getDebt();
       const debt_new = await this.ModelDebt.findByPk(body.debt_id);
       law_act!.r_person_id = debt_new!.parent_id;
       law_act!.r_portfolio_id = debt_new!.r_portfolio_id;
       law_act!.r_debt_id = debt_new!.id;
-      await law_act!.$create<LawExecProtokol>('LawActProtokol', {
+      await law_act!.createLawActProtokol({
         r_user_id: auth.userContact!.id,
         typ: 105,
         dsc: `Была осуществлена перепривязка с долга ${debt_old!.id} на ${

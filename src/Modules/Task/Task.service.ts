@@ -20,13 +20,13 @@ export class TaskService {
       },
     });
     for (const act of acts) {
-      for (const protokol of await act.$get('LawExecProtokols')) {
+      for (const protokol of await act.getLawExecProtokols()) {
         await protokol.destroy();
       }
-      for (const log of await act.$get('LawExecColumnLogs')) {
+      for (const log of await act.getLawExecColumnLogs()) {
         await log.destroy();
       }
-      await (await act.$get('LawExecPersonLink'))?.destroy();
+      await (await act.getLawExecPersonLink())?.destroy();
       await act.destroy();
     }
   }

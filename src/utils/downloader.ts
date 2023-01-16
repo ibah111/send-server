@@ -8,6 +8,7 @@ import { InjectModel, SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import { Injectable, Module, NotFoundException } from '@nestjs/common';
 import { SmbModule, SMBService } from '@tools/nestjs-smb2';
 import config from '../config/smb.json';
+import { MIS } from '@sql-tools/sequelize';
 type uploads = {
   name: string;
   filename: string;
@@ -112,18 +113,16 @@ export class Downloader {
       ],
       group: 'REL_SERVER_PATH',
       order: [[Sequelize.fn('MAX', Sequelize.col('id')), 'DESC']],
-    }))! as DocAttach & { dataValues: { count?: number } };
+    }))! as MIS<DocAttach> & { dataValues: { count?: number } };
     let path: number | string = count.REL_SERVER_PATH.replaceAll('\\', '');
     path = Number(path);
     if (count.dataValues.count === 1000) {
       path += 1;
     }
     path = String(path);
-    const save_path: string = (
-      (await this.ModelConstValue.findOne({
-        where: { name: 'DocAttach.SavePath' },
-      })) as any
-    ).value;
+    const save_path: string = (await this.ModelConstValue.findOne({
+      where: { name: 'DocAttach.SavePath' },
+    }))!.value!;
     return await this.uploadSmb(doc_name, save_path, path, file, OpUser, id);
   }
   async downloadFile(

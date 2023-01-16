@@ -20,7 +20,7 @@ export class DeleteExecService {
         if (![4, 5, 6].includes(le.state)) {
           le.state = 6;
           await le.save();
-          await le.$create('LawExecProtokol', {
+          await le.createLawExecProtokol({
             r_user_id: auth.userContact.id,
             typ: 23,
             dsc: `Перевод в архив`,

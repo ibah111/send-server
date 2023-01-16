@@ -16,12 +16,12 @@ export class CreateExecService {
   ): Promise<boolean | number> {
     if (auth.userContact !== null) {
       const la = await this.ModelLawAct.findByPk(body.id);
-      const debt = await la!.$get('Debt');
+      const debt = await la!.getDebt();
       let user_id = 17;
-      const work_task = await debt!.$get('WorkTask');
+      const work_task = await debt!.getWorkTask();
       if (work_task!.r_user_id !== null) user_id = work_task!.r_user_id;
       if (la !== null) {
-        const data: CreationAttributes<LawExec> = {
+        const le = await la.createLawExec({
           r_person_id: la.r_person_id,
           r_debt_id: la.r_debt_id,
           r_portfolio_id: la.r_portfolio_id,
@@ -33,10 +33,12 @@ export class CreateExecService {
           total_sum: 0,
           ...body.old,
           dsc: 'Создается ИП из "Отправка"',
-        };
-        const le: LawExec = await la.$create('LawExec', data);
-        await le.$create('LawExecPersonLink', { PERSON_ID: la.r_person_id });
-        await le.$create('LawExecProtokol', {
+        });
+        await le.createLawExecPersonLink({
+          PERSON_ID: la.r_person_id,
+          R_LAW_EXEC_ID: le.id,
+        });
+        await le.createLawExecProtokol({
           r_user_id: auth.userContact.id,
           typ: 1,
           dsc: `Создание ИД из "Отправки" со значениями: Статус - (5) Аннулировано, Тип доставки - (3) Курьером, Договор - ${
