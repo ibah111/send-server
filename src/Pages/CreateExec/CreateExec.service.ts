@@ -17,16 +17,12 @@ export class CreateExecService {
     if (auth.userContact !== null) {
       const la = await this.ModelLawAct.findByPk(body.id);
       const debt = await la!.getDebt();
-      let user_id = 17;
-      const work_task = await debt!.getWorkTask();
-      if (work_task!.r_user_id !== null) user_id = work_task!.r_user_id;
       if (la !== null) {
         const le = await la.createLawExec({
           r_person_id: la.r_person_id,
           r_debt_id: la.r_debt_id,
           r_portfolio_id: la.r_portfolio_id,
           state: 5,
-          r_user_id: user_id,
           DELIVERY_TYP: 3,
           contract: debt!.contract,
           currency: 1,
