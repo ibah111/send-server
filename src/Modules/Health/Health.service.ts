@@ -9,6 +9,7 @@ import {
   SmbIndicator,
 } from '@tools/terminus-indicators';
 import server from 'src/utils/server';
+import { SocketService } from '../Socket/Socket.service';
 @Injectable()
 export class HealthService {
   constructor(
@@ -16,9 +17,11 @@ export class HealthService {
     private readonly http: HttpHealthIndicator,
     private readonly db: SequelizeHealthIndicator,
     private readonly smb: SmbIndicator,
+    private readonly socket: SocketService,
   ) {}
   check() {
     return this.health.check([
+      () => this.socket.connections('sockets'),
       () =>
         this.http.responseCheck<HealthCheckResult>(
           'templates',
