@@ -73,9 +73,40 @@ export class UpdateExecService {
     private readonly downloader: Downloader,
     private readonly helper: Helper,
   ) {}
+  async changeDebtGuarantor(
+    le: LawExec['ModelInstance'],
+    debt_guarantor: number,
+    r_user_id: number,
+  ) {
+    const link = await le.getLawExecPersonLink();
+    if (debt_guarantor > -1) {
+      link.PERSON_ROLE = 2;
+      if (link.PERSON_ID !== debt_guarantor) {
+        link.PERSON_ID = debt_guarantor;
+        await link.save();
+        const dg = await link.getDebtGuarantor();
+        await le.createLawExecProtokol({
+          r_user_id,
+          typ: 6,
+          dsc: `Изменение стороны на поручителя "${dg.fio}"`,
+        });
+      }
+    }
+    if (link.PERSON_ROLE === 2 && debt_guarantor === -1) {
+      link.PERSON_ROLE = 1;
+      link.PERSON_ID = le.r_person_id;
+      await link.save();
+      await le.createLawExecProtokol({
+        r_user_id,
+        typ: 6,
+        dsc: `Изменение стороны на должника`,
+      });
+    }
+  }
   async update(body: UpdateExecInput, auth: AuthResult) {
     if (auth.userContact !== null) {
       const le = (await this.ModelLawExec.findByPk(body.id))!;
+      this.changeDebtGuarantor(le, body.debt_guarantor, auth.userContact.id);
       for (const value of strings) {
         le[value] = transform(value, body[value]);
       }

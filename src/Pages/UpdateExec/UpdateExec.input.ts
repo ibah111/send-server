@@ -58,4 +58,7 @@ export class UpdateExecInput {
   @IsOptional()
   @IsBoolean()
   add_interests: boolean;
+  @IsNotEmpty()
+  @IsNumber()
+  debt_guarantor: number;
 }
