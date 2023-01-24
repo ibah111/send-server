@@ -30,8 +30,10 @@ export class CreateExecService {
           ...body.old,
           dsc: 'Создается ИП из "Отправка"',
         });
+        const la_link = await la.getLawActPersonLink();
         await le.createLawExecPersonLink({
-          PERSON_ID: la.r_person_id,
+          PERSON_ID: la_link.PERSON_ID,
+          PERSON_ROLE: la_link.PERSON_ROLE,
           R_LAW_EXEC_ID: le.id,
         });
         await le.createLawExecProtokol({
