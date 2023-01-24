@@ -5,8 +5,10 @@ import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import {
   Address,
   Debt,
+  DebtGuarantor,
   Dict,
   LawAct,
+  LawActPersonLink,
   Person,
   Portfolio,
 } from '@contact/models';
@@ -21,6 +23,10 @@ export class SearchLawActService {
     @InjectModel(Person, 'contact') private ModelPerson: typeof Person,
     @InjectModel(Portfolio, 'contact') private ModelPortfolio: typeof Portfolio,
     @InjectModel(Debt, 'contact') private ModelDebt: typeof Debt,
+    @InjectModel(LawActPersonLink, 'contact')
+    private readonly ModelLawActPersonLink: typeof LawActPersonLink,
+    @InjectModel(DebtGuarantor, 'contact')
+    private ModelDebtGuarantor: typeof DebtGuarantor,
   ) {}
   async searchLawAct(body: SearchLawActInput) {
     const result = await this.ModelLawAct.findAll({
@@ -32,6 +38,14 @@ export class SearchLawActService {
         ],
       },
       include: [
+        {
+          model: this.ModelLawActPersonLink,
+          required: false,
+          where: { PERSON_ROLE: 2 },
+          include: [
+            { model: this.ModelDebtGuarantor, attributes: ['id', 'fio'] },
+          ],
+        },
         {
           model: this.ModelDict,
           as: 'StatusDict',

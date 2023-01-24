@@ -10,6 +10,8 @@ import {
   Dict,
   Address,
   LawAct,
+  LawExecPersonLink,
+  DebtGuarantor,
 } from '@contact/models';
 import { Injectable } from '@nestjs/common';
 import { SearchInput } from './Search.input';
@@ -23,6 +25,10 @@ export class SearchService {
     @InjectModel(Dict, 'contact') private ModelDict: typeof Dict,
     @InjectModel(Address, 'contact') private ModelAddress: typeof Address,
     @InjectModel(LawAct, 'contact') private ModelLawAct: typeof LawAct,
+    @InjectModel(LawExecPersonLink, 'contact')
+    private readonly ModelLawExecPersonLink: typeof LawExecPersonLink,
+    @InjectModel(DebtGuarantor, 'contact')
+    private ModelDebtGuarantor: typeof DebtGuarantor,
   ) {}
   async search(body: SearchInput) {
     const result = await this.ModelLawExec.findAll({
@@ -36,6 +42,14 @@ export class SearchService {
         'entry_force_dt',
       ],
       include: [
+        {
+          model: this.ModelLawExecPersonLink,
+          required: false,
+          where: { PERSON_ROLE: 2 },
+          include: [
+            { model: this.ModelDebtGuarantor, attributes: ['id', 'fio'] },
+          ],
+        },
         {
           model: this.ModelDict,
           as: 'StateDict',

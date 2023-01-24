@@ -1,8 +1,10 @@
 import {
   Address,
   Debt,
+  DebtGuarantor,
   Dict,
   LawAct,
+  LawActPersonLink,
   Person,
   Portfolio,
 } from '@contact/models';
@@ -14,7 +16,16 @@ import { SearchLawActService } from './SearchLawAct.service';
 @Module({
   imports: [
     SequelizeModule.forFeature(
-      [LawAct, Dict, Address, Person, Portfolio, Debt],
+      [
+        LawAct,
+        Dict,
+        Address,
+        Person,
+        Portfolio,
+        Debt,
+        LawActPersonLink,
+        DebtGuarantor,
+      ],
       'contact',
     ),
   ],

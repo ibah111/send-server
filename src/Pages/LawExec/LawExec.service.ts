@@ -1,4 +1,11 @@
-import { Debt, LawExec, Person, Portfolio } from '@contact/models';
+import {
+  Debt,
+  DebtGuarantor,
+  LawExec,
+  LawExecPersonLink,
+  Person,
+  Portfolio,
+} from '@contact/models';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import { LawExecInput } from './LawExec.input';
@@ -9,14 +16,28 @@ export class LawExecService {
     @InjectModel(Person, 'contact') private ModelPerson: typeof Person,
     @InjectModel(Debt, 'contact') private ModelDebt: typeof Debt,
     @InjectModel(Portfolio, 'contact') private ModelPortfolio: typeof Portfolio,
+    @InjectModel(LawExecPersonLink, 'contact')
+    private readonly ModelLawExecPersonLink: typeof LawExecPersonLink,
+    @InjectModel(DebtGuarantor, 'contact')
+    private ModelDebtGuarantor: typeof DebtGuarantor,
   ) {}
   async law_exec(body: LawExecInput) {
     return await this.ModelLawExec.findOne({
       where: { id: body.id },
       include: [
         { model: this.ModelPerson, attributes: ['f', 'i', 'o'] },
-        { model: this.ModelDebt, attributes: ['contract'] },
+        {
+          model: this.ModelDebt,
+          attributes: ['contract'],
+          include: [{ model: this.ModelDebtGuarantor }],
+        },
         { model: this.ModelPortfolio, attributes: ['name'] },
+        {
+          model: this.ModelLawExecPersonLink,
+          required: false,
+          where: { PERSON_ROLE: 2 },
+          include: [this.ModelDebtGuarantor],
+        },
       ],
     });
   }
