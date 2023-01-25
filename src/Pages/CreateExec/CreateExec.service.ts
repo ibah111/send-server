@@ -19,6 +19,7 @@ export class CreateExecService {
       const debt = await la!.getDebt();
       if (la !== null) {
         const le = await la.createLawExec({
+          ...body.old,
           r_person_id: la.r_person_id,
           r_debt_id: la.r_debt_id,
           r_portfolio_id: la.r_portfolio_id,
@@ -27,7 +28,7 @@ export class CreateExecService {
           contract: debt!.contract,
           currency: 1,
           total_sum: 0,
-          ...body.old,
+          name: debt.name,
           dsc: 'Создается ИП из "Отправка"',
         });
         const la_link = await la.getLawActPersonLink();
