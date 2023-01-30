@@ -242,21 +242,23 @@ export class UpdateExecService {
         auth.user.token,
       );
       if (data.file) {
-        const doc = await this.ModelDocAttach.create(data.sql);
-        await le.createLawExecProtokol({
-          r_user_id: auth.userContact.id,
-          typ: 8,
-          r_doc_attach_id: doc.id,
-          dsc: `Вложение: ${doc.name}`,
-        });
-        const debt = await le.getDebt();
-        const transaction = await getContextTransaction(
-          this.sequelize,
-          auth.userContact.id,
-        );
-        debt!.law_exec_flag = 1;
-        await debt!.save({ transaction });
-        await transaction.commit();
+        if (body.options?.save_file) {
+          const doc = await this.ModelDocAttach.create(data.sql);
+          await le.createLawExecProtokol({
+            r_user_id: auth.userContact.id,
+            typ: 8,
+            r_doc_attach_id: doc.id,
+            dsc: `Вложение: ${doc.name}`,
+          });
+          const debt = await le.getDebt();
+          const transaction = await getContextTransaction(
+            this.sequelize,
+            auth.userContact.id,
+          );
+          debt!.law_exec_flag = 1;
+          await debt!.save({ transaction });
+          await transaction.commit();
+        }
         return { file: data.file.data, name: data.sql.name };
       }
       return null;

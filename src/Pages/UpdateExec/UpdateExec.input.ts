@@ -9,9 +9,16 @@ import {
   Max,
   Min,
 } from 'class-validator';
-
+export class SaveOptions {
+  @IsOptional()
+  @IsBoolean()
+  save_file?: boolean;
+  @IsBoolean()
+  @IsOptional()
+  send?: boolean;
+}
 export class UpdateExecInput {
-  [key: string]: number | string | Date | boolean | null;
+  [key: string]: number | string | Date | boolean | SaveOptions | null;
   @IsNumber()
   @IsNotEmpty()
   id: number;
@@ -61,4 +68,7 @@ export class UpdateExecInput {
   @IsNotEmpty()
   @IsNumber()
   debt_guarantor: number;
+  @IsOptional()
+  @Type(() => SaveOptions)
+  options: SaveOptions;
 }
