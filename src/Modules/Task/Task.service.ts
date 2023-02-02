@@ -10,7 +10,7 @@ export class TaskService {
     @InjectModel(LawExec, 'contact')
     private readonly modelLawExec: typeof LawExec,
   ) {}
-  @Cron('*/30 * * * * *')
+  @Cron('* */30 * * * *')
   async removeNotCreated() {
     const acts = await this.modelLawExec.findAll({
       where: {
