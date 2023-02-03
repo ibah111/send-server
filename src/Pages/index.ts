@@ -14,6 +14,8 @@ import { SearchLawActModule } from './SearchLawAct/SearchLawAct.module';
 import { UpdateExecModule } from './UpdateExec/UpdateExec.module';
 import { DebtCalcModule } from './DebtCalc/DebtCalc.module';
 import { DocumentsModule } from './Documents/Documents.module';
+import { GetDebtGuarantorModule } from './GetDebtGuarantor/GetDebtGuarantor.module';
+import { CreateOrUpdateDebtGuarantorModule } from './CreateOrUpdateDebtGuarantor/CreateOrUpdateDebtGuarantor.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { DocumentsModule } from './Documents/Documents.module';
     UpdateDebtModule,
     DebtCalcModule,
     DocumentsModule,
+    GetDebtGuarantorModule,
+    CreateOrUpdateDebtGuarantorModule,
   ],
 })
 export class PagesModule {}

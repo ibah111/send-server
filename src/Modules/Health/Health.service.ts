@@ -28,7 +28,8 @@ export class HealthService {
           server('fastreport') + '/health',
           (res) => res.data.status === 'ok',
         ),
-      () => this.db.pingCheck('database', { connection: 'contact' }),
+      () => this.db.pingCheck('database_contact', { connection: 'contact' }),
+      () => this.db.pingCheck('database_local', { connection: 'local' }),
       () => this.smb.check('smb', 'DocAttach'),
     ]);
   }
