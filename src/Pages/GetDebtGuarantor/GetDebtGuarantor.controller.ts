@@ -10,4 +10,8 @@ export class GetDebtGuarantorController {
   get(@Body() body: GetDebtGuarantorInput) {
     return this.service.get(body.id);
   }
+  @Post('address')
+  getAddress(@Body() body: GetDebtGuarantorInput) {
+    return this.service.getAddress(body.id);
+  }
 }

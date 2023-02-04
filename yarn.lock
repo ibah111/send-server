@@ -651,15 +651,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@contact/models@npm:^0.3.18":
-  version: 0.3.18
-  resolution: "@contact/models@npm:0.3.18::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.3.18.tgz"
+"@contact/models@npm:^0.3.19":
+  version: 0.3.19
+  resolution: "@contact/models@npm:0.3.19::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F69%2Fpackages%2Fnpm%2F%40contact%2Fmodels%2F-%2F%40contact%2Fmodels-0.3.19.tgz"
   dependencies:
     reflect-metadata: ^0.1.13
   peerDependencies:
     "@sql-tools/sequelize": ^6.27.8
     "@sql-tools/sequelize-typescript": ^2.1.5
-  checksum: d149442b15f6bbc9d757ac4db249c99b6d3fed615d55350a1e19ec9a6124dcde2d50faf3f74f8f228cd57f34430b607a34e0f98696ceda83444e6925a62ef61b
+  checksum: 3a5b140d3b8eb5829d3209a7afa3a74bfd4f67e8115f32af309a994e957ef9ea31c6e20431470d206ddd7facca4fe99b492570ce25d3385978bc5b62d0d9a59e
   languageName: node
   linkType: hard
 
@@ -7788,7 +7788,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "send_server@workspace:."
   dependencies:
-    "@contact/models": ^0.3.18
+    "@contact/models": ^0.3.19
     "@contact/smb2": ^0.19.0
     "@nestjs/axios": ^1.0.1
     "@nestjs/cli": ^9.1.8
