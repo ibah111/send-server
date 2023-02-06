@@ -1,6 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { tz } from 'moment-timezone';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -10,7 +9,8 @@ import https from './utils/https';
 import client from './utils/client';
 import { contentParser } from 'fastify-multer';
 import { LocalSeed } from './Modules/Database/local.database/local.seed';
-tz.setDefault('GMT');
+import moment from 'moment';
+moment.tz.setDefault('GMT');
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
