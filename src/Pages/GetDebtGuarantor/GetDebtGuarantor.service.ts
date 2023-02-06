@@ -17,6 +17,15 @@ export class GetDebtGuarantorService {
     return this.ModelAddress.findAll({
       where: { r_debt_guarantor_id: id },
       include: ['TypDict'],
+      attributes: [
+        'parent_id',
+        'id',
+        'dsc',
+        'typ',
+        'status',
+        'r_debt_guarantor_id',
+        'full_adr',
+      ],
     });
   }
 }

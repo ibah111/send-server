@@ -1,7 +1,10 @@
-import { DebtGuarantor } from '@contact/models';
+import { Address, DebtGuarantor } from '@contact/models';
 import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
-import { CreateOrUpdateDebtGuarantorInput } from './CreateOrUpdateDebtGuarantor.input';
+import {
+  CreateOrUpdateAddress,
+  CreateOrUpdateDebtGuarantorInput,
+} from './CreateOrUpdateDebtGuarantor.input';
 function objectKeys<T extends {}>(obj: T) {
   return Object.keys(obj) as Array<keyof typeof obj>;
 }
@@ -17,6 +20,8 @@ export class CreateOrUpdateDebtGuarantorService {
   constructor(
     @InjectModel(DebtGuarantor, 'contact')
     private readonly ModelDebtGuarantor: typeof DebtGuarantor,
+    @InjectModel(Address, 'contact')
+    private readonly ModelAddress: typeof Address,
   ) {}
   async get(body: CreateOrUpdateDebtGuarantorInput) {
     if (body.id) {
@@ -33,6 +38,24 @@ export class CreateOrUpdateDebtGuarantorService {
       }
     } else {
       const data = await this.ModelDebtGuarantor.create(body);
+      return new HttpException(data, HttpStatus.CREATED);
+    }
+  }
+  async address(body: CreateOrUpdateAddress) {
+    if (body.id) {
+      const data = await this.ModelAddress.findByPk(body.id);
+      if (data) {
+        for (const key of objectKeys(body)) {
+          if (key !== 'id') {
+            const value = body[key];
+            if (value !== undefined) UpdateValue(data, key, value);
+          }
+        }
+        await data.save();
+        return new HttpException({ update: true }, HttpStatus.OK);
+      }
+    } else {
+      const data = await this.ModelAddress.create(body);
       return new HttpException(data, HttpStatus.CREATED);
     }
   }

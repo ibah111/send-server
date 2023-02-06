@@ -8,7 +8,10 @@ import {
 } from '@nestjs/common';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
-import { CreateOrUpdateDebtGuarantorInput } from './CreateOrUpdateDebtGuarantor.input';
+import {
+  CreateOrUpdateAddress,
+  CreateOrUpdateDebtGuarantorInput,
+} from './CreateOrUpdateDebtGuarantor.input';
 import { CreateOrUpdateDebtGuarantorService } from './CreateOrUpdateDebtGuarantor.service';
 
 export class TestUpdate {
@@ -30,5 +33,9 @@ export class CreateOrUpdateDebtGuarantorController {
   )
   get(@Body() body: CreateOrUpdateDebtGuarantorInput) {
     return this.service.get(body);
+  }
+  @Post('address')
+  address(@Body() body: CreateOrUpdateAddress) {
+    return this.service.address(body);
   }
 }
