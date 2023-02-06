@@ -84,7 +84,7 @@ export class SearchLawActService {
         { model: this.ModelPortfolio, attributes: ['name'] },
         {
           model: this.ModelDebt,
-          attributes: ['id', 'contract', 'debt_sum', 'status'],
+          attributes: ['id', 'contract', 'debt_sum', 'status', 'name'],
           where: {
             status: { [Op.notIn]: [] },
             ...(body.contract ? { contract: body.contract } : {}),

@@ -84,7 +84,7 @@ export class SearchService {
         { model: this.ModelDict, as: 'ExecutiveTyp', attributes: ['name'] },
         {
           model: this.ModelDebt,
-          attributes: ['id', 'contract', 'debt_sum', 'status'],
+          attributes: ['id', 'contract', 'debt_sum', 'status', 'name'],
           where: {
             status: { [Op.notIn]: [] },
             ...(body.contract ? { contract: body.contract } : {}),
