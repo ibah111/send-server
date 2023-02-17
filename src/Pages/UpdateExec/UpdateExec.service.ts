@@ -56,6 +56,8 @@ const translate: Record<string, string> = {
   receipt_recover_dt: 'Дата получения ИЛ на взыскание',
   fssp_date: 'Дата подачи',
   r_court_id: 'ФССП',
+  fssp_doc_num: 'Номер ФССП',
+  start_date: 'Дата возбуждения',
   dsc: 'Коментарий',
 };
 const t = (value: string) => {
@@ -110,6 +112,8 @@ export class UpdateExecService {
       for (const value of strings) {
         le[value] = transform(value, body[value]);
       }
+      le.fssp_doc_num = null;
+      le.start_date = null;
       const changes = le.changed();
       if (changes) {
         const transaction = await getContextTransaction(
