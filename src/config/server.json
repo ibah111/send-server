@@ -1,7 +1,6 @@
 {
-  "protocol": "ssl",
-  "server": "chat.nbkfinance.ru",
-  "port": "80",
+  "server": "https://chat.nbkfinance.ru",
   "token": "sl1HjBxOWIScFIMUCy2x4AbtfnkK4alc",
+  "oauth": "https://apps.usb.ru:3008",
   "fastreport": "https://apps.usb.ru:3009"
 }
