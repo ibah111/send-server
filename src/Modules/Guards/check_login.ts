@@ -2,6 +2,7 @@ import axios from 'axios';
 import { AuthUser, AuthUserError, AuthUserSuccess } from './auth.guard';
 import client from 'src/utils/client';
 import server from 'src/utils/server';
+import { UnauthorizedException } from '@nestjs/common';
 export const checkLogin = async (token: string) => {
   if (!token) {
     return false;
@@ -17,17 +18,24 @@ export const checkLogin = async (token: string) => {
           position: 'Должность',
         } as AuthUserSuccess)
       : ({ login_result: false } as AuthUserError);
-  const result = await axios.get<AuthUser<boolean>>(
-    server('oauth') + '/oauth/login',
-    { headers: { token } },
-  );
-  if (result.data === undefined || result.data === null) {
-    return false;
-  } else {
-    if (result.data.login_result === true) {
-      return result.data as AuthUserSuccess;
+  try {
+    const result = await axios.get<AuthUser<boolean>>(
+      server('oauth') + '/oauth/login',
+      { headers: { token } },
+    );
+    if (result.data === undefined || result.data === null) {
+      return false;
     } else {
-      return result.data as AuthUserError;
+      if (result.data.login_result === true) {
+        return result.data as AuthUserSuccess;
+      } else {
+        return result.data as AuthUserError;
+      }
     }
+  } catch {
+    throw new UnauthorizedException({
+      message: 'Был выдан неправильный или истекший токен',
+      code: 'error_token',
+    });
   }
 };
