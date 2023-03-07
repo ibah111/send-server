@@ -4,6 +4,7 @@ import {
   LawExec,
   LawExecPersonLink,
   Person,
+  PersonProperty,
   Portfolio,
 } from '@contact/models';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
@@ -19,7 +20,9 @@ export class LawExecService {
     @InjectModel(LawExecPersonLink, 'contact')
     private readonly ModelLawExecPersonLink: typeof LawExecPersonLink,
     @InjectModel(DebtGuarantor, 'contact')
-    private ModelDebtGuarantor: typeof DebtGuarantor,
+    private readonly ModelDebtGuarantor: typeof DebtGuarantor,
+    @InjectModel(PersonProperty, 'contact')
+    private readonly ModelPersonProperty: typeof PersonProperty,
   ) {}
   async law_exec(body: LawExecInput) {
     return await this.ModelLawExec.findOne({
@@ -29,7 +32,14 @@ export class LawExecService {
         {
           model: this.ModelDebt,
           attributes: ['contract'],
-          include: [{ model: this.ModelDebtGuarantor }],
+          include: [
+            {
+              model: this.ModelPersonProperty,
+              limit: 1,
+              include: ['PersonPropertyParams'],
+            },
+            { model: this.ModelDebtGuarantor },
+          ],
         },
         { model: this.ModelPortfolio, attributes: ['name'] },
         {

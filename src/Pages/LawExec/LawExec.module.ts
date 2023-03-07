@@ -4,6 +4,8 @@ import {
   LawExec,
   LawExecPersonLink,
   Person,
+  PersonProperty,
+  PersonPropertyParam,
   Portfolio,
 } from '@contact/models';
 import { SequelizeModule } from '@sql-tools/nestjs-sequelize';
@@ -14,7 +16,16 @@ import { LawExecService } from './LawExec.service';
 @Module({
   imports: [
     SequelizeModule.forFeature(
-      [LawExec, Person, Debt, Portfolio, LawExecPersonLink, DebtGuarantor],
+      [
+        LawExec,
+        Person,
+        Debt,
+        Portfolio,
+        LawExecPersonLink,
+        DebtGuarantor,
+        PersonProperty,
+        PersonPropertyParam,
+      ],
       'contact',
     ),
   ],
