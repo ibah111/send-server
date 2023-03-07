@@ -26,19 +26,19 @@ export class User_Role extends Model<
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)
-  id: CreationOptional<number>;
+  declare id: CreationOptional<number>;
 
   @ForeignKey(() => User)
   @AllowNull(false)
   @Column(DataType.INTEGER)
-  user_id: number;
+  declare user_id: number;
   @BelongsTo(() => User)
-  User?: NonAttribute<User>;
+  declare User?: NonAttribute<User>;
 
   @ForeignKey(() => Role)
   @AllowNull(false)
   @Column(DataType.INTEGER)
-  role_id: number;
+  declare role_id: number;
   @BelongsTo(() => Role)
-  Role?: NonAttribute<Role>;
+  declare Role?: NonAttribute<Role>;
 }

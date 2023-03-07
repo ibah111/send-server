@@ -24,10 +24,10 @@ export class User extends Model<
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)
-  id: CreationOptional<number>;
+  declare id: CreationOptional<number>;
   @Column(DataType.STRING)
-  login: string;
+  declare login: string;
 
   @BelongsToMany(() => Role, () => User_Role)
-  Roles?: NonAttribute<Array<Role & { User_Role: User_Role }>>;
+  declare Roles?: NonAttribute<Array<Role & { User_Role: User_Role }>>;
 }

@@ -25,16 +25,16 @@ export class Role extends Model<
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)
-  id: CreationOptional<number>;
+  declare id: CreationOptional<number>;
 
   @AllowNull(false)
   @Column(DataType.STRING)
-  name: string;
+  declare name: string;
 
   @AllowNull(false)
   @Column(DataType.STRING)
-  title: string;
+  declare title: string;
 
   @BelongsToMany(() => User, () => User_Role)
-  Users?: NonAttribute<Array<User & { User_Role: User_Role }>>;
+  declare Users?: NonAttribute<Array<User & { User_Role: User_Role }>>;
 }
