@@ -1,6 +1,6 @@
 import { DocAttach, LawExec } from '@contact/models';
 import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
-import { Attributes } from '@sql-tools/sequelize';
+import { Attributes, MIS } from '@sql-tools/sequelize';
 import { Injectable } from '@nestjs/common';
 import moment from 'moment';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';
@@ -59,6 +59,7 @@ const translate: Record<string, string> = {
   fssp_doc_num: 'Номер ФССП',
   start_date: 'Дата возбуждения',
   dsc: 'Коментарий',
+  deposit_typ: 'Залоговое имущество',
 };
 const t = (value: string) => {
   if (translate[value]) return translate[value];
@@ -76,7 +77,7 @@ export class UpdateExecService {
     private readonly helper: Helper,
   ) {}
   async changeDebtGuarantor(
-    le: LawExec['ModelInstance'],
+    le: MIS<LawExec>,
     debt_guarantor: number,
     r_user_id: number,
   ) {
@@ -114,6 +115,7 @@ export class UpdateExecService {
       }
       le.fssp_doc_num = null;
       le.start_date = null;
+      le.deposit_typ = body.person_property ? 1 : null;
       const changes = le.changed();
       if (changes) {
         const transaction = await getContextTransaction(

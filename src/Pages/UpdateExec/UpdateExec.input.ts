@@ -69,6 +69,9 @@ export class UpdateExecInput {
   @IsNumber()
   debt_guarantor: number;
   @IsOptional()
+  @IsNumber()
+  person_property: number;
+  @IsOptional()
   @Type(() => SaveOptions)
   options: SaveOptions;
 }
