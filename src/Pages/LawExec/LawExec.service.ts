@@ -35,7 +35,7 @@ export class LawExecService {
           include: [
             {
               model: this.ModelPersonProperty,
-              include: ['PersonPropertyParams'],
+              include: ['PersonPropertyParams', 'StatusDict'],
             },
             { model: this.ModelDebtGuarantor },
           ],

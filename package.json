@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@contact/models": "^0.3.19",
+    "@contact/models": "^0.3.36",
     "@contact/smb2": "^0.19.0",
     "@nestjs/axios": "^1.0.1",
     "@nestjs/common": "^9.2.1",
@@ -55,6 +55,7 @@
     "@nestjs/cli": "^9.1.8",
     "@nestjs/schematics": "^9.0.4",
     "@nestjs/testing": "^9.2.1",
+    "@sql-tools/association-literal": "^0.0.3",
     "@types/cron": "^2.0.0",
     "@types/crypto-js": "^4.1.1",
     "@types/dottie": "^2.0.4",
