@@ -23,7 +23,7 @@ export class UpdateExecInput {
   @IsNotEmpty()
   id: number;
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   @Min(0)
   @Max(10000000)
   total_sum: number;
