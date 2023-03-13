@@ -26,7 +26,7 @@ export class UpdateExecInput {
   @IsOptional()
   @Min(0)
   @Max(10000000)
-  total_sum: number;
+  total_sum: number | null;
   @IsDate()
   @IsNotEmpty()
   @Type(() => Date)
