@@ -16,7 +16,8 @@ function transform<T extends keyof Attributes<LawExec>>(
   if (value) {
     switch (name) {
       case 'total_sum':
-        return value || 0;
+        if (value === null) return 0;
+        return value;
       case 'load_dt':
         return moment(value).toDate();
       case 'court_date':
