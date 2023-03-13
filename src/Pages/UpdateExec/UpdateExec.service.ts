@@ -29,7 +29,6 @@ function transform<T extends keyof Attributes<LawExec>>(
         return value;
     }
   } else {
-    console.log(name, value);
     if (name === 'total_sum' && (value === null || value === 0)) return 0;
     return null;
   }
