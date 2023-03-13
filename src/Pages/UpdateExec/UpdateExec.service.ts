@@ -29,7 +29,8 @@ function transform<T extends keyof Attributes<LawExec>>(
         return value;
     }
   } else {
-    if (name === 'total_sum' && value === null) return 0;
+    console.log(name, value);
+    if (name === 'total_sum' && (value === null || value === 0)) return 0;
     return null;
   }
 }
@@ -113,6 +114,7 @@ export class UpdateExecService {
       this.changeDebtGuarantor(le, body.debt_guarantor, auth.userContact.id);
       for (const value of strings) {
         le[value] = transform(value, body[value]);
+        console.log(value, le[value]);
       }
       le.fssp_doc_num = null;
       le.start_date = null;
