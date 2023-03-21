@@ -113,7 +113,6 @@ export class UpdateExecService {
       this.changeDebtGuarantor(le, body.debt_guarantor, auth.userContact.id);
       for (const value of strings) {
         le[value] = transform(value, body[value]);
-        console.log(value, le[value]);
       }
       le.fssp_doc_num = null;
       le.start_date = null;
