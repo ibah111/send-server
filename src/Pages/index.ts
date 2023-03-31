@@ -16,6 +16,7 @@ import { DebtCalcModule } from './DebtCalc/DebtCalc.module';
 import { DocumentsModule } from './Documents/Documents.module';
 import { GetDebtGuarantorModule } from './GetDebtGuarantor/GetDebtGuarantor.module';
 import { CreateOrUpdateDebtGuarantorModule } from './CreateOrUpdateDebtGuarantor/CreateOrUpdateDebtGuarantor.module';
+import { RestartModule } from './Restart';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CreateOrUpdateDebtGuarantorModule } from './CreateOrUpdateDebtGuarantor
     DocumentsModule,
     GetDebtGuarantorModule,
     CreateOrUpdateDebtGuarantorModule,
+    RestartModule,
   ],
 })
 export class PagesModule {}
