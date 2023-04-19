@@ -1,5 +1,5 @@
 import { Sequelize } from '@sql-tools/sequelize-typescript';
-import { Op } from '@sql-tools/sequelize';
+import { Attributes, Op, WhereOptions } from '@sql-tools/sequelize';
 import dottie from 'dottie';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import {
@@ -102,7 +102,10 @@ export class SearchService {
           include: [
             {
               model: this.ModelAddress,
-              where: { typ: 1 },
+              where: {
+                typ: 1,
+                block_flag: { [Op.or]: [{ [Op.is]: null }, 0] },
+              } as WhereOptions<Attributes<Address>>,
               attributes: ['full_adr'],
               limit: 1,
             },
