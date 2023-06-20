@@ -4,11 +4,9 @@ import {
   HealthCheckService,
   HttpHealthIndicator,
 } from '@nestjs/terminus';
-import {
-  SequelizeHealthIndicator,
-  SmbIndicator,
-} from '@tools/terminus-indicators';
+import { SequelizeHealthIndicator } from '@tools/terminus-indicators';
 import server from 'src/utils/server';
+import { SMBService } from '../Smb/Smb.service';
 import { SocketService } from '../Socket/Socket.service';
 @Injectable()
 export class HealthService {
@@ -16,8 +14,8 @@ export class HealthService {
     private readonly health: HealthCheckService,
     private readonly http: HttpHealthIndicator,
     private readonly db: SequelizeHealthIndicator,
-    private readonly smb: SmbIndicator,
     private readonly socket: SocketService,
+    private readonly smb: SMBService,
   ) {}
   check() {
     return this.health.check([
@@ -30,7 +28,7 @@ export class HealthService {
         ),
       () => this.db.pingCheck('database_contact', { connection: 'contact' }),
       () => this.db.pingCheck('database_local', { connection: 'local' }),
-      () => this.smb.check('smb', 'DocAttach'),
+      () => this.smb.getHealth('smb'),
     ]);
   }
 }

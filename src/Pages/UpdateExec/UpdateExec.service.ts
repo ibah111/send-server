@@ -9,6 +9,7 @@ import { Helper } from 'src/utils/helper';
 import { UpdateExecInput } from './UpdateExec.input';
 import { Sequelize } from '@sql-tools/sequelize-typescript';
 import getContextTransaction from 'src/utils/getContextTransaction';
+import { lastValueFrom } from 'rxjs';
 function transform<T extends keyof Attributes<LawExec>>(
   name: T,
   value: any,
@@ -240,13 +241,15 @@ export class UpdateExecService {
         'executive_typ',
         le.executive_typ,
       )} ${moment(le.court_date).utcOffset(3).format('DD.MM.YYYY')}.pdf`;
-      const data = await this.downloader.downloadFile(
-        auth.userContact,
-        le,
-        doc_name,
-        body.template_typ,
-        { addInterests: body.add_interests },
-        auth.user.token,
+      const data = await lastValueFrom(
+        this.downloader.downloadFile(
+          auth.userContact,
+          le,
+          doc_name,
+          body.template_typ,
+          { addInterests: body.add_interests },
+          auth.user.token,
+        ),
       );
       if (data.file) {
         if (body.options?.save_file) {
@@ -266,7 +269,7 @@ export class UpdateExecService {
           await debt!.save({ transaction });
           await transaction.commit();
         }
-        return { file: data.file.data, name: data.sql.name };
+        return { file: data.file, name: data.sql.name };
       }
       return null;
     } else {

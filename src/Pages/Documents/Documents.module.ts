@@ -4,16 +4,15 @@ import { Module } from '@nestjs/common';
 import { DownloaderModule } from 'src/utils/downloader';
 import { DocumentsController } from './Documents.controller';
 import { DocumentsService } from './Documents.service';
-import config from '../../config/smb.json';
-import { SmbModule } from '@tools/nestjs-smb2';
+import { SmbModule } from 'src/Modules/Smb/Smb.module';
 
 @Module({
   imports: [
+    SmbModule,
     SequelizeModule.forFeature(
       [ConstValue, LawExec, DocAttach, User],
       'contact',
     ),
-    SmbModule.register(config),
     DownloaderModule,
   ],
   controllers: [DocumentsController],

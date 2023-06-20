@@ -1,6 +1,9 @@
 {
-  "share": "\\\\newct.usb.ru\\Luxbase",
-  "domain": "usb.ru",
-  "username": "Contact-SMB",
-  "password": "Contact-SMB"
+  "credentials": {
+    "share": "\\\\newct.usb.ru\\Luxbase",
+    "domain": "usb.ru",
+    "username": "Contact-SMB",
+    "password": "Contact-SMB"
+  },
+  "url": "apps.usb.ru:3032"
 }

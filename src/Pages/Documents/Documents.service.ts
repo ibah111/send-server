@@ -5,9 +5,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { SMBService } from '@tools/nestjs-smb2';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { Downloader } from 'src/utils/downloader';
+import { lastValueFrom } from 'rxjs';
+import { SMBService } from 'src/Modules/Smb/Smb.service';
 @Injectable()
 export class DocumentsService {
   constructor(
@@ -31,9 +32,8 @@ export class DocumentsService {
     const dir = tmp[tmp.length - 1];
     const doc = await this.ModelDocAttach.findByPk(id);
     const path = doc!.REL_SERVER_PATH.replaceAll('\\', '');
-    const client = this.smb.get();
-    const file = await client.readFile(
-      `${dir}\\${path}\\${doc!.FILE_SERVER_NAME}`,
+    const file = lastValueFrom(
+      this.smb.readFile(`${dir}\\${path}\\${doc!.FILE_SERVER_NAME}`),
     );
     return file;
   }
@@ -51,11 +51,13 @@ export class DocumentsService {
   ): Promise<number> {
     const le = await this.ModelLawExec.findByPk(id);
     if (le) {
-      const data = await this.downloader.uploadFile(
-        file.originalname,
-        file.buffer,
-        auth.userContact!,
-        id,
+      const data = await lastValueFrom(
+        this.downloader.uploadFile(
+          file.originalname,
+          file.buffer,
+          auth.userContact!,
+          id,
+        ),
       );
       const doc = await this.ModelDocAttach.create(data);
       await le.createLawExecProtokol({

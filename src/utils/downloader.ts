@@ -5,10 +5,11 @@ import server from './server';
 import { Sequelize } from '@sql-tools/sequelize-typescript';
 import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
 import { InjectModel, SequelizeModule } from '@sql-tools/nestjs-sequelize';
-import { Injectable, Module, NotFoundException } from '@nestjs/common';
-import { SmbModule, SMBService } from '@tools/nestjs-smb2';
-import config from '../config/smb.json';
+import { Injectable, Module } from '@nestjs/common';
 import { MIS } from '@sql-tools/sequelize';
+import { SMBService } from 'src/Modules/Smb/Smb.service';
+import { from, map, mergeMap, Observable, of } from 'rxjs';
+import { SmbModule } from 'src/Modules/Smb/Smb.module';
 type uploads = {
   name: string;
   filename: string;
@@ -35,97 +36,91 @@ export class Downloader {
     file: Buffer,
     OpUser: User,
     id: number,
-  ) {
-    return new Promise<uploads>((resolve, reject) => {
-      const data = {
-        name: doc_name,
-        filename: doc_name,
-        r_user_id: OpUser.id,
-        r_id: id,
-        SAVE_MODE: 2,
-        CHANGE_DT: moment().toDate(),
-        obj_id: 47,
-        REL_SERVER_PATH: `\\${path}\\`,
-        FILE_SERVER_NAME: `${uuidv4().toUpperCase()}..pdf`,
-      };
-      const tmp = save_path.split('\\');
-      const dir = tmp[tmp.length - 1];
-      const client = this.smb.get();
-      client.exists(`${dir}\\${path}`, (err, exists) => {
-        if (err) reject(err);
-        if (exists) {
-          client.writeFile(
-            `${dir}\\${path}\\${data.FILE_SERVER_NAME}`,
-            file,
-            (err: any) => {
-              if (err) reject(err);
-              resolve(data);
-            },
-          );
-        } else {
-          client.mkdir(`${dir}\\${path}`, (err) => {
-            if (err) reject(err);
-            client.writeFile(
-              `${dir}\\${path}\\${data.FILE_SERVER_NAME}`,
-              file,
-              (err: any) => {
-                if (err) reject(err);
-                resolve(data);
-              },
-            );
-          });
+  ): Observable<uploads> {
+    const data = {
+      name: doc_name,
+      filename: doc_name,
+      r_user_id: OpUser.id,
+      r_id: id,
+      SAVE_MODE: 2,
+      CHANGE_DT: moment().toDate(),
+      obj_id: 47,
+      REL_SERVER_PATH: `\\${path}\\`,
+      FILE_SERVER_NAME: `${uuidv4().toUpperCase()}..pdf`,
+    };
+    const tmp = save_path.split('\\');
+    const dir = tmp[tmp.length - 1];
+    return this.smb.exists(`${dir}\\${path}`).pipe(
+      mergeMap((exists) => {
+        if (!exists) {
+          return this.smb.mkdir(`${dir}\\${path}`);
         }
-      });
-    });
+        return of(exists);
+      }),
+      mergeMap(() =>
+        this.smb.writeFile(`${dir}\\${path}\\${data.FILE_SERVER_NAME}`, file),
+      ),
+      map(() => data),
+    );
   }
-  removeSmb(save_path: string, path: string, file: string) {
-    return new Promise<boolean>((resolve, reject) => {
-      const tmp = save_path.split('\\');
-      const dir = tmp[tmp.length - 1];
-      const client = this.smb.get();
-      client.exists(`${dir}\\${path}`, (err, exists) => {
-        if (err) reject(err);
-        if (exists) {
-          client.unlink(`${dir}\\${path}\\${file}`, (err) => {
-            if (err) reject(err);
-            resolve(true);
-          });
-        } else {
-          reject(new NotFoundException('Файл не найден в папке сервера'));
+  removeSmb(
+    save_path: string,
+    path: string,
+    file: string,
+  ): Observable<boolean> {
+    const tmp = save_path.split('\\');
+    const dir = tmp[tmp.length - 1];
+    return this.smb.unlink(`${dir}\\${path}\\${file}`);
+  }
+  removeFile(doc: DocAttach): Observable<boolean> {
+    return from(
+      this.ModelConstValue.findOne({
+        where: { name: 'DocAttach.SavePath' },
+        rejectOnEmpty: true,
+      }),
+    ).pipe(
+      map((res) => res.value!),
+      mergeMap((save_path) => {
+        let path: number | string = doc.REL_SERVER_PATH.replaceAll('\\', '');
+        path = String(path);
+        return this.removeSmb(save_path, path, doc.FILE_SERVER_NAME);
+      }),
+    );
+  }
+  uploadFile(doc_name: string, file: Buffer, OpUser: User, id: number) {
+    return from(
+      this.ModelDocAttach.findOne({
+        attributes: [
+          'REL_SERVER_PATH',
+          [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
+        ],
+        group: 'REL_SERVER_PATH',
+        order: [[Sequelize.fn('MAX', Sequelize.col('id')), 'DESC']],
+      }) as Promise<MIS<DocAttach> & { dataValues: { count?: number } }>,
+    ).pipe(
+      mergeMap((count) =>
+        from(
+          this.ModelConstValue.findOne({
+            where: { name: 'DocAttach.SavePath' },
+            rejectOnEmpty: true,
+          }),
+        ).pipe(
+          map((res) => res.value!),
+          map((save_path) => ({ count, save_path })),
+        ),
+      ),
+      mergeMap(({ count, save_path }) => {
+        let path: number | string = count.REL_SERVER_PATH.replaceAll('\\', '');
+        path = Number(path);
+        if (count.dataValues.count === 1000) {
+          path += 1;
         }
-      });
-    });
+        path = String(path);
+        return this.uploadSmb(doc_name, save_path, path, file, OpUser, id);
+      }),
+    );
   }
-  async removeFile(doc: DocAttach) {
-    const save_path: string = (await this.ModelConstValue.findOne({
-      where: { name: 'DocAttach.SavePath' },
-    }))!.value!;
-    let path: number | string = doc.REL_SERVER_PATH.replaceAll('\\', '');
-    path = String(path);
-    const result = await this.removeSmb(save_path, path, doc.FILE_SERVER_NAME);
-    return result;
-  }
-  async uploadFile(doc_name: string, file: Buffer, OpUser: User, id: number) {
-    const count = (await this.ModelDocAttach.findOne({
-      attributes: [
-        'REL_SERVER_PATH',
-        [Sequelize.fn('COUNT', Sequelize.col('id')), 'count'],
-      ],
-      group: 'REL_SERVER_PATH',
-      order: [[Sequelize.fn('MAX', Sequelize.col('id')), 'DESC']],
-    }))! as MIS<DocAttach> & { dataValues: { count?: number } };
-    let path: number | string = count.REL_SERVER_PATH.replaceAll('\\', '');
-    path = Number(path);
-    if (count.dataValues.count === 1000) {
-      path += 1;
-    }
-    path = String(path);
-    const save_path: string = (await this.ModelConstValue.findOne({
-      where: { name: 'DocAttach.SavePath' },
-    }))!.value!;
-    return await this.uploadSmb(doc_name, save_path, path, file, OpUser, id);
-  }
-  async downloadFile(
+  downloadFile(
     OpUser: User,
     le: LawExec,
     doc_name: string,
@@ -133,22 +128,29 @@ export class Downloader {
     params: { addInterests: boolean },
     token: string,
   ) {
-    const file = await axios.get<Buffer>(
-      `${server('fastreport')}/print/${template_id}`,
-      {
+    return from(
+      axios.get<Buffer>(`${server('fastreport')}/print/${template_id}`, {
         responseType: 'arraybuffer',
         headers: { token },
         params: { ...params, id: le.id },
-      },
+      }),
+    ).pipe(
+      map((res) => res.data),
+      mergeMap((file) =>
+        this.uploadFile(doc_name, file, OpUser, le.id).pipe(
+          map((sql) => ({
+            file,
+            sql,
+          })),
+        ),
+      ),
     );
-    const data = await this.uploadFile(doc_name, file.data, OpUser, le.id);
-    return { file: file, sql: data };
   }
 }
 @Module({
   imports: [
-    SmbModule.register(config),
     SequelizeModule.forFeature([DocAttach, ConstValue], 'contact'),
+    SmbModule,
   ],
   providers: [Downloader],
   exports: [Downloader],
