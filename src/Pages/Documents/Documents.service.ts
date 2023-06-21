@@ -7,7 +7,15 @@ import {
 } from '@nestjs/common';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { Downloader } from 'src/utils/downloader';
-import { lastValueFrom } from 'rxjs';
+import {
+  catchError,
+  from,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  throwError,
+} from 'rxjs';
 import { SMBService } from 'src/Modules/Smb/Smb.service';
 @Injectable()
 export class DocumentsService {
@@ -22,83 +30,107 @@ export class DocumentsService {
     private readonly smb: SMBService,
     private downloader: Downloader,
   ) {}
-  async get(id: number) {
-    const save_path: string = (
-      (await this.ModelConstValue.findOne({
+  get(id: number) {
+    return from(
+      this.ModelConstValue.findOne({
         where: { name: 'DocAttach.SavePath' },
-      })) as any
-    ).value;
-    const tmp = save_path.split('\\');
-    const dir = tmp[tmp.length - 1];
-    const doc = await this.ModelDocAttach.findByPk(id);
-    const path = doc!.REL_SERVER_PATH.replaceAll('\\', '');
-    const file = lastValueFrom(
-      this.smb.readFile(`${dir}\\${path}\\${doc!.FILE_SERVER_NAME}`),
+        rejectOnEmpty: true,
+      }),
+    ).pipe(
+      map((data) => data.value!),
+      mergeMap((save_path) => {
+        const tmp = save_path.split('\\');
+        const dir = tmp[tmp.length - 1];
+        return from(
+          this.ModelDocAttach.findByPk(id, { rejectOnEmpty: true }),
+        ).pipe(
+          map((doc) => {
+            const path = doc!.REL_SERVER_PATH.replaceAll('\\', '');
+            const file = this.smb.readFileStream(
+              `${dir}\\${path}\\${doc!.FILE_SERVER_NAME}`,
+            );
+            return file;
+          }),
+        );
+      }),
     );
-    return file;
   }
-  async getAll(id: number): Promise<DocAttach[]> {
-    const law_exec = await this.ModelLawExec.findOne({
-      where: { id },
-      include: [{ model: this.ModelDocAttach, include: [this.ModelUser] }],
-    });
-    return law_exec!.DocAttachs!;
+  getAll(id: number): Observable<DocAttach[]> {
+    return from(
+      this.ModelLawExec.findOne({
+        where: { id },
+        include: [{ model: this.ModelDocAttach, include: [this.ModelUser] }],
+        rejectOnEmpty: true,
+      }),
+    ).pipe(map((law_exec) => law_exec.DocAttachs!));
   }
-  async upload(
+  upload(
     file: Express.Multer.File,
     id: number,
     auth: AuthResult,
-  ): Promise<number> {
-    const le = await this.ModelLawExec.findByPk(id);
-    if (le) {
-      const data = await lastValueFrom(
-        this.downloader.uploadFile(
-          file.originalname,
-          file.buffer,
-          auth.userContact!,
-          id,
-        ),
-      );
-      const doc = await this.ModelDocAttach.create(data);
-      await le.createLawExecProtokol({
-        r_user_id: auth.userContact!.id,
-        typ: 8,
-        r_doc_attach_id: doc.id,
-        dsc: `Вложение: ${doc.name}`,
-      });
-      return doc.id;
-    } else {
-      throw new NotFoundException('Такое дело не найдено');
-    }
+  ): Observable<number> {
+    return from(
+      this.ModelLawExec.findByPk(id, {
+        rejectOnEmpty: new NotFoundException('Такое дело не найдено'),
+      }),
+    ).pipe(
+      mergeMap((le) =>
+        this.downloader
+          .uploadFile(file.originalname, file.buffer, auth.userContact!, id)
+          .pipe(
+            mergeMap((data) => this.ModelDocAttach.create(data)),
+            mergeMap((doc) =>
+              from(
+                le.createLawExecProtokol({
+                  r_user_id: auth.userContact!.id,
+                  typ: 8,
+                  r_doc_attach_id: doc.id,
+                  dsc: `Вложение: ${doc.name}`,
+                }),
+              ).pipe(map(() => doc)),
+            ),
+            map((doc) => doc.id),
+          ),
+      ),
+    );
   }
-  async remove(id: number, auth: AuthResult) {
-    const doc = await this.ModelDocAttach.findByPk(id);
-    if (doc) {
-      if (doc.obj_id === 47) {
-        const le = await this.ModelLawExec.findByPk(doc.r_id);
-        await le!.createLawExecProtokol({
-          r_user_id: auth.userContact!.id,
-          typ: 10,
-          dsc: `Вложение: ${doc.name}, версия: ${doc.vers1}.${doc.vers2}`,
-        });
-        try {
-          await this.downloader.removeFile(doc);
-          await doc.destroy();
-          return true;
-        } catch (e) {
-          if (e instanceof NotFoundException) {
-            await doc.destroy();
-            return false;
-          }
-          throw e;
-        }
-      } else {
-        throw new BadRequestException(
-          'Выбранный файл находится не в Исполнительном производстве',
-        );
-      }
-    } else {
-      throw new NotFoundException('Файл не найден');
-    }
+  remove(id: number, auth: AuthResult) {
+    return from(
+      this.ModelDocAttach.findByPk(id, {
+        rejectOnEmpty: new NotFoundException('Файл не найден'),
+      }),
+    ).pipe(
+      mergeMap((doc) =>
+        doc.obj_id
+          ? of(doc)
+          : throwError(
+              () =>
+                new BadRequestException(
+                  'Выбранный файл находится не в Исполнительном производстве',
+                ),
+            ),
+      ),
+      mergeMap((doc) =>
+        from(
+          this.ModelLawExec.findByPk(doc.r_id, { rejectOnEmpty: true }),
+        ).pipe(
+          mergeMap((le) =>
+            from(
+              le.createLawExecProtokol({
+                r_user_id: auth.userContact!.id,
+                typ: 10,
+                dsc: `Вложение: ${doc.name}, версия: ${doc.vers1}.${doc.vers2}`,
+              }),
+            ).pipe(map(() => le)),
+          ),
+          map(() => doc),
+        ),
+      ),
+      mergeMap((doc) =>
+        this.downloader.removeFile(doc).pipe(mergeMap(() => doc.destroy())),
+      ),
+      map(() => true),
+      catchError(() => of(false)),
+    );
   }
 }

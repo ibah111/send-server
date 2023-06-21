@@ -1,40 +1,52 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
+  ParseIntPipe,
   Post,
   UploadedFile,
   UseGuards,
+  StreamableFile,
 } from '@nestjs/common';
 import { FastifyFileInterceptor } from 'nest-fastify-multer';
+import { map } from 'rxjs';
 import { Auth, AuthGuard, AuthResult } from 'src/Modules/Guards/auth.guard';
 import { DocumentsInput, DocumentsRemoveInput } from './Documents.input';
 import { DocumentsService } from './Documents.service';
 
 @Controller('documents')
-@UseGuards(AuthGuard)
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
+  @UseGuards(AuthGuard)
   @Post('get')
-  async get(@Body() body: DocumentsInput) {
+  get(@Body() body: DocumentsInput) {
     if (body.id) {
-      return await this.documentsService.get(body.id);
+      return this.documentsService.get(body.id);
     }
     if (body.law_exec_id) {
-      return await this.documentsService.getAll(body.law_exec_id);
+      return this.documentsService.getAll(body.law_exec_id);
     }
   }
+  @Get(':id')
+  getFile(@Param('id', ParseIntPipe) id: number) {
+    return this.documentsService
+      .get(id)
+      .pipe(map((doc) => new StreamableFile(doc)));
+  }
+  @UseGuards(AuthGuard)
   @FastifyFileInterceptor('file', {})
   @Post('upload/:id')
-  async upload(
+  upload(
     @UploadedFile() file: Express.Multer.File,
     @Param('id') id: number,
     @Auth() auth: AuthResult,
   ) {
-    return await this.documentsService.upload(file, id, auth);
+    return this.documentsService.upload(file, id, auth);
   }
+  @UseGuards(AuthGuard)
   @Post('remove')
-  async remove(@Body() body: DocumentsRemoveInput, @Auth() auth: AuthResult) {
+  remove(@Body() body: DocumentsRemoveInput, @Auth() auth: AuthResult) {
     return this.documentsService.remove(body.id, auth);
   }
 }
