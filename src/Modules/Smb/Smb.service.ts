@@ -51,17 +51,20 @@ export class SMBService implements OnModuleInit {
         return;
       },
     });
-    this.smbClient.readFile({ path }, this.meta).subscribe({
-      next: (value) => {
-        data.push(value);
-      },
-      error: (e) => {
-        data.destroy(e);
-      },
-      complete: () => {
-        data.push(null);
-      },
-    });
+    this.smbClient
+      .readFile({ path }, this.meta)
+      .pipe(map((res) => res.result))
+      .subscribe({
+        next: (value) => {
+          data.push(value);
+        },
+        error: (e) => {
+          data.destroy(e);
+        },
+        complete: () => {
+          data.push(null);
+        },
+      });
     return data;
   }
   readFile(path: string): Observable<Buffer> {
