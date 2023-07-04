@@ -3,6 +3,6 @@ import { ModulesModule } from './Modules/Modules.module';
 import { PagesModule } from './Pages';
 
 @Module({
-  imports: [PagesModule, ModulesModule],
+  imports: [ModulesModule, PagesModule],
 })
 export class AppModule {}

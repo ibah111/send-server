@@ -7,9 +7,9 @@ import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
 import { InjectModel, SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import { Injectable, Module } from '@nestjs/common';
 import { MIS } from '@sql-tools/sequelize';
-import { SMBService } from 'src/Modules/Smb/Smb.service';
 import { from, map, mergeMap, Observable, of } from 'rxjs';
-import { SmbModule } from 'src/Modules/Smb/Smb.module';
+import { SMBService, SmbModule } from '@tools/nestjs-smb2';
+import smb from '../config/smb.json';
 type uploads = {
   name: string;
   filename: string;
@@ -148,10 +148,7 @@ export class Downloader {
   }
 }
 @Module({
-  imports: [
-    SequelizeModule.forFeature([DocAttach, ConstValue], 'contact'),
-    SmbModule,
-  ],
+  imports: [SequelizeModule.forFeature([DocAttach, ConstValue], 'contact')],
   providers: [Downloader],
   exports: [Downloader],
 })

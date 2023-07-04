@@ -5,9 +5,12 @@ import { HealthModule } from './Health/Health.module';
 import { SocketModule } from './Socket/Socket.module';
 import { TaskModule } from './Task/Task.module';
 import { VersionModule } from './Version/version.module';
+import { SmbModule } from '@tools/nestjs-smb2';
+import smb from '../config/smb.json';
 
 @Module({
   imports: [
+    SmbModule.register({ server: smb.url, ...smb.credentials, isGlobal: true }),
     DatabaseModule,
     ScheduleModule.forRoot(),
     HealthModule,

@@ -16,7 +16,7 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { SMBService } from 'src/Modules/Smb/Smb.service';
+import { SMBService } from '@tools/nestjs-smb2';
 @Injectable()
 export class DocumentsService {
   constructor(

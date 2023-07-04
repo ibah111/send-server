@@ -1743,16 +1743,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tools/terminus-indicators@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "@tools/terminus-indicators@npm:0.1.0::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F156%2Fpackages%2Fnpm%2F%40tools%2Fterminus-indicators%2F-%2F%40tools%2Fterminus-indicators-0.1.0.tgz"
+"@tools/nestjs-smb2@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "@tools/nestjs-smb2@npm:0.1.4::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F160%2Fpackages%2Fnpm%2F%40tools%2Fnestjs-smb2%2F-%2F%40tools%2Fnestjs-smb2-0.1.4.tgz"
   peerDependencies:
-    "@nestjs/common": 9.x
-    "@nestjs/core": 9.x
-    "@nestjs/terminus": 9.*
-    reflect-metadata: 0.1.x
-    rxjs: 7.x
-  checksum: 106edb9931409fb5a3ebab040a5c6f7be1f456b6bc7d9d6e2d854a5f27eb2feb3c28315e417a561a45c65114fdb0d87027b4a0d295c2f681dd55efbce0a1c77e
+    "@contact/smb2": 0.x
+    "@grpc/grpc-js": ^1.8.0
+    "@grpc/proto-loader": ^0.7.0
+    "@nestjs/common": ^8.0.0 || ^9.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0
+    "@nestjs/microservices": ^8.0.0 || ^9.0.0
+    reflect-metadata: ^0.1.13
+    rxjs: ^7.2.0
+  checksum: e607a28acdb2d63858fd9e6601c327ae0f240a50a5f73b52adb0a2125a8445f6a3f5b19e79ee28b3269ef2caced0c713db3206a683a2481cb6d8d6925024494c
+  languageName: node
+  linkType: hard
+
+"@tools/terminus-indicators@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@tools/terminus-indicators@npm:0.1.3::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F156%2Fpackages%2Fnpm%2F%40tools%2Fterminus-indicators%2F-%2F%40tools%2Fterminus-indicators-0.1.3.tgz"
+  peerDependencies:
+    "@nestjs/common": ^8.0.0 || ^9.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0
+    "@nestjs/terminus": ^8.0.0 || ^9.0.0
+    reflect-metadata: ^0.1.13
+    rxjs: ^7.2.0
+  checksum: d8b907c27cb7a7d9edf8332a010de4ca0d39befc0ed247da8df340a808c05e159fe215941e8d9c25d55a9712970d5c191c1dad4286d078febdd644a3b635f436
   languageName: node
   linkType: hard
 
@@ -7981,7 +7997,8 @@ __metadata:
     "@sql-tools/nestjs-sequelize": ^9.0.0
     "@sql-tools/sequelize": ^6.27.8
     "@sql-tools/sequelize-typescript": ^2.1.5
-    "@tools/terminus-indicators": ^0.1.0
+    "@tools/nestjs-smb2": ^0.1.4
+    "@tools/terminus-indicators": ^0.1.3
     "@types/cron": ^2.0.0
     "@types/crypto-js": ^4.1.1
     "@types/dottie": ^2.0.4
