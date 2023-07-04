@@ -16,7 +16,7 @@ export class GetDebtGuarantorService {
   getAddress(id: number) {
     return this.ModelAddress.findAll({
       where: { r_debt_guarantor_id: id },
-      include: ['TypDict'],
+      include: ['Typ'],
       attributes: [
         'parent_id',
         'id',
