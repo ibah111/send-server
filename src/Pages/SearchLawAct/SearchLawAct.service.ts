@@ -61,7 +61,10 @@ export class SearchLawActService {
           include: [
             {
               model: this.ModelAddress,
-              where: { typ: 1 },
+              where: {
+                typ: 1,
+                block_flag: { [Op.or]: [{ [Op.is]: null }, 0] },
+              },
               attributes: ['full_adr'],
               limit: 1,
             },
