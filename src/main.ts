@@ -10,8 +10,8 @@ import client from './utils/client';
 import { contentParser } from 'fastify-multer';
 import { LocalSeed } from './Modules/Database/local.database/local.seed';
 import moment from 'moment';
+import './utils/CustomCA';
 moment.tz.setDefault('GMT');
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,

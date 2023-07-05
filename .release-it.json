@@ -5,6 +5,7 @@
   },
   "gitlab": {
     "origin": "https://git.usb.ru",
+    "certificateAuthorityFile": "./https/ca.crt",
     "release": true
   },
   "npm": false,
