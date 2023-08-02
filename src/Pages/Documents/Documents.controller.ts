@@ -30,9 +30,15 @@ export class DocumentsController {
   }
   @Get(':id')
   getFile(@Param('id', ParseIntPipe) id: number) {
-    return this.documentsService
-      .get(id)
-      .pipe(map((doc) => new StreamableFile(doc)));
+    return this.documentsService.get(id).pipe(
+      map(
+        (doc) =>
+          new StreamableFile(doc.file, {
+            type: doc.mime,
+            disposition: doc.disposition,
+          }),
+      ),
+    );
   }
   @UseGuards(AuthGuard)
   @FastifyFileInterceptor('file', {})

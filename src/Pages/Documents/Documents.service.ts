@@ -17,6 +17,8 @@ import {
   throwError,
 } from 'rxjs';
 import { SMBService } from '@tools/nestjs-smb2';
+import mime from 'mime-types';
+import contentDisposition from 'content-disposition';
 @Injectable()
 export class DocumentsService {
   constructor(
@@ -49,7 +51,13 @@ export class DocumentsService {
             const file = this.smb.readFileStream(
               `${dir}\\${path}\\${doc!.FILE_SERVER_NAME}`,
             );
-            return file;
+            return {
+              file,
+              mime: mime.lookup(doc!.filename) || 'application/pdf',
+              disposition: contentDisposition(doc!.filename, {
+                type: 'inline',
+              }),
+            };
           }),
         );
       }),
