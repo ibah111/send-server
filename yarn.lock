@@ -2257,11 +2257,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tools/nestjs-smb2@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@tools/nestjs-smb2@npm:1.0.1::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F160%2Fpackages%2Fnpm%2F%40tools%2Fnestjs-smb2%2F-%2F%40tools%2Fnestjs-smb2-1.0.1.tgz"
+"@tools/nestjs-smb2@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@tools/nestjs-smb2@npm:1.0.3::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F160%2Fpackages%2Fnpm%2F%40tools%2Fnestjs-smb2%2F-%2F%40tools%2Fnestjs-smb2-1.0.3.tgz"
   peerDependencies:
-    "@contact/smb2": 0.x
     "@grpc/grpc-js": ^1.8.0
     "@grpc/proto-loader": ^0.7.0
     "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -2269,20 +2268,20 @@ __metadata:
     "@nestjs/microservices": ^8.0.0 || ^9.0.0 || ^10.0.0
     reflect-metadata: ^0.1.13
     rxjs: ^7.2.0
-  checksum: 565823ad3774f6f245705ecabfd2ff05394103daec9c8ac1a3ed6eefb3d8f272d925fed9cd68d16776f9b4cfd827a4313c89f0b3a89e1ddd382141ae81ecb904
+  checksum: c175dd50c9abde45793836903829f03b971daca79e12f80b1a95a140279e2d0602ac5ce5424cb405c9a95ae26f661c79f5ad56dc8acce32ac41b39d7120484ec
   languageName: node
   linkType: hard
 
-"@tools/terminus-indicators@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@tools/terminus-indicators@npm:1.0.1::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F156%2Fpackages%2Fnpm%2F%40tools%2Fterminus-indicators%2F-%2F%40tools%2Fterminus-indicators-1.0.1.tgz"
+"@tools/terminus-indicators@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@tools/terminus-indicators@npm:1.0.3::__archiveUrl=https%3A%2F%2Fgit.usb.ru%2Fapi%2Fv4%2Fprojects%2F156%2Fpackages%2Fnpm%2F%40tools%2Fterminus-indicators%2F-%2F%40tools%2Fterminus-indicators-1.0.3.tgz"
   peerDependencies:
     "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
     "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
     "@nestjs/terminus": ^8.0.0 || ^9.0.0 || ^10.0.0
     reflect-metadata: ^0.1.13
     rxjs: ^7.2.0
-  checksum: 392c97a988942b11bdeb7cfec6c3524a5aad779dcad599393f477339f8785e91039dd591769e0c5383f68c855227d3957d521ccc5da17ebb28a437fcc0e1f370
+  checksum: 89364be7a1a65c9e3b6fe6a6cb4fcac40c598097081c226fc792efc287f71fe58fa571e6d9ad5b444654918c29eb5e1f9e3faf2ab8e14d08b37908ac91cdc542
   languageName: node
   linkType: hard
 
@@ -10588,8 +10587,8 @@ __metadata:
     "@sql-tools/nestjs-sequelize": ^10.0.0
     "@sql-tools/sequelize": ^6.29.4
     "@sql-tools/sequelize-typescript": ^2.1.5
-    "@tools/nestjs-smb2": ^1.0.1
-    "@tools/terminus-indicators": ^1.0.1
+    "@tools/nestjs-smb2": ^1.0.3
+    "@tools/terminus-indicators": ^1.0.3
     "@types/content-disposition": ^0.5.5
     "@types/cron": ^2.0.1
     "@types/crypto-js": ^4.1.1
