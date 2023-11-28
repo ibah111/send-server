@@ -1,21 +1,21 @@
 import { PersonPropertyParam } from '@contact/models';
-import { ClassConstructor } from 'class-transformer';
 import moment from 'moment';
 const metadataKey = 'design:type_property';
-function Property(type: number, typ_params?: Function) {
+type FunctionConverter<T> = (...args: any[]) => T;
+function Property(type: number, typ_params?: FunctionConverter<unknown>) {
   if (!typ_params)
     return Reflect.metadata(metadataKey, { type, typ_params: String });
   return Reflect.metadata(metadataKey, { typ_params, type });
 }
 interface IMetaData<T> {
-  typ_params: ClassConstructor<T>;
+  typ_params: FunctionConverter<T>;
   type: number;
 }
 interface IPropertyData<T, K extends keyof T> {
   name: K;
-  typ_params: Function;
+  typ_params: FunctionConverter<T[K]>;
 }
-function getProperty<K extends keyof T, T extends Object>(
+function getProperty<K extends keyof T, T extends object>(
   target: T,
   key: K,
 ): IMetaData<T[K]> {

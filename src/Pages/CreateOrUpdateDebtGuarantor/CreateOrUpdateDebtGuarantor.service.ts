@@ -1,14 +1,14 @@
 import { Address, DebtGuarantor } from '@contact/models';
-import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import {
   CreateOrUpdateAddress,
   CreateOrUpdateDebtGuarantorInput,
 } from './CreateOrUpdateDebtGuarantor.input';
-function objectKeys<T extends {}>(obj: T) {
+function objectKeys<T extends object>(obj: T) {
   return Object.keys(obj) as Array<keyof typeof obj>;
 }
-function UpdateValue<T extends {}, K extends keyof T, V extends T[K]>(
+function UpdateValue<T extends object, K extends keyof T, V extends T[K]>(
   data: T,
   key: K,
   value: V,

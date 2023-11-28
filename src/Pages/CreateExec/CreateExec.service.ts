@@ -1,9 +1,8 @@
-import { LawAct, LawExec } from '@contact/models';
+import { LawAct } from '@contact/models';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { CreateExecInput } from './CreateExec.input';
-import { CreationAttributes } from '@sql-tools/sequelize';
 @Injectable()
 export class CreateExecService {
   constructor(

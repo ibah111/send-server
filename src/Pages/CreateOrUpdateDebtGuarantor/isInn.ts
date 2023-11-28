@@ -1,5 +1,4 @@
 import {
-  buildMessage,
   registerDecorator,
   ValidationArguments,
   ValidationOptions,
@@ -79,7 +78,7 @@ export class IsInnConstructor implements ValidatorConstraintInterface {
   }
 }
 export function IsInn(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'isInn',
       target: object.constructor,

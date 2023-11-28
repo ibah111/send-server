@@ -1,4 +1,4 @@
-import { Debt, LawAct, LawExec, LawExecProtokol } from '@contact/models';
+import { Debt, LawAct, LawExec } from '@contact/models';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';
