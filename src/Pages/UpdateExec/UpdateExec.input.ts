@@ -25,7 +25,7 @@ export class UpdateExecInput {
   @IsOptional()
   @Min(0)
   @Max(10000000)
-  total_sum: number | null;
+  total_sum?: number | null;
   @IsDate()
   @IsNotEmpty()
   @Type(() => Date)
@@ -50,7 +50,7 @@ export class UpdateExecInput {
   @IsOptional()
   @IsDate()
   @Type(() => Date)
-  receipt_recover_dt: Date;
+  receipt_recover_dt?: Date;
   @IsDate()
   @IsNotEmpty()
   @Type(() => Date)
@@ -58,19 +58,19 @@ export class UpdateExecInput {
   @IsNumber()
   @IsNotEmpty()
   r_court_id: number;
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   template_typ: number;
   @IsOptional()
   @IsBoolean()
-  add_interests: boolean;
+  add_interests?: boolean;
   @IsNotEmpty()
   @IsNumber()
   debt_guarantor: number;
   @IsOptional()
   @IsNumber()
-  person_property: number;
+  person_property?: number;
   @IsOptional()
   @Type(() => SaveOptions)
-  options: SaveOptions;
+  options?: SaveOptions;
 }

@@ -8,8 +8,7 @@ import { InjectModel, SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import { Injectable, Module } from '@nestjs/common';
 import { MIS } from '@sql-tools/sequelize';
 import { from, map, mergeMap, Observable, of } from 'rxjs';
-import { SMBService, SmbModule } from '@tools/nestjs-smb2';
-import smb from '../config/smb.json';
+import { SMBService } from '@tools/nestjs-smb2';
 type uploads = {
   name: string;
   filename: string;
@@ -125,7 +124,7 @@ export class Downloader {
     le: LawExec,
     doc_name: string,
     template_id: number,
-    params: { addInterests: boolean },
+    params: { addInterests?: boolean },
     token: string,
   ) {
     return from(

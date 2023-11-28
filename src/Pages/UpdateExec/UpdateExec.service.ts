@@ -1,7 +1,7 @@
 import { DocAttach, LawExec } from '@contact/models';
 import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Attributes, MIS } from '@sql-tools/sequelize';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import moment from 'moment';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { Downloader } from 'src/utils/downloader';
@@ -12,7 +12,7 @@ import getContextTransaction from 'src/utils/getContextTransaction';
 import { lastValueFrom } from 'rxjs';
 function transform<T extends keyof Attributes<LawExec> & keyof UpdateExecInput>(
   name: T,
-  value: LawExec[T],
+  value?: LawExec[T],
 ): LawExec[T] {
   if (value) {
     switch (name) {
@@ -126,7 +126,9 @@ export class UpdateExecService {
   }
   async update(body: UpdateExecInput, auth: AuthResult) {
     if (auth.userContact !== null) {
-      const le = (await this.ModelLawExec.findByPk(body.id))!;
+      const le = await this.ModelLawExec.findByPk(body.id, {
+        rejectOnEmpty: new NotFoundException('Такой дело не найдено'),
+      });
       this.changeDebtGuarantor(le, body.debt_guarantor, auth.userContact.id);
       for (const value of strings) {
         updateData(le, value, transform(value, body[value]));
