@@ -1,0 +1,64 @@
+diff --git a/node_modules/@types/git-semver-tags/index.d.ts b/node_modules/@types/git-semver-tags/index.d.ts
+index 968a732..ee49e97 100644
+--- a/node_modules/@types/git-semver-tags/index.d.ts
++++ b/node_modules/@types/git-semver-tags/index.d.ts
+@@ -7,34 +7,33 @@
+ /**
+  * Get all git semver tags of your repository in reverse chronological order
+  */
+-declare function gitSemverTags(options: gitSemverTags.Options, callback: gitSemverTags.Callback): void;
+-declare function gitSemverTags(callback: gitSemverTags.Callback): void;
++declare module 'git-semver-tags' {
++	declare function gitSemverTags(options: SemverTagsOptions): Promise<string[]>;
++	declare function gitSemverTags(): Promise<string[]>;
+ 	
+-declare namespace gitSemverTags {
+-    type Callback = (error: any, tags: string[]) => void;
++	interface SemverTagsOptions {
++	  /**
++	   * Extract lerna style tags (`foo-package@2.0.0`) from the git history, rather
++	   * than `v1.0.0` format.
++	   */
++	  lernaTags?: boolean | undefined;
+   
+-    interface Options {
+-        /**
+-         * Extract lerna style tags (`foo-package@2.0.0`) from the git history, rather
+-         * than `v1.0.0` format.
+-         */
+-        lernaTags?: boolean | undefined;
++	  /**
++	   * What package should lerna style tags be listed for, e.g., `foo-package`.
++	   */
++	  package?: string | undefined;
+   
+-        /**
+-         * What package should lerna style tags be listed for, e.g., `foo-package`.
+-         */
+-        package?: string | undefined;
++	  /**
++	   * Specify a prefix for the git tag to be ignored from the semver checks.
++	   */
++	  tagPrefix?: string | undefined;
+   
+-        /**
+-         * Specify a prefix for the git tag to be ignored from the semver checks.
+-         */
+-        tagPrefix?: string | undefined;
++	  /**
++	   * If given, unstable tags (e.g. `x.x.x-alpha.1`, `x.x.x-rc.2`) will be skipped.
++	   */
++	  skipUnstable?: boolean | undefined;
++	}
+   
+-        /**
+-         * If given, unstable tags (e.g. `x.x.x-alpha.1`, `x.x.x-rc.2`) will be skipped.
+-         */
+-        skipUnstable?: boolean | undefined;
+-    }
+-}
++	export = gitSemverTags;
++  }
+   
+\ No newline at end of file
+-export = gitSemverTags;

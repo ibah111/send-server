@@ -1,19 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import gitSemverTags from 'git-semver-tags';
+import { from, last, lastValueFrom, map, mergeMap, tap } from 'rxjs';
 import s from 'semver';
 
-const gitGet = (): Promise<string> =>
-  new Promise((resolve) => {
-    gitSemverTags({ tagPrefix: 'v' }, (err, result) => {
-      const tags = result.map((value) => s.clean(value));
-      resolve(tags[0]!);
-    });
-  });
-
+/**
+ * Сервис версии
+ */
 @Injectable()
-export class VersionService {
+export class VersionService implements OnModuleInit {
+  /**
+   * Версия
+   */
   version: string;
-  async init() {
-    this.version = await gitGet();
+  /**
+   * Инициализировать сервис
+   */
+  async onModuleInit() {
+    await lastValueFrom(
+      from(gitSemverTags({ tagPrefix: 'v' })).pipe(
+        mergeMap((items) => items),
+        map((item) => s.clean(item)),
+        last(),
+        tap((item) => {
+          this.version = item as string;
+        }),
+      ),
+    );
   }
 }
