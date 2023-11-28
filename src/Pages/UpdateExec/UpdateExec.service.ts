@@ -129,7 +129,11 @@ export class UpdateExecService {
       const le = await this.ModelLawExec.findByPk(body.id, {
         rejectOnEmpty: new NotFoundException('Такой дело не найдено'),
       });
-      this.changeDebtGuarantor(le, body.debt_guarantor, auth.userContact.id);
+      await this.changeDebtGuarantor(
+        le,
+        body.debt_guarantor,
+        auth.userContact.id,
+      );
       for (const value of strings) {
         updateData(le, value, transform(value, body[value]));
       }
