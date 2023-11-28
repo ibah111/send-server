@@ -10,31 +10,40 @@ import { UpdateExecInput } from './UpdateExec.input';
 import { Sequelize } from '@sql-tools/sequelize-typescript';
 import getContextTransaction from 'src/utils/getContextTransaction';
 import { lastValueFrom } from 'rxjs';
-function transform<T extends keyof Attributes<LawExec>>(
+function transform<T extends keyof Attributes<LawExec> & keyof UpdateExecInput>(
   name: T,
-  value: any,
+  value: LawExec[T],
 ): LawExec[T] {
   if (value) {
     switch (name) {
       case 'load_dt':
-        return moment(value).toDate();
+        return moment(value as Date).toDate() as LawExec[T];
       case 'court_date':
-        return moment(value).startOf('day').toDate();
+        return moment(value as Date)
+          .startOf('day')
+          .toDate() as LawExec[T];
       case 'entry_force_dt':
-        return moment(value).startOf('day').toDate();
+        return moment(value as Date)
+          .startOf('day')
+          .toDate() as LawExec[T];
       case 'receipt_recover_dt':
-        return moment(value).startOf('day').toDate();
+        return moment(value as Date)
+          .startOf('day')
+          .toDate() as LawExec[T];
       case 'fssp_date':
-        return moment(value).startOf('day').toDate();
+        return moment(value as Date)
+          .startOf('day')
+          .toDate() as LawExec[T];
       default:
         return value;
     }
   } else {
-    if (name === 'total_sum' && (value === null || value === 0)) return 0;
-    return null;
+    if (name === 'total_sum' && (value === null || value === 0))
+      return 0 as LawExec[T];
+    return null as LawExec[T];
   }
 }
-const strings: (keyof Attributes<LawExec>)[] = [
+const strings: (keyof UpdateExecInput & keyof Attributes<LawExec>)[] = [
   'total_sum',
   'load_dt',
   'court_doc_num',
@@ -67,6 +76,13 @@ const t = (value: string) => {
   if (translate[value]) return translate[value];
   return 'Не определено';
 };
+function updateData<V extends T[K], K extends keyof T, T extends LawExec>(
+  data: T,
+  key: K,
+  value: V,
+) {
+  data[key] = value;
+}
 @Injectable()
 export class UpdateExecService {
   constructor(
@@ -113,7 +129,7 @@ export class UpdateExecService {
       const le = (await this.ModelLawExec.findByPk(body.id))!;
       this.changeDebtGuarantor(le, body.debt_guarantor, auth.userContact.id);
       for (const value of strings) {
-        le[value] = transform(value, body[value]);
+        updateData(le, value, transform(value, body[value]));
       }
       le.fssp_doc_num = null;
       le.start_date = null;

@@ -18,7 +18,6 @@ export class SaveOptions {
   send?: boolean;
 }
 export class UpdateExecInput {
-  [key: string]: number | string | Date | boolean | SaveOptions | null;
   @IsNumber()
   @IsNotEmpty()
   id: number;
