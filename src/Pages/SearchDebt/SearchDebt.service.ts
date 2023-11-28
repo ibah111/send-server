@@ -47,7 +47,7 @@ export class SearchDebtService {
       ],
       limit: 25,
     });
-    return JSON.parse(JSON.stringify(result)).map((res: any) =>
+    return JSON.parse(JSON.stringify(result)).map((res: object) =>
       dottie.flatten(res),
     );
   }

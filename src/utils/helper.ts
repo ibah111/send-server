@@ -8,7 +8,7 @@ export class Helper {
     @InjectModel(Dict, 'contact') private ModelDict: typeof Dict,
     @InjectModel(LawCourt, 'contact') private ModelLawCourt: typeof LawCourt,
   ) {}
-  async help(typ: string, value: any) {
+  async help(typ: string, value: unknown) {
     switch (typ) {
       case 'load_dt':
         if (value) return moment(value).format('DD.MM.YYYY');
@@ -43,7 +43,7 @@ export class Helper {
         if (value) return moment(value).format('DD.MM.YYYY');
       case 'r_court_id':
         if (value) {
-          const data = await this.ModelLawCourt.findByPk(value);
+          const data = await this.ModelLawCourt.findByPk(value as number);
           if (data) return data.name;
         }
       default:

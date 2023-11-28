@@ -1,7 +1,7 @@
 import { PersonPropertyParam } from '@contact/models';
 import moment from 'moment';
 const metadataKey = 'design:type_property';
-type FunctionConverter<T> = (...args: any[]) => T;
+type FunctionConverter<T> = (args: string) => T;
 function Property(type: number, typ_params?: FunctionConverter<unknown>) {
   if (!typ_params)
     return Reflect.metadata(metadataKey, { type, typ_params: String });
@@ -83,7 +83,7 @@ export class Vehicle {
   /**
    * Год выпуска
    */
-  @Property(42, (value: string) => moment(value, 'DD.MM.YYYY'))
+  @Property(42, (value) => moment(value, 'DD.MM.YYYY'))
   year: string | null;
   /**
    * Номер двигателя
