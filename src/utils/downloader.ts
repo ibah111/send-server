@@ -124,7 +124,7 @@ export class Downloader {
     le: LawExec,
     doc_name: string,
     template_id: number,
-    params: { addInterests?: boolean },
+    params: { addInterests?: boolean; appeal_typ?: number },
     token: string,
   ) {
     return from(

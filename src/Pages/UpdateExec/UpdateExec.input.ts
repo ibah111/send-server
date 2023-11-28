@@ -71,6 +71,9 @@ export class UpdateExecInput {
   @IsNumber()
   person_property?: number;
   @IsOptional()
+  @IsNumber()
+  appeal_typ?: number;
+  @IsOptional()
   @Type(() => SaveOptions)
   options?: SaveOptions;
 }

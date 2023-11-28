@@ -269,7 +269,7 @@ export class UpdateExecService {
           le,
           doc_name,
           body.template_typ,
-          { addInterests: body.add_interests },
+          { addInterests: body.add_interests, appeal_typ: body.appeal_typ },
           auth.user.token,
         ),
       );
