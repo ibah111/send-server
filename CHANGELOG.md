@@ -1,5 +1,12 @@
 
 
+## [0.3.1](https://git.usb.ru/send/server/compare/v0.3.0...v0.3.1) (2023-11-29)
+
+
+### Bug Fixes
+
+* **tags:** исправил определение версии ([35d7a2a](https://git.usb.ru/send/server/commit/35d7a2a617be6377e18323d8516e31c3e7cf2819))
+
 ## [0.3.0](https://git.usb.ru/send/server/compare/v0.2.7...v0.3.0) (2023-11-28)
 
 
