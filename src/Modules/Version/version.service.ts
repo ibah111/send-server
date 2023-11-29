@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import gitSemverTags from 'git-semver-tags';
-import { from, last, lastValueFrom, map, mergeMap, tap } from 'rxjs';
+import { first, from, lastValueFrom, map, mergeMap, tap } from 'rxjs';
 import s from 'semver';
 
 /**
@@ -20,8 +20,9 @@ export class VersionService implements OnModuleInit {
       from(gitSemverTags({ tagPrefix: 'v' })).pipe(
         mergeMap((items) => items),
         map((item) => s.clean(item)),
-        last(),
+        first(),
         tap((item) => {
+          console.log(item);
           this.version = item as string;
         }),
       ),
