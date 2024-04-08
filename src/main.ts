@@ -12,6 +12,11 @@ import { LocalSeed } from './Modules/Database/local.database/local.seed';
 import moment from 'moment';
 import './utils/CustomCA';
 import 'colors';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {
+  getSwaggerOptions,
+  getSwaggerOptionsCustom,
+} from './utils/getSwaggerOptions';
 
 const node = process.env.NODE_ENV;
 class bootstrapOptions {
@@ -40,14 +45,28 @@ async function bootstrap() {
     console.log(e);
     throw e;
   }
+  const config = new DocumentBuilder()
+    .setTitle('Подача')
+    .setDescription('ПО Подача для отдела ИП')
+    .addBasicAuth({
+      description: 'Введите token в headers',
+      name: 'token',
+      in: 'header',
+      type: 'apiKey',
+    })
+    .build();
+  const document = SwaggerModule.createDocument(
+    app,
+    config,
+    getSwaggerOptions(),
+  );
+  SwaggerModule.setup('docs', app, document, getSwaggerOptionsCustom());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors();
   await app.listen(client('port'), '0.0.0.0');
   console.log(
-    `NODE_ENV: ${node}, Application is running on: ${await app.getUrl()}`.replace(
-      'http',
-      node === 'prod' ? 'https' : 'http',
-    ).yellow,
+    `NODE_ENV: ${node}, Application is running on: ${await app.getUrl()}/docs
+    `.replace('http', node === 'prod' ? 'https' : 'http').yellow,
   );
 }
 
