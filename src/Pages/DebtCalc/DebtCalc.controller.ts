@@ -2,7 +2,9 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/Modules/Guards/auth.guard';
 import { DebtCalcInput } from './DebtCalc.input';
 import { DebtCalcService } from './DebtCalc.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('DebtCalc')
 @Controller('debt_calc')
 @UseGuards(AuthGuard)
 export class DebtCalcController {

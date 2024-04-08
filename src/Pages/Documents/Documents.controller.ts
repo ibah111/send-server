@@ -14,7 +14,9 @@ import { map } from 'rxjs';
 import { Auth, AuthGuard, AuthResult } from 'src/Modules/Guards/auth.guard';
 import { DocumentsInput, DocumentsRemoveInput } from './Documents.input';
 import { DocumentsService } from './Documents.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Documents')
 @Controller('documents')
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}

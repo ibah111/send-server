@@ -2,7 +2,9 @@ import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/Modules/Guards/auth.guard';
 import { LawExecInput } from './LawExec.input';
 import { LawExecService } from './LawExec.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Exec')
 @Controller('law_exec')
 @UseGuards(AuthGuard)
 export class LawExecController {

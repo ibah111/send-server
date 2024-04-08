@@ -13,6 +13,7 @@ import {
   CreateOrUpdateDebtGuarantorInput,
 } from './CreateOrUpdateDebtGuarantor.input';
 import { CreateOrUpdateDebtGuarantorService } from './CreateOrUpdateDebtGuarantor.service';
+import { ApiTags } from '@nestjs/swagger';
 
 export class TestUpdate {
   @Expose()
@@ -20,6 +21,7 @@ export class TestUpdate {
   id: string;
 }
 
+@ApiTags('DebtGuarantor')
 @Controller('create_or_update_debt_guarantor')
 export class CreateOrUpdateDebtGuarantorController {
   constructor(private readonly service: CreateOrUpdateDebtGuarantorService) {}
