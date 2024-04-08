@@ -6,7 +6,7 @@ export function getSwaggerOptions() {
 }
 export function getSwaggerOptionsCustom() {
   const options: SwaggerCustomOptions = {};
-  options.customSiteTitle = 'Scanner-Docs-App';
+  options.customSiteTitle = 'Send-App';
   options.validatorUrl = '';
   return options;
 }

@@ -65,7 +65,7 @@ async function bootstrap() {
   app.enableCors();
   await app.listen(client('port'), '0.0.0.0');
   console.log(
-    `NODE_ENV: ${node}, Application is running on: ${await app.getUrl()}/docs
+    `NODE_ENV: ${node}, Send-Application is running on: ${await app.getUrl()}/docs
     `.replace('http', node === 'prod' ? 'https' : 'http').yellow,
   );
 }
