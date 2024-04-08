@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@contact/models": "^0.4.1",
+    "@fastify/static": "^7.0.3",
     "@grpc/grpc-js": "^1.9.12",
     "@grpc/proto-loader": "^0.7.10",
     "@nestjs/axios": "^3.0.1",
