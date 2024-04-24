@@ -3,7 +3,7 @@ import { Auth, AuthGuard, AuthResult } from 'src/Modules/Guards/auth.guard';
 import { DeleteExecInput } from './DeleteExec.input';
 import { DeleteExecService } from './DeleteExec.service';
 import { ApiTags } from '@nestjs/swagger';
-@ApiTags('Exec')
+@ApiTags('LawExec')
 @Controller('delete_exec')
 @UseGuards(AuthGuard)
 export class DeleteExecController {

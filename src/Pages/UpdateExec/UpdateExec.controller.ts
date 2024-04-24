@@ -5,7 +5,7 @@ import { UpdateExecService } from './UpdateExec.service';
 import { ApiTags } from '@nestjs/swagger';
 @Controller('update_exec')
 @UseGuards(AuthGuard)
-@ApiTags('Exec')
+@ApiTags('LawExec')
 export class UpdateExecController {
   constructor(private readonly updateExecService: UpdateExecService) {}
   @Post()

@@ -4,7 +4,7 @@ import { LawExecInput } from './LawExec.input';
 import { LawExecService } from './LawExec.service';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Exec')
+@ApiTags('LawExec')
 @Controller('law_exec')
 @UseGuards(AuthGuard)
 export class LawExecController {
