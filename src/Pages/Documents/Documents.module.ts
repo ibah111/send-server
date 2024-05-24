@@ -1,4 +1,4 @@
-import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
+import { ConstValue, DocAttach, LawAct, LawExec, User } from '@contact/models';
 import { SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import { Module } from '@nestjs/common';
 import { DownloaderModule } from 'src/utils/downloader';
@@ -8,7 +8,7 @@ import { DocumentsService } from './Documents.service';
 @Module({
   imports: [
     SequelizeModule.forFeature(
-      [ConstValue, LawExec, DocAttach, User],
+      [ConstValue, LawExec, LawAct, DocAttach, User],
       'contact',
     ),
     DownloaderModule,

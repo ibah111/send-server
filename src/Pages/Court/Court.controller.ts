@@ -1,10 +1,10 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/Modules/Guards/auth.guard';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { CourtInput } from './Court.input';
 import { CourtService } from './Court.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('court')
-@UseGuards(AuthGuard)
+@ApiTags('Court')
 export class CourtController {
   constructor(private courtService: CourtService) {}
   @HttpCode(200)
