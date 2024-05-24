@@ -1,4 +1,4 @@
-import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
+import { ConstValue, DocAttach, LawAct, LawExec, User } from '@contact/models';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import {
   BadRequestException,
@@ -24,6 +24,8 @@ export class DocumentsService {
   constructor(
     @InjectModel(LawExec, 'contact')
     private readonly ModelLawExec: typeof LawExec,
+    @InjectModel(LawAct, 'contact')
+    private readonly ModelLawAct: typeof LawAct,
     @InjectModel(DocAttach, 'contact')
     private readonly ModelDocAttach: typeof DocAttach,
     @InjectModel(User, 'contact') private readonly ModelUser: typeof User,
@@ -63,15 +65,29 @@ export class DocumentsService {
       }),
     );
   }
-  getAll(id: number): Observable<DocAttach[]> {
-    return from(
+  //Получение вложений по исполнительному производству
+  getAllLawExecDocAttachs(law_exec_id: number): Observable<DocAttach[]> {
+    const law_exec_doc_attach = from(
       this.ModelLawExec.findOne({
-        where: { id },
+        where: { id: law_exec_id },
         include: [{ model: this.ModelDocAttach, include: [this.ModelUser] }],
         rejectOnEmpty: true,
       }),
     ).pipe(map((law_exec) => law_exec.DocAttachs!));
+    return law_exec_doc_attach;
   }
+  //Получение вложений по судебной работе
+  getAllLawActDocAttachs(law_act_id: number): Observable<DocAttach[]> {
+    const law_act_doc_attach = from(
+      this.ModelLawAct.findOne({
+        where: { id: law_act_id },
+        include: [{ model: this.ModelDocAttach, include: [this.ModelUser] }],
+        rejectOnEmpty: true,
+      }),
+    ).pipe(map((law_act) => law_act.DocAttachs!));
+    return law_act_doc_attach;
+  }
+
   upload(
     file: Express.Multer.File,
     id: number,
