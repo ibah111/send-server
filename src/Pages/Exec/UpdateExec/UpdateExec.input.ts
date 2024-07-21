@@ -76,4 +76,7 @@ export class UpdateExecInput {
   @IsOptional()
   @Type(() => SaveOptions)
   options?: SaveOptions;
+  @IsOptional()
+  @IsNumber()
+  custom_requisites_id?: number;
 }
