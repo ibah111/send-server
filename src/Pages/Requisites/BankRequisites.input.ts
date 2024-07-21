@@ -23,7 +23,7 @@ export class BankRequisitesClass {
   /**
    * ИНН
    */
-  @Length(16, 16)
+  @Length(8, 16)
   @ApiProperty()
   inn: string;
   /**
