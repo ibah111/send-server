@@ -18,7 +18,7 @@ import {
   getSwaggerOptionsCustom,
 } from './utils/getSwaggerOptions';
 
-const node = process.env.NODE_ENV;
+export const node = process.env.NODE_ENV;
 class bootstrapOptions {
   constructor() {
     this.adapter =

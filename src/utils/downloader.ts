@@ -124,16 +124,22 @@ export class Downloader {
     le: LawExec,
     doc_name: string,
     template_id: number,
-    params: { addInterests?: boolean; appeal_typ?: number },
+    params: {
+      addInterests?: boolean;
+      appeal_typ?: number;
+      customRequisitesId?: number;
+    },
     token: string,
   ) {
-    return from(
-      axios.get<Buffer>(`${server('fastreport')}/print/${template_id}`, {
-        responseType: 'arraybuffer',
-        headers: { token },
-        params: { ...params, id: le.id },
-      }),
-    ).pipe(
+    const download_url = `${server('fastreport')}/print/${template_id}`;
+    console.log(download_url, token, params);
+    const axios_request = axios.get<Buffer>(download_url, {
+      responseType: 'arraybuffer',
+      headers: { token },
+      params: { ...params, id: le.id },
+    });
+
+    return from(axios_request).pipe(
       map((res) => res.data),
       mergeMap((file) =>
         this.uploadFile(doc_name, file, OpUser, le.id).pipe(
