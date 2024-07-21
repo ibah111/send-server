@@ -124,7 +124,11 @@ export class Downloader {
     le: LawExec,
     doc_name: string,
     template_id: number,
-    params: { addInterests?: boolean; appeal_typ?: number },
+    params: {
+      addInterests?: boolean;
+      appeal_typ?: number;
+      customRequisitesId?: number;
+    },
     token: string,
   ) {
     const download_url = `${server('fastreport')}/print/${template_id}`;
