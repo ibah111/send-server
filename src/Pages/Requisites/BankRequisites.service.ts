@@ -46,9 +46,11 @@ export default class BankRequisitesService {
     requisites.br_name = b.br_name;
     requisites.inn = b.inn;
     requisites.bik = b.bik;
+    requisites.r_account = b.r_account;
     requisites.k_account = b.k_account;
     requisites.pay_purpose = b.pay_purpose;
     requisites.br_address = b.br_address;
+    requisites.kpp = b.kpp;
     requisites.typ = b.typ;
     requisites.kbe = b.kbe;
     requisites.knp = b.knp;
