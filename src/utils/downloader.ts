@@ -132,7 +132,6 @@ export class Downloader {
     token: string,
   ) {
     const download_url = `${server('fastreport')}/print/${template_id}`;
-    console.log(download_url, token, params);
     const axios_request = axios.get<Buffer>(download_url, {
       responseType: 'arraybuffer',
       headers: { token },
