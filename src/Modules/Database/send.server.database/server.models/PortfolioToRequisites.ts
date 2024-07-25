@@ -13,12 +13,12 @@ import {
 } from '@sql-tools/sequelize-typescript';
 
 @Table({
-  tableName: 'PortfoliosToRequsites',
+  tableName: 'PortfoliosToRequisites',
   paranoid: true,
 })
-export class PortfoliosToRequsites extends Model<
-  InferAttributes<PortfoliosToRequsites>,
-  InferCreationAttributes<PortfoliosToRequsites>
+export class PortfoliosToRequisites extends Model<
+  InferAttributes<PortfoliosToRequisites>,
+  InferCreationAttributes<PortfoliosToRequisites>
 > {
   @AutoIncrement
   @PrimaryKey

@@ -5,7 +5,7 @@ export const up: MigrationFn<QueryInterface> = ({ context }) =>
   context.sequelize.transaction((t) =>
     Promise.all([
       context.createTable(
-        'PortfoliosToRequsites',
+        'PortfoliosToRequisites',
         {
           id: {
             type: DataTypes.INTEGER,
