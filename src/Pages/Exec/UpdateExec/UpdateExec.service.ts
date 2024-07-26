@@ -10,6 +10,7 @@ import { UpdateExecInput } from './UpdateExec.input';
 import { Sequelize } from '@sql-tools/sequelize-typescript';
 import getContextTransaction from 'src/utils/getContextTransaction';
 import { lastValueFrom } from 'rxjs';
+import PortfoliosToRequisitesService from 'src/Pages/PortfoliosToRequisites/PortfoliosToRequisites.service';
 function transform<T extends keyof Attributes<LawExec> & keyof UpdateExecInput>(
   name: T,
   value?: LawExec[T],
@@ -93,6 +94,7 @@ export class UpdateExecService {
     private readonly ModelDocAttach: typeof DocAttach,
     private readonly downloader: Downloader,
     private readonly helper: Helper,
+    private readonly portfolioToRequisites: PortfoliosToRequisitesService,
   ) {}
   async changeDebtGuarantor(
     le: MIS<LawExec>,
@@ -263,6 +265,20 @@ export class UpdateExecService {
         'executive_typ',
         le.executive_typ,
       )} ${moment(le.court_date).utcOffset(3).format('DD.MM.YYYY')}.pdf`;
+
+      /**
+       * linked requisites to portfolio logic
+       */
+      let requisites_id: number;
+      const portf_id = le.Portfolio?.id;
+      const customRequisites =
+        await this.portfolioToRequisites.getRequisitesByPortfolio(portf_id);
+      if (customRequisites) {
+        const customRequisitesId = customRequisites.id;
+        requisites_id = customRequisitesId;
+      } else {
+        requisites_id = body.custom_requisites_id || 0;
+      }
       const data = await lastValueFrom(
         this.downloader.downloadFile(
           auth.userContact,
@@ -272,7 +288,7 @@ export class UpdateExecService {
           {
             addInterests: body.add_interests,
             appeal_typ: body.appeal_typ,
-            customRequisitesId: body.custom_requisites_id,
+            customRequisitesId: requisites_id,
           },
           auth.user.token,
         ),
