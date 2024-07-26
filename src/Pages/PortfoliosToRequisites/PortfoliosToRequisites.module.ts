@@ -12,5 +12,6 @@ import { BankRequisits, Debt, Portfolio } from '@contact/models';
   ],
   controllers: [PortfoliosToRequisitesController],
   providers: [PortfoliosToRequisitesService],
+  exports: [PortfoliosToRequisitesService],
 })
 export default class PortfoliosToRequisitesModule {}
