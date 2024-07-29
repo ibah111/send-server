@@ -5,11 +5,11 @@ import { DownloaderModule } from 'src/utils/downloader';
 import { HelperModule } from 'src/utils/helper';
 import { UpdateExecController } from './UpdateExec.controller';
 import { UpdateExecService } from './UpdateExec.service';
-import PortfoliosToRequisitesService from 'src/Pages/PortfoliosToRequisites/PortfoliosToRequisites.service';
+import PortfoliosToRequisitesModule from 'src/Pages/PortfoliosToRequisites/PortfoliosToRequisites.module';
 
 @Module({
   imports: [
-    PortfoliosToRequisitesService,
+    PortfoliosToRequisitesModule,
     DownloaderModule,
     HelperModule,
     SequelizeModule.forFeature([LawExec, DocAttach], 'contact'),
