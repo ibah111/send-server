@@ -9,15 +9,20 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import BankRequisitesService from './BankRequisites.service';
-import { BankRequisitesClass } from './BankRequisites.input';
+import {
+  BankRequisitesClass,
+  SearchPortfolioInput,
+} from './BankRequisites.input';
 
 @ApiTags('BankRequisites')
 @Controller('BankRequisites')
 export class BankRequisitesController {
   constructor(private readonly bankRequisitesService: BankRequisitesService) {}
   @Get('getAllBankRequisites')
-  getAllBankRequisites() {
-    return this.bankRequisitesService.getAllRequisites();
+  getAllBankRequisites(@Body() body: SearchPortfolioInput) {
+    return this.bankRequisitesService.getAllRequisites({
+      ...body,
+    });
   }
 
   @Get('getOneBankRequisites/:id')

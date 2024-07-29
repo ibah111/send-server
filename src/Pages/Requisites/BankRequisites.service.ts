@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { BankRequisits } from '@contact/models';
-import { BankRequisitesClass } from './BankRequisites.input';
+import {
+  BankRequisitesClass,
+  SearchPortfolioInput,
+} from './BankRequisites.input';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
+import { Op } from 'sequelize';
+
 @Injectable()
 export default class BankRequisitesService {
   constructor(
@@ -25,8 +30,15 @@ export default class BankRequisitesService {
     'knp',
     'kod',
   ];
-  async getAllRequisites() {
+  async getAllRequisites(name: SearchPortfolioInput) {
     const requisites = await this.modelBankRequisites.findAll({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      where: {
+        name: {
+          [Op.like]: `%${name}%`,
+        },
+      },
       attributes: this.attributes,
     });
     return requisites;
