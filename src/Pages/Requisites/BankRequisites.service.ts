@@ -32,7 +32,7 @@ export default class BankRequisitesService {
     return requisites;
   }
 
-  async getOneRequisites(id: number) {
+  async getOneBankRequisites(id: number) {
     const requisite = await this.modelBankRequisites.findByPk(id, {
       attributes: this.attributes,
     });

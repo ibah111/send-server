@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import BankRequisitesService from './BankRequisites.service';
 import { BankRequisitesClass } from './BankRequisites.input';
@@ -12,9 +20,9 @@ export class BankRequisitesController {
     return this.bankRequisitesService.getAllRequisites();
   }
 
-  @Get('getOneRequisites/:id')
-  getOneBankReq(@Param('id') id: number) {
-    return this.bankRequisitesService.getOneRequisites(id);
+  @Get('getOneBankRequisites/:id')
+  getOneBankRequisites(@Param('id', ParseIntPipe) id: number) {
+    return this.bankRequisitesService.getOneBankRequisites(id);
   }
 
   @Post('addBankRequisites')
