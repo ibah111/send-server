@@ -269,15 +269,19 @@ export class UpdateExecService {
       /**
        * linked requisites to portfolio logic
        */
-      let requisites_id: number;
+      let requisites_id: number = 0;
+
       const portf_id = le.Portfolio?.id;
-      const customRequisites =
-        await this.portfolioToRequisites.getRequisitesByPortfolio(portf_id);
-      if (customRequisites) {
-        const customRequisitesId = customRequisites.id;
-        requisites_id = customRequisitesId;
-      } else {
-        requisites_id = body.custom_requisites_id || 0;
+
+      if (portf_id) {
+        const customRequisites =
+          await this.portfolioToRequisites.getRequisitesByPortfolio(portf_id);
+        if (customRequisites) {
+          const customRequisitesId = customRequisites.id;
+          requisites_id = customRequisitesId;
+        } else {
+          requisites_id = body.custom_requisites_id || 0;
+        }
       }
       const data = await lastValueFrom(
         this.downloader.downloadFile(
