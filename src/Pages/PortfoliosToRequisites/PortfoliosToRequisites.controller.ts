@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import PortfoliosToRequisitesService from './PortfoliosToRequisites.service';
 import { IsNumber } from 'class-validator';
@@ -29,13 +36,15 @@ export default class PortfoliosToRequisitesController {
   }
 
   @Get('getAllLinksByRequisites/:id')
-  getAllLinksByRequisites(@Param(':id') requisites_id: number) {
-    return this.portfolioService.getAllLinksByRequisites(requisites_id);
+  getAllLinksByRequisites(@Param('id', ParseIntPipe) requisites_id: number) {
+    const port_id = Number(requisites_id);
+    return this.portfolioService.getAllLinksByRequisites(port_id);
   }
 
   @Get('getRequisitesByPortfolio/:id')
-  getRequisitesByPortfolio(@Param(':id') portfolio_id: number) {
-    return this.portfolioService.getRequisitesByPortfolio(portfolio_id);
+  getRequisitesByPortfolio(@Param('id', ParseIntPipe) portfolio_id: number) {
+    const port_id = Number(portfolio_id);
+    return this.portfolioService.getRequisitesByPortfolio(port_id);
   }
 
   @Post('createPortfolioToRequisitesLink')
