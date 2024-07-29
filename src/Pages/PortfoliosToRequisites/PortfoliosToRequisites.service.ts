@@ -1,6 +1,7 @@
 import { Bank, BankRequisits, Debt, Portfolio } from '@contact/models';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
+import { Op } from 'sequelize';
 import { PortfoliosToRequisites } from 'src/Modules/Database/send.server.database/server.models/PortfolioToRequisites';
 
 class CreateLinkInput {
@@ -43,19 +44,41 @@ export default class PortfoliosToRequisitesService {
           r_requisites_id: requisites_id,
         },
       });
-      return result;
+      if (result.length > 0) {
+        const result_ids: number[] = result.map((item) => item.id);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        const portfolios = await this.modelPortfolio.findAll({
+          //@ts-expect-error type error
+          where: {
+            id: {
+              [Op.in]: result_ids,
+            },
+          },
+          include: [
+            {
+              model: Bank,
+              attributes: ['id', 'name', 'full_name'],
+            },
+          ],
+        });
+        return portfolios;
+      }
+      return [];
     } catch (error) {
+      console.log(error);
       throw Error('Error getting all links by requisites');
     }
   }
 
   async getRequisitesByPortfolio(portfolio_id: number) {
     try {
-      return await this.modelPortfoliosToRequisites.findOne({
+      const link = await this.modelPortfoliosToRequisites.findOne({
         where: {
           r_portfolio_id: portfolio_id,
         },
       });
+      return link;
     } catch (error) {
       throw Error('Error with getting requisited by portfolio_id');
     }
