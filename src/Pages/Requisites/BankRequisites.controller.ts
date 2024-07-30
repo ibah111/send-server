@@ -19,10 +19,13 @@ import {
 export class BankRequisitesController {
   constructor(private readonly bankRequisitesService: BankRequisitesService) {}
   @Get('getAllBankRequisites')
-  getAllBankRequisites(@Body() body: SearchPortfolioInput) {
-    return this.bankRequisitesService.getAllRequisites({
-      ...body,
-    });
+  getAllBankRequisites() {
+    return this.bankRequisitesService.getAllRequisites();
+  }
+
+  @Post('getAllPortfolio')
+  getAllPortfolios(@Body() body: SearchPortfolioInput) {
+    return this.bankRequisitesService.getAllPortfolios(body);
   }
 
   @Get('getOneBankRequisites/:id')

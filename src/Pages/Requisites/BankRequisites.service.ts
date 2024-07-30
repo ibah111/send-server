@@ -1,19 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { BankRequisits } from '@contact/models';
+import { Bank, BankRequisits, Portfolio } from '@contact/models';
 import {
   BankRequisitesClass,
   SearchPortfolioInput,
 } from './BankRequisites.input';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Op } from 'sequelize';
+import getSize from 'src/utils/getSize';
 
 @Injectable()
 export default class BankRequisitesService {
   constructor(
+    @InjectModel(Portfolio, 'contact')
+    private readonly modelPortfolio: typeof Portfolio,
     @InjectModel(BankRequisits, 'contact')
     private readonly modelBankRequisites: typeof BankRequisits,
+    @InjectModel(Bank, 'contact')
+    private readonly modelBank: typeof Bank,
   ) {}
-  attributes = [
+  private bankAttributes = ['id', 'name', 'full_name', 'bank_address'];
+  private portfolioAttributes = ['id', 'parent_id', 'name', 'sign_date'];
+  private attributes = [
     'id',
     'name',
     'recipient',
@@ -30,15 +37,8 @@ export default class BankRequisitesService {
     'knp',
     'kod',
   ];
-  async getAllRequisites(name: SearchPortfolioInput) {
+  async getAllRequisites() {
     const requisites = await this.modelBankRequisites.findAll({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      where: {
-        name: {
-          [Op.like]: `%${name}%`,
-        },
-      },
       attributes: this.attributes,
     });
     return requisites;
@@ -80,5 +80,31 @@ export default class BankRequisitesService {
     await currentRequisites.update({
       ...body,
     });
+  }
+
+  async getAllPortfolios(body: SearchPortfolioInput) {
+    const size = getSize(body.paginationModel.pageSize);
+    const offset = body.paginationModel.page * size;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    const portfolios = await this.modelPortfolio.findAll({
+      attributes: this.portfolioAttributes,
+      offset,
+      limit: size,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      where: {
+        name: {
+          [Op.like]: `%${body.name}%`,
+        },
+      },
+      include: [
+        {
+          attributes: this.bankAttributes,
+          model: this.modelBank,
+        },
+      ],
+    });
+    return portfolios;
   }
 }
