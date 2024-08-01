@@ -87,7 +87,7 @@ export default class BankRequisitesService {
     const offset = body.paginationModel.page * size;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    const portfolios = await this.modelPortfolio.findAll({
+    const { count, rows } = await this.modelPortfolio.findAndCountAll({
       attributes: this.portfolioAttributes,
       offset,
       limit: size,
@@ -105,6 +105,9 @@ export default class BankRequisitesService {
         },
       ],
     });
-    return portfolios;
+    return {
+      count,
+      rows,
+    };
   }
 }

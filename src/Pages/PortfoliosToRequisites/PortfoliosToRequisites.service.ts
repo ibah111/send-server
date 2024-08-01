@@ -21,22 +21,6 @@ export default class PortfoliosToRequisitesService {
     private readonly modelPortfoliosToRequisites: typeof PortfoliosToRequisites,
   ) {}
 
-  async getAllPortfolio() {
-    try {
-      return await this.modelPortfolio.findAll({
-        include: [
-          {
-            model: Bank,
-            attributes: ['id', 'name', 'full_name'],
-          },
-        ],
-        attributes: ['id', 'parent_id', 'name', 'sign_date'],
-      });
-    } catch (error) {
-      throw Error('Error in the AllPortfolio');
-    }
-  }
-
   async getAllLinksByRequisites(requisites_id: number) {
     try {
       const result = await this.modelPortfoliosToRequisites.findAll({

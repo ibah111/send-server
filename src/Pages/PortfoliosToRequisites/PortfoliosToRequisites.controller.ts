@@ -30,11 +30,6 @@ export default class PortfoliosToRequisitesController {
     private readonly portfolioService: PortfoliosToRequisitesService,
   ) {}
 
-  @Get('getAllPortfolio')
-  getAllPortfolio() {
-    return this.portfolioService.getAllPortfolio();
-  }
-
   @Get('getAllLinksByRequisites/:id')
   getAllLinksByRequisites(@Param('id', ParseIntPipe) requisites_id: number) {
     const port_id = Number(requisites_id);
