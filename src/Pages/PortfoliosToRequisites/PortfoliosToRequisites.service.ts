@@ -79,10 +79,20 @@ export default class PortfoliosToRequisitesService {
   }: CreateLinkInput) {
     for (const iterator_id of r_portfolio_ids) {
       try {
-        return await this.modelPortfoliosToRequisites.create({
-          r_requisites_id: r_requisites_id,
-          r_portfolio_id: iterator_id,
+        const is_exist = await this.modelPortfoliosToRequisites.findOne({
+          where: {
+            r_requisites_id: r_requisites_id,
+            r_portfolio_id: iterator_id,
+          },
         });
+        if (is_exist) {
+          throw Error('Такая связь уже существует');
+        } else if (!is_exist) {
+          return await this.modelPortfoliosToRequisites.create({
+            r_requisites_id: r_requisites_id,
+            r_portfolio_id: iterator_id,
+          });
+        }
       } catch (error) {
         console.log('Error: ', error);
         throw Error('Error Portfolio to requisites create link');
