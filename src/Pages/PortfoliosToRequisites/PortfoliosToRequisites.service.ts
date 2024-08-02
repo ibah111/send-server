@@ -33,7 +33,9 @@ export default class PortfoliosToRequisitesService {
         },
       });
       if (result.length > 0) {
-        const result_ids: number[] = result.map((item) => item.id);
+        const result_ids: number[] = result.map(
+          (item) => item.dataValues.r_portfolio_id,
+        );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         const portfolios = await this.modelPortfolio.findAll({
@@ -54,7 +56,6 @@ export default class PortfoliosToRequisitesService {
       }
       return [];
     } catch (error) {
-      console.log(error);
       throw Error('Error getting all links by requisites');
     }
   }
@@ -76,7 +77,6 @@ export default class PortfoliosToRequisitesService {
     r_portfolio_ids,
     r_requisites_id,
   }: CreateLinkInput) {
-    console.log(r_requisites_id, r_portfolio_ids);
     for (const iterator_id of r_portfolio_ids) {
       try {
         return await this.modelPortfoliosToRequisites.create({
@@ -96,8 +96,8 @@ export default class PortfoliosToRequisitesService {
   }: DeleteLinkInput) {
     const link = await this.modelPortfoliosToRequisites.findOne({
       where: {
-        r_portfolio_id,
-        r_requisites_id,
+        r_portfolio_id: r_portfolio_id,
+        r_requisites_id: r_requisites_id,
       },
       rejectOnEmpty: Error('Связь не найдена'),
     });

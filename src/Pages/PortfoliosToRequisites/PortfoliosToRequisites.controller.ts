@@ -27,12 +27,10 @@ class DeleteLinkInput {
   @ApiProperty({
     required: true,
   })
-  @IsNumber()
   r_requisites_id: number;
   @ApiProperty({
     required: true,
   })
-  @IsNumber()
   r_portfolio_id: number;
 }
 
