@@ -16,7 +16,6 @@ import {
 
 @Table({
   tableName: 'PortfoliosToRequisites',
-  paranoid: true,
 })
 export class PortfoliosToRequisites extends Model<
   InferAttributes<PortfoliosToRequisites>,
