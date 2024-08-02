@@ -1,4 +1,6 @@
+import { CreateLiteralAssociation } from '@sql-tools/association-literal';
 import {
+  CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
@@ -18,12 +20,13 @@ import {
 })
 export class PortfoliosToRequisites extends Model<
   InferAttributes<PortfoliosToRequisites>,
-  InferCreationAttributes<PortfoliosToRequisites>
+  InferCreationAttributes<PortfoliosToRequisites>,
+  CreateLiteralAssociation<PortfoliosToRequisites>
 > {
   @AutoIncrement
   @PrimaryKey
   @Column(DataTypes.INTEGER)
-  declare id: number;
+  declare id: CreationOptional<number>;
 
   @AllowNull(false)
   @Column(DataTypes.INTEGER)
