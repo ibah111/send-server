@@ -23,6 +23,19 @@ class CreateLinkInput {
   r_portfolio_ids: number[];
 }
 
+class DeleteLinkInput {
+  @ApiProperty({
+    required: true,
+  })
+  @IsNumber()
+  r_requisites_id: number;
+  @ApiProperty({
+    required: true,
+  })
+  @IsNumber()
+  r_portfolio_id: number;
+}
+
 @ApiTags('PortfoliosToRequisites')
 @Controller('PortfoliosToRequisites')
 export default class PortfoliosToRequisitesController {
@@ -45,6 +58,13 @@ export default class PortfoliosToRequisitesController {
   @Post('createPortfolioToRequisitesLink')
   createPortfolioToRequisitesLink(@Body() body: CreateLinkInput) {
     return this.portfolioService.createPortfolioToRequisitesLink({
+      ...body,
+    });
+  }
+
+  @Post('deletePortfolioToRequisitesLink')
+  deletePortfolioToRequisitesLink(@Body() body: DeleteLinkInput) {
+    return this.portfolioService.deletePortfolioToRequisitesLink({
       ...body,
     });
   }
