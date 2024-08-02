@@ -7,6 +7,7 @@ import {
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Op } from 'sequelize';
 import getSize from 'src/utils/getSize';
+import { PortfoliosToRequisites } from 'src/Modules/Database/send.server.database/server.models/PortfolioToRequisites';
 
 @Injectable()
 export default class BankRequisitesService {
@@ -17,6 +18,8 @@ export default class BankRequisitesService {
     private readonly modelBankRequisites: typeof BankRequisits,
     @InjectModel(Bank, 'contact')
     private readonly modelBank: typeof Bank,
+    @InjectModel(PortfoliosToRequisites, 'send')
+    private readonly modelPortfoliosToRequisites: typeof PortfoliosToRequisites,
   ) {}
   private bankAttributes = ['id', 'name', 'full_name', 'bank_address'];
   private portfolioAttributes = ['id', 'parent_id', 'name', 'sign_date'];
@@ -83,6 +86,12 @@ export default class BankRequisitesService {
   }
 
   async getAllPortfolios(body: SearchPortfolioInput) {
+    const all_linked_portfolios =
+      await this.modelPortfoliosToRequisites.findAll();
+
+    const ids = all_linked_portfolios.map(
+      (item) => item.dataValues.r_portfolio_id,
+    );
     const size = getSize(body.paginationModel.pageSize);
     const offset = body.paginationModel.page * size;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -94,6 +103,9 @@ export default class BankRequisitesService {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       where: {
+        id: {
+          [Op.notIn]: ids,
+        },
         name: {
           [Op.like]: `%${body.name}%`,
         },

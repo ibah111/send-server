@@ -8,19 +8,19 @@ import {
 } from '@nestjs/common';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import PortfoliosToRequisitesService from './PortfoliosToRequisites.service';
-import { IsNumber } from 'class-validator';
+import { ArrayNotEmpty, IsNumber } from 'class-validator';
 
 class CreateLinkInput {
   @ApiProperty({
     required: true,
   })
   @IsNumber()
-  requisites_id: number;
+  r_requisites_id: number;
   @ApiProperty({
     required: true,
   })
-  @IsNumber()
-  portfolio_id: number;
+  @ArrayNotEmpty()
+  r_portfolio_ids: number[];
 }
 
 @ApiTags('PortfoliosToRequisites')

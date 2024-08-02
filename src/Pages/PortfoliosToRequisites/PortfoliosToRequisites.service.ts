@@ -5,10 +5,14 @@ import { Op } from 'sequelize';
 import { PortfoliosToRequisites } from 'src/Modules/Database/send.server.database/server.models/PortfolioToRequisites';
 
 class CreateLinkInput {
-  portfolio_id: number;
-  requisites_id: number;
+  r_portfolio_ids: number[];
+  r_requisites_id: number;
 }
 
+class DeleteLinkInput {
+  r_portfolio_id: number;
+  r_requisites_id: number;
+}
 @Injectable()
 export default class PortfoliosToRequisitesService {
   constructor(
@@ -69,17 +73,34 @@ export default class PortfoliosToRequisitesService {
   }
 
   async createPortfolioToRequisitesLink({
-    portfolio_id,
-    requisites_id,
+    r_portfolio_ids,
+    r_requisites_id,
   }: CreateLinkInput) {
-    try {
-      const link = this.modelPortfoliosToRequisites.build();
-      link.r_requisites_id = requisites_id;
-      link.r_portfolio_id = portfolio_id;
-      await link.save();
-    } catch (error) {
-      console.log('Error: ', error);
-      throw Error('Error Portfolio to requisites create link');
+    console.log(r_requisites_id, r_portfolio_ids);
+    for (const iterator_id of r_portfolio_ids) {
+      try {
+        return await this.modelPortfoliosToRequisites.create({
+          r_requisites_id: r_requisites_id,
+          r_portfolio_id: iterator_id,
+        });
+      } catch (error) {
+        console.log('Error: ', error);
+        throw Error('Error Portfolio to requisites create link');
+      }
     }
+  }
+
+  async deletePortfolioToRequisitesLink({
+    r_portfolio_id,
+    r_requisites_id,
+  }: DeleteLinkInput) {
+    const link = await this.modelPortfoliosToRequisites.findOne({
+      where: {
+        r_portfolio_id,
+        r_requisites_id,
+      },
+      rejectOnEmpty: Error('Связь не найдена'),
+    });
+    link.destroy();
   }
 }
