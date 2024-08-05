@@ -23,6 +23,8 @@ export default class PortfoliosToRequisitesService {
     private readonly modelPortfolio: typeof Portfolio,
     @InjectModel(PortfoliosToRequisites, 'send')
     private readonly modelPortfoliosToRequisites: typeof PortfoliosToRequisites,
+    @InjectModel(LawExec, 'contact')
+    private readonly modelLawExec: typeof LawExec,
   ) {}
 
   async getAllLinksByRequisites(requisites_id: number) {
