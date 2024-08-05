@@ -270,19 +270,14 @@ export class UpdateExecService {
        * linked requisites to portfolio logic
        */
       let requisites_id: number = 0;
-
-      const portf_id = le.Portfolio?.id;
-
-      if (portf_id) {
-        const customRequisites =
-          await this.portfolioToRequisites.getRequisitesByPortfolio(portf_id);
-        if (customRequisites) {
-          const customRequisitesId = customRequisites.id;
-          requisites_id = customRequisitesId;
-        } else {
-          requisites_id = body.custom_requisites_id || 0;
-        }
+      if (body.custom_requisites_id! != 0) {
+        requisites_id = body.custom_requisites_id!;
+      } else if (body.custom_requisites_id === 0) {
+        const linked_requisites_id =
+          await this.portfolioToRequisites.getRequisitesByLawExecId(le.id);
+        requisites_id = linked_requisites_id;
       }
+
       const data = await lastValueFrom(
         this.downloader.downloadFile(
           auth.userContact,
@@ -290,9 +285,10 @@ export class UpdateExecService {
           doc_name,
           body.template_typ,
           {
+            testVariable: `ID реквизитов:${requisites_id}`,
             addInterests: body.add_interests,
-            appeal_typ: body.appeal_typ,
             customRequisitesId: requisites_id,
+            appeal_typ: body.appeal_typ,
           },
           auth.user.token,
         ),
