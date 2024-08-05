@@ -47,12 +47,6 @@ export default class PortfoliosToRequisitesController {
     return this.portfolioService.getAllLinksByRequisites(port_id);
   }
 
-  @Get('getRequisitesByPortfolio/:id')
-  getRequisitesByPortfolio(@Param('id', ParseIntPipe) portfolio_id: number) {
-    const port_id = Number(portfolio_id);
-    return this.portfolioService.getRequisitesByPortfolio(port_id);
-  }
-
   @Post('createPortfolioToRequisitesLink')
   createPortfolioToRequisitesLink(@Body() body: CreateLinkInput) {
     return this.portfolioService.createPortfolioToRequisitesLink({

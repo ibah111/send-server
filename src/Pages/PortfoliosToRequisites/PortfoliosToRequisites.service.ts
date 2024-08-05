@@ -1,4 +1,4 @@
-import { Bank, BankRequisits, Debt, Portfolio } from '@contact/models';
+import { Bank, BankRequisits, Debt, LawExec, Portfolio } from '@contact/models';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Op } from 'sequelize';
@@ -62,17 +62,41 @@ export default class PortfoliosToRequisitesService {
     }
   }
 
-  async getRequisitesByPortfolio(portfolio_id: number) {
+  private async getRequisitesByPortfolio(portfolio_id: number) {
     try {
       const link = await this.modelPortfoliosToRequisites.findOne({
         where: {
           r_portfolio_id: portfolio_id,
         },
+        rejectOnEmpty: true,
       });
       return link;
     } catch (error) {
       throw Error('Error with getting requisited by portfolio_id');
     }
+  }
+
+  async getRequisitesByLawExecId(law_exec_id: number) {
+    const law_exec = await this.modelLawExec.findOne({
+      where: {
+        id: law_exec_id,
+      },
+      include: [
+        {
+          required: true,
+          model: this.modelDebt,
+          include: [
+            {
+              model: this.modelPortfolio,
+            },
+          ],
+        },
+      ],
+      rejectOnEmpty: true,
+    });
+    const portfolio_id = law_exec.Debt!.Portfolio!.id;
+    const requisites_id = await this.getRequisitesByPortfolio(portfolio_id);
+    return requisites_id.dataValues.r_requisites_id;
   }
 
   async createPortfolioToRequisitesLink({
