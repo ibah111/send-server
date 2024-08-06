@@ -68,7 +68,6 @@ export default class PortfoliosToRequisitesService {
         where: {
           r_portfolio_id: portfolio_id,
         },
-        rejectOnEmpty: true,
       });
       return link;
     } catch (error) {
@@ -94,9 +93,20 @@ export default class PortfoliosToRequisitesService {
       ],
       rejectOnEmpty: true,
     });
-    const portfolio_id = law_exec.Debt!.Portfolio!.id;
-    const requisites_id = await this.getRequisitesByPortfolio(portfolio_id);
-    return requisites_id.dataValues.r_requisites_id;
+    try {
+      const link = await this.getRequisitesByPortfolio(
+        law_exec.r_portfolio_id!,
+      );
+      if (link === null) {
+        //default "no link" requisites_id
+        return 8;
+      } else {
+        return link.dataValues.r_requisites_id;
+      }
+    } catch (error) {
+      console.log(error);
+      throw Error('Get requisites by portfolio error');
+    }
   }
 
   async createPortfolioToRequisitesLink({
