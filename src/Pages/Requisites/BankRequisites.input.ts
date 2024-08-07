@@ -1,5 +1,7 @@
+import { GridPaginationModel } from '@mui/x-data-grid-premium';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, Length } from 'class-validator';
+import { Expose, Type } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
 
 export class BankRequisitesClass {
   /**
@@ -79,4 +81,32 @@ export class BankRequisitesClass {
    */
   @ApiProperty()
   kod: string;
+}
+
+export class PaginationValidator implements GridPaginationModel {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  @Expose()
+  pageSize: number;
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  @Expose()
+  page: number;
+}
+export class SearchPortfolioInput {
+  @IsString()
+  @ApiProperty({
+    default: '',
+  })
+  name: string;
+  @ApiProperty({
+    default: {
+      page: 0,
+      pageSize: 25,
+    },
+  })
+  @Type(() => PaginationValidator)
+  paginationModel: PaginationValidator;
 }

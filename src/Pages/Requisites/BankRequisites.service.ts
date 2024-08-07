@@ -1,14 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { BankRequisits } from '@contact/models';
-import { BankRequisitesClass } from './BankRequisites.input';
+import { Bank, BankRequisits, Portfolio } from '@contact/models';
+import {
+  BankRequisitesClass,
+  SearchPortfolioInput,
+} from './BankRequisites.input';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
+import { Op } from 'sequelize';
+import getSize from 'src/utils/getSize';
+import { PortfoliosToRequisites } from 'src/Modules/Database/send.server.database/server.models/PortfolioToRequisites';
+
 @Injectable()
 export default class BankRequisitesService {
   constructor(
+    @InjectModel(Portfolio, 'contact')
+    private readonly modelPortfolio: typeof Portfolio,
     @InjectModel(BankRequisits, 'contact')
     private readonly modelBankRequisites: typeof BankRequisits,
+    @InjectModel(Bank, 'contact')
+    private readonly modelBank: typeof Bank,
+    @InjectModel(PortfoliosToRequisites, 'send')
+    private readonly modelPortfoliosToRequisites: typeof PortfoliosToRequisites,
   ) {}
-  attributes = [
+  private bankAttributes = ['id', 'name', 'full_name', 'bank_address'];
+  private portfolioAttributes = ['id', 'parent_id', 'name', 'sign_date'];
+  private attributes = [
     'id',
     'name',
     'recipient',
@@ -32,7 +47,7 @@ export default class BankRequisitesService {
     return requisites;
   }
 
-  async getOneRequisites(id: number) {
+  async getOneBankRequisites(id: number) {
     const requisite = await this.modelBankRequisites.findByPk(id, {
       attributes: this.attributes,
     });
@@ -68,5 +83,43 @@ export default class BankRequisitesService {
     await currentRequisites.update({
       ...body,
     });
+  }
+
+  async getAllPortfolios(body: SearchPortfolioInput) {
+    const all_linked_portfolios =
+      await this.modelPortfoliosToRequisites.findAll();
+
+    const ids = all_linked_portfolios.map(
+      (item) => item.dataValues.r_portfolio_id,
+    );
+    const size = getSize(body.paginationModel.pageSize);
+    const offset = body.paginationModel.page * size;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    const { count, rows } = await this.modelPortfolio.findAndCountAll({
+      attributes: this.portfolioAttributes,
+      offset,
+      limit: size,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      where: {
+        id: {
+          [Op.notIn]: ids,
+        },
+        name: {
+          [Op.like]: `%${body.name}%`,
+        },
+      },
+      include: [
+        {
+          attributes: this.bankAttributes,
+          model: this.modelBank,
+        },
+      ],
+    });
+    return {
+      count,
+      rows,
+    };
   }
 }

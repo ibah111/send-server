@@ -32,7 +32,7 @@ export class LocalSeed {
       for (let i = 1; i < roles.length; i++)
         await this.modelRole.create(roles[i]);
       const user = await this.modelUser.create({
-        login: 'smorkalov@zakon43.ru',
+        login: 'balezin@zakon43.ru',
       });
       await this.modelUser_Role.create({
         user_id: user.id,

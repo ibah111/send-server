@@ -18,6 +18,7 @@ import { GetDebtGuarantorModule } from './GetDebtGuarantor/GetDebtGuarantor.modu
 import { CreateOrUpdateDebtGuarantorModule } from './CreateOrUpdateDebtGuarantor/CreateOrUpdateDebtGuarantor.module';
 import { RestartModule } from './Restart';
 import { RequisitesModule } from './Requisites/BankRequisites.module';
+import PortfoliosToRequisitesModule from './PortfoliosToRequisites/PortfoliosToRequisites.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { RequisitesModule } from './Requisites/BankRequisites.module';
     CreateOrUpdateDebtGuarantorModule,
     RestartModule,
     RequisitesModule,
+    PortfoliosToRequisitesModule,
   ],
 })
 export class PagesModule {}

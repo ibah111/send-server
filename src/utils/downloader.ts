@@ -128,28 +128,32 @@ export class Downloader {
       addInterests?: boolean;
       appeal_typ?: number;
       customRequisitesId?: number;
+      testVariable?: string;
     },
     token: string,
   ) {
     const download_url = `${server('fastreport')}/print/${template_id}`;
-    console.log(download_url, token, params);
-    const axios_request = axios.get<Buffer>(download_url, {
-      responseType: 'arraybuffer',
-      headers: { token },
-      params: { ...params, id: le.id },
-    });
-
-    return from(axios_request).pipe(
-      map((res) => res.data),
-      mergeMap((file) =>
-        this.uploadFile(doc_name, file, OpUser, le.id).pipe(
-          map((sql) => ({
-            file,
-            sql,
-          })),
+    try {
+      const axios_request = axios.get<Buffer>(download_url, {
+        responseType: 'arraybuffer',
+        headers: { token },
+        params: { ...params, id: le.id },
+      });
+      return from(axios_request).pipe(
+        map((res) => res.data),
+        mergeMap((file) =>
+          this.uploadFile(doc_name, file, OpUser, le.id).pipe(
+            map((sql) => ({
+              file,
+              sql,
+            })),
+          ),
         ),
-      ),
-    );
+      );
+    } catch (error) {
+      console.log(error);
+      throw Error();
+    }
   }
 }
 @Module({
