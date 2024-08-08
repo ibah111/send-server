@@ -10,6 +10,9 @@ export class CourtService {
     @InjectModel(LawCourt, 'contact') private ModelLawCourt: typeof LawCourt,
   ) {}
   async court(body: CourtInput) {
+    if (body.data?.name) {
+      body.name = body.data.name;
+    }
     const where: FindOptions['where'] = {};
     if (body.id) where.id = body.id;
     if (body.name) {

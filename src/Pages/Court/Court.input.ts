@@ -14,4 +14,9 @@ export class CourtInput {
   @IsOptional()
   @IsString()
   name?: string;
+
+  data?: {
+    id?: number;
+    name?: string;
+  };
 }
