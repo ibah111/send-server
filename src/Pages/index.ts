@@ -19,6 +19,7 @@ import { CreateOrUpdateDebtGuarantorModule } from './CreateOrUpdateDebtGuarantor
 import { RestartModule } from './Restart';
 import { RequisitesModule } from './Requisites/BankRequisites.module';
 import PortfoliosToRequisitesModule from './PortfoliosToRequisites/PortfoliosToRequisites.module';
+import { LawCourtModule } from './Exec/LawCourt/LawCourt.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import PortfoliosToRequisitesModule from './PortfoliosToRequisites/PortfoliosToR
     RestartModule,
     RequisitesModule,
     PortfoliosToRequisitesModule,
+    LawCourtModule,
   ],
 })
 export class PagesModule {}
