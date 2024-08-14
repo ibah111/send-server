@@ -2,7 +2,7 @@ import { LawCourt } from '@contact/models';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { FindOptions, Op } from '@sql-tools/sequelize';
 import { Injectable } from '@nestjs/common';
-import { CourtInput } from './Court.input';
+import { CourtInput, LawCourtInput } from './Court.input';
 
 @Injectable()
 export class CourtService {
@@ -28,5 +28,17 @@ export class CourtService {
       attributes: ['id', 'name', 'address', 'district'],
       limit: 25,
     });
+  }
+
+  async AddLawCourt(body: LawCourtInput) {
+    try {
+      const createInstance = await this.ModelLawCourt.create({
+        ...body,
+      });
+      return createInstance;
+    } catch (error) {
+      console.log(error);
+      throw Error('Ошибка в добавлени ФССП');
+    }
   }
 }
