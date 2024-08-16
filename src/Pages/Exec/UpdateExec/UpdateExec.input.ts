@@ -43,18 +43,22 @@ export class UpdateExecInput {
   @IsNumber()
   @IsNotEmpty()
   DELIVERY_TYP: number;
+
+  @IsOptional()
   @IsDate()
-  @IsNotEmpty()
   @Type(() => Date)
-  entry_force_dt: Date;
+  entry_force_dt?: Date | null;
+
   @IsOptional()
   @IsDate()
   @Type(() => Date)
   receipt_recover_dt?: Date;
+
+  @IsOptional()
   @IsDate()
-  @IsNotEmpty()
   @Type(() => Date)
-  fssp_date: Date;
+  fssp_date?: Date | null;
+
   @IsNumber()
   @IsNotEmpty()
   r_court_id: number;

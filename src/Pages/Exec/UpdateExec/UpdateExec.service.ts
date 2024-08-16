@@ -1,4 +1,4 @@
-import { DocAttach, LawExec } from '@contact/models';
+import { DocAttach, LawCourt, LawExec } from '@contact/models';
 import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Attributes, MIS } from '@sql-tools/sequelize';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -11,6 +11,7 @@ import { Sequelize } from '@sql-tools/sequelize-typescript';
 import getContextTransaction from 'src/utils/getContextTransaction';
 import { lastValueFrom } from 'rxjs';
 import PortfoliosToRequisitesService from 'src/Pages/PortfoliosToRequisites/PortfoliosToRequisites.service';
+import { Http2ServerResponse } from 'http2';
 function transform<T extends keyof Attributes<LawExec> & keyof UpdateExecInput>(
   name: T,
   value?: LawExec[T],
@@ -92,6 +93,8 @@ export class UpdateExecService {
     private readonly ModelLawExec: typeof LawExec,
     @InjectModel(DocAttach, 'contact')
     private readonly ModelDocAttach: typeof DocAttach,
+    @InjectModel(LawCourt, 'contact')
+    private readonly modelLawCourt: typeof LawCourt,
     private readonly downloader: Downloader,
     private readonly helper: Helper,
     private readonly portfolioToRequisites: PortfoliosToRequisitesService,
@@ -278,40 +281,53 @@ export class UpdateExecService {
         requisites_id = linked_requisites_id;
       }
 
-      const data = await lastValueFrom(
-        this.downloader.downloadFile(
-          auth.userContact,
-          le,
-          doc_name,
-          body.template_typ,
-          {
-            testVariable: `ID реквизитов:${requisites_id}`,
-            addInterests: body.add_interests,
-            customRequisitesId: requisites_id,
-            appeal_typ: body.appeal_typ,
-          },
-          auth.user.token,
-        ),
-      );
-      if (data.file) {
-        if (body.options?.save_file) {
-          const doc = await this.ModelDocAttach.create(data.sql);
-          await le.createLawExecProtokol({
-            r_user_id: auth.userContact.id,
-            typ: 8,
-            r_doc_attach_id: doc.id,
-            dsc: `Вложение: ${doc.name}`,
-          });
-          const debt = await le.getDebt();
-          const transaction = await getContextTransaction(
-            this.sequelize,
-            auth.userContact.id,
-          );
-          debt!.law_exec_flag = 1;
-          await debt!.save({ transaction });
-          await transaction.commit();
+      const law_court = await this.modelLawCourt.findOne({
+        where: {
+          id: body.r_court_id,
+        },
+        rejectOnEmpty: true,
+      });
+      if (law_court!.name !== 'Сбербанк') {
+        const data = await lastValueFrom(
+          this.downloader.downloadFile(
+            auth.userContact,
+            le,
+            doc_name,
+            body.template_typ,
+            {
+              testVariable: `ID реквизитов:${requisites_id}`,
+              addInterests: body.add_interests,
+              customRequisitesId: requisites_id,
+              appeal_typ: body.appeal_typ,
+            },
+            auth.user.token,
+          ),
+        );
+        if (data.file) {
+          if (body.options?.save_file) {
+            const doc = await this.ModelDocAttach.create(data.sql);
+            await le.createLawExecProtokol({
+              r_user_id: auth.userContact.id,
+              typ: 8,
+              r_doc_attach_id: doc.id,
+              dsc: `Вложение: ${doc.name}`,
+            });
+            const debt = await le.getDebt();
+            const transaction = await getContextTransaction(
+              this.sequelize,
+              auth.userContact.id,
+            );
+            debt!.law_exec_flag = 1;
+            await debt!.save({ transaction });
+            await transaction.commit();
+          }
+          return { file: data.file, name: data.sql.name };
         }
-        return { file: data.file, name: data.sql.name };
+      } else if (law_court.name === 'Сбербанк') {
+        /**
+         * Логика отправления в сбербанк
+         */
+        return true;
       }
       return null;
     } else {
