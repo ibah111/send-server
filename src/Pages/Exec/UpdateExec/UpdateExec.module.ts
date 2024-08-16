@@ -1,4 +1,4 @@
-import { DocAttach, LawExec } from '@contact/models';
+import { DocAttach, LawCourt, LawExec } from '@contact/models';
 import { SequelizeModule } from '@sql-tools/nestjs-sequelize';
 import { Module } from '@nestjs/common';
 import { DownloaderModule } from 'src/utils/downloader';
@@ -12,7 +12,7 @@ import PortfoliosToRequisitesModule from 'src/Pages/PortfoliosToRequisites/Portf
     PortfoliosToRequisitesModule,
     DownloaderModule,
     HelperModule,
-    SequelizeModule.forFeature([LawExec, DocAttach], 'contact'),
+    SequelizeModule.forFeature([LawExec, DocAttach, LawCourt], 'contact'),
   ],
   controllers: [UpdateExecController],
   providers: [UpdateExecService],
