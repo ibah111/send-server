@@ -47,7 +47,15 @@ export class Helper {
           if (data) return data.name;
         }
       default:
-        if (value) return value;
+        if (value) {
+          if (typeof value === 'string') {
+            if (value.length > 2000) {
+              console.log('Урезаю длину комментария', value.length);
+              const comment = value.slice(100);
+              return comment;
+            } else return value;
+          }
+        }
         return '';
     }
   }
