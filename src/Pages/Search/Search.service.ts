@@ -78,13 +78,27 @@ export class SearchService {
               attributes: ['name'],
             },
           ],
-          attributes: ['id', 'typ'],
+          attributes: ['id', 'typ', 'court_sum', 'exec_number'],
         },
         { model: this.ModelPortfolio, attributes: ['name'] },
         { model: this.ModelDict, as: 'ExecutiveTyp', attributes: ['name'] },
         {
           model: this.ModelDebt,
-          attributes: ['id', 'contract', 'debt_sum', 'status', 'name'],
+          attributes: {
+            include: [
+              'id',
+              'contract',
+              'debt_sum',
+              'status',
+              'name',
+              [
+                Sequelize.literal(
+                  '(select sum(debt_calc.sum) as debt_payments_sum from debt_calc where debt_calc.parent_id = [Debt].[id] and is_cancel = 0)',
+                ),
+                'debt_payments_sum',
+              ],
+            ],
+          },
           where: {
             status: { [Op.notIn]: [] },
             ...(body.contract ? { contract: body.contract } : {}),

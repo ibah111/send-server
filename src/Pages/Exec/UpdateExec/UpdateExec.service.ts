@@ -11,7 +11,7 @@ import { Sequelize } from '@sql-tools/sequelize-typescript';
 import getContextTransaction from 'src/utils/getContextTransaction';
 import { lastValueFrom } from 'rxjs';
 import PortfoliosToRequisitesService from 'src/Pages/PortfoliosToRequisites/PortfoliosToRequisites.service';
-import { Http2ServerResponse } from 'http2';
+
 function transform<T extends keyof Attributes<LawExec> & keyof UpdateExecInput>(
   name: T,
   value?: LawExec[T],
