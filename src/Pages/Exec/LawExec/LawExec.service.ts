@@ -33,7 +33,6 @@ export class LawExecService {
   ) {}
   async law_exec(body: LawExecInput) {
     return await this.ModelLawExec.findOne({
-      logging: console.log,
       where: { id: body.id },
       include: [
         {
