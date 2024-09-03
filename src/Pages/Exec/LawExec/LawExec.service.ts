@@ -12,7 +12,6 @@ import {
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
 import { LawExecInput } from './LawExec.input';
-import { Sequelize } from 'sequelize';
 @Injectable()
 export class LawExecService {
   constructor(
@@ -32,8 +31,9 @@ export class LawExecService {
     private readonly modelLawAct: typeof LawAct,
   ) {}
   async law_exec(body: LawExecInput) {
+    const { id } = body;
     return await this.ModelLawExec.findOne({
-      where: { id: body.id },
+      where: { id },
       include: [
         {
           attributes: ['exec_number', 'court_sum'],
