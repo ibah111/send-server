@@ -145,7 +145,7 @@ export class UpdateExecService {
       console.log(law_act);
       await law_act
         .update({
-          court_sum: body.court_sum,
+          court_sum: body.court_sum || 0,
         })
         .then(() => console.log('Сумма по решению суда обновлена'.yellow));
       await this.changeDebtGuarantor(

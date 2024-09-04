@@ -86,5 +86,5 @@ export class UpdateExecInput {
 
   @IsOptional()
   @IsNumber()
-  court_sum: number;
+  court_sum?: number;
 }
