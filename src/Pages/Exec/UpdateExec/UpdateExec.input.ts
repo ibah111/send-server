@@ -83,4 +83,8 @@ export class UpdateExecInput {
   @IsOptional()
   @IsNumber()
   custom_requisites_id?: number;
+
+  @IsOptional()
+  @IsNumber()
+  court_sum: number;
 }
