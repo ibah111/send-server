@@ -52,6 +52,7 @@ export class LawExecService {
             },
             { model: this.ModelDebtGuarantor },
             {
+              required: false,
               model: this.modelDebtCalc,
               attributes: ['id', 'sum', 'is_confirmed', 'is_cancel'],
               where: {
