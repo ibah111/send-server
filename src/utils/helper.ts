@@ -50,9 +50,24 @@ export class Helper {
         if (value) {
           if (typeof value === 'string') {
             if (value.length > 2000) {
-              console.log('Урезаю длину комментария', value.length);
-              const comment = value.slice(100);
-              return comment;
+              const arr = value.split('\n');
+              let sum_length = 0;
+              const split_arr = arr.reduce((prev, curr) => prev + `${curr}`);
+              const over_length = split_arr.length;
+              const total_minus_length = over_length + 100 - 2000;
+              console.log('total_minus_length', total_minus_length);
+              for (let i = 0; sum_length <= total_minus_length; i++) {
+                const item = arr[i];
+                sum_length += item.length;
+                console.log(
+                  sum_length <= total_minus_length
+                    ? `Ещё не превышено ${sum_length} > ${total_minus_length}`
+                    : `Превышено ${sum_length} > ${total_minus_length}`,
+                );
+              }
+              const a = split_arr.slice(sum_length);
+              console.log(a, a.length);
+              return a;
             } else return value;
           }
         }

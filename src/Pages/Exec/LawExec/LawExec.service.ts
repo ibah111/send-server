@@ -1,6 +1,8 @@
 import {
   Debt,
+  DebtCalc,
   DebtGuarantor,
+  LawAct,
   LawExec,
   LawExecPersonLink,
   Person,
@@ -23,21 +25,39 @@ export class LawExecService {
     private readonly ModelDebtGuarantor: typeof DebtGuarantor,
     @InjectModel(PersonProperty, 'contact')
     private readonly ModelPersonProperty: typeof PersonProperty,
+    @InjectModel(DebtCalc, 'contact')
+    private readonly modelDebtCalc: typeof DebtCalc,
+    @InjectModel(LawAct, 'contact')
+    private readonly modelLawAct: typeof LawAct,
   ) {}
   async law_exec(body: LawExecInput) {
+    const { id } = body;
     return await this.ModelLawExec.findOne({
-      where: { id: body.id },
+      where: { id },
       include: [
+        {
+          attributes: ['exec_number', 'court_sum'],
+          model: this.modelLawAct,
+        },
         { model: this.ModelPerson, attributes: ['f', 'i', 'o'] },
         {
           model: this.ModelDebt,
-          attributes: ['contract'],
+          attributes: {
+            include: ['id', 'contract'],
+          },
           include: [
             {
               model: this.ModelPersonProperty,
               include: ['PersonPropertyParams', 'StatusDict'],
             },
             { model: this.ModelDebtGuarantor },
+            {
+              model: this.modelDebtCalc,
+              attributes: ['id', 'sum', 'is_confirmed', 'is_cancel'],
+              where: {
+                is_cancel: 0,
+              },
+            },
           ],
         },
         { model: this.ModelPortfolio, attributes: ['name'] },

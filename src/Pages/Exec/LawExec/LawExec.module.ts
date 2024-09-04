@@ -1,6 +1,8 @@
 import {
   Debt,
+  DebtCalc,
   DebtGuarantor,
+  LawAct,
   LawExec,
   LawExecPersonLink,
   Person,
@@ -25,6 +27,8 @@ import { LawExecService } from './LawExec.service';
         DebtGuarantor,
         PersonProperty,
         PersonPropertyParam,
+        DebtCalc,
+        LawAct,
       ],
       'contact',
     ),

@@ -1,4 +1,4 @@
-import { DocAttach, LawCourt, LawExec } from '@contact/models';
+import { DocAttach, LawAct, LawCourt, LawExec } from '@contact/models';
 import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Attributes, MIS } from '@sql-tools/sequelize';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -95,6 +95,8 @@ export class UpdateExecService {
     private readonly ModelDocAttach: typeof DocAttach,
     @InjectModel(LawCourt, 'contact')
     private readonly modelLawCourt: typeof LawCourt,
+    @InjectModel(LawAct, 'contact')
+    private readonly modelLawAct: typeof LawAct,
     private readonly downloader: Downloader,
     private readonly helper: Helper,
     private readonly portfolioToRequisites: PortfoliosToRequisitesService,
@@ -134,6 +136,18 @@ export class UpdateExecService {
       const le = await this.ModelLawExec.findByPk(body.id, {
         rejectOnEmpty: new NotFoundException('Такой дело не найдено'),
       });
+      const law_act = await this.modelLawAct.findOne({
+        where: {
+          id: le.r_act_id!,
+        },
+        rejectOnEmpty: new NotFoundException('Такой law_act не найден'),
+      });
+      console.log(law_act);
+      await law_act
+        .update({
+          court_sum: body.court_sum,
+        })
+        .then(() => console.log('Сумма по решению суда обновлена'.yellow));
       await this.changeDebtGuarantor(
         le,
         body.debt_guarantor,
