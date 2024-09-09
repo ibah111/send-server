@@ -207,7 +207,7 @@ export class UpdateExecService {
           for (const change of changes) {
             switch (change) {
               case 'r_court_id':
-                const value = `${t(change)}. Новое значение: "${await this.helper.help(
+                const r_court_id_value = `${t(change)}. Новое значение: "${await this.helper.help(
                   change,
                   le[change],
                 )}". Старое значение: "${await this.helper.help(
@@ -217,7 +217,7 @@ export class UpdateExecService {
                 await le.createLawExecProtokol({
                   r_user_id: auth.userContact.id,
                   typ: 2,
-                  dsc: truncator(value),
+                  dsc: truncator(r_court_id_value),
                 });
                 break;
               case 'dsc':
