@@ -87,4 +87,12 @@ export class UpdateExecInput {
   @IsOptional()
   @IsNumber()
   court_sum?: number;
+
+  @IsOptional()
+  @IsNumber()
+  debt_payments_sum?: number;
+
+  @IsOptional()
+  @IsString()
+  dsc: string;
 }
