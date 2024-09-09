@@ -1,6 +1,5 @@
 export default function truncator(value: string) {
   const length = value.length;
-  console.log(`length: ${length}, value:`, value);
   if (length >= 2000) {
     let sum_length: number = 0;
     const arr = value.split('\n');
@@ -12,7 +11,6 @@ export default function truncator(value: string) {
       sum_length += item.length;
     }
     const a = split_arr.slice(sum_length);
-    console.log('Returning truncated value, length = ', a.length);
     return a;
   } else return value;
 }

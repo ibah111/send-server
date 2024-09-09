@@ -11,6 +11,7 @@ import { Sequelize } from '@sql-tools/sequelize-typescript';
 import getContextTransaction from 'src/utils/getContextTransaction';
 import { lastValueFrom } from 'rxjs';
 import PortfoliosToRequisitesService from 'src/Pages/PortfoliosToRequisites/PortfoliosToRequisites.service';
+import truncator from 'src/utils/truncator';
 
 function transform<T extends keyof Attributes<LawExec> & keyof UpdateExecInput>(
   name: T,
@@ -142,12 +143,9 @@ export class UpdateExecService {
         },
         rejectOnEmpty: new NotFoundException('Такой law_act не найден'),
       });
-      console.log(law_act);
-      await law_act
-        .update({
-          court_sum: body.court_sum || 0,
-        })
-        .then(() => console.log('Сумма по решению суда обновлена'.yellow));
+      await law_act.update({
+        court_sum: body.court_sum,
+      });
       await this.changeDebtGuarantor(
         le,
         body.debt_guarantor,
@@ -209,27 +207,34 @@ export class UpdateExecService {
           for (const change of changes) {
             switch (change) {
               case 'r_court_id':
+                const value = `${t(change)}. Новое значение: "${await this.helper.help(
+                  change,
+                  le[change],
+                )}". Старое значение: "${await this.helper.help(
+                  change,
+                  le.previous(change),
+                )}".`;
                 await le.createLawExecProtokol({
                   r_user_id: auth.userContact.id,
                   typ: 2,
-                  dsc: `${t(change)}. Новое значение: "${await this.helper.help(
-                    change,
-                    le[change],
-                  )}". Старое значение: "${await this.helper.help(
-                    change,
-                    le.previous(change),
-                  )}".`,
+                  dsc: truncator(value),
                 });
                 break;
               case 'dsc':
-                await le.createLawExecProtokol({
-                  r_user_id: auth.userContact.id,
-                  typ: 2,
-                  dsc: `${t(change)}. Новое значение: "${await this.helper.help(
-                    change,
-                    le[change],
-                  )}".`,
-                });
+                const dsc = `${t(change)}. Новое значение: "${await this.helper.help(
+                  change,
+                  le[change],
+                )}".`;
+                try {
+                  await le.createLawExecProtokol({
+                    r_user_id: auth.userContact.id,
+                    typ: 2,
+                    dsc: truncator(dsc),
+                  });
+                } catch (error) {
+                  //@ts-expect-error ///
+                  throw Error(error);
+                }
                 break;
               case 'state':
                 switch (le.previous(change)) {
@@ -237,37 +242,41 @@ export class UpdateExecService {
                     await le.createLawExecProtokol({
                       r_user_id: auth.userContact.id,
                       typ: 30,
-                      dsc: `Перевод исполнительного документа на исполнительное производство`,
+                      dsc: truncator(
+                        `Перевод исполнительного документа на исполнительное производство`,
+                      ),
                     });
                     break;
                   default:
+                    const value = `${t(
+                      change,
+                    )}. Новое значение: "${await this.helper.help(
+                      change,
+                      le[change],
+                    )}". Старое значение: "${await this.helper.help(
+                      change,
+                      le.previous(change),
+                    )}".`;
                     await le.createLawExecProtokol({
                       r_user_id: auth.userContact.id,
                       typ: 2,
-                      dsc: `${t(
-                        change,
-                      )}. Новое значение: "${await this.helper.help(
-                        change,
-                        le[change],
-                      )}". Старое значение: "${await this.helper.help(
-                        change,
-                        le.previous(change),
-                      )}".`,
+                      dsc: truncator(value),
                     });
                     break;
                 }
                 break;
               default:
+                const value = `${t(change)}. Новое значение: "${await this.helper.help(
+                  change,
+                  le[change],
+                )}". Старое значение: "${await this.helper.help(
+                  change,
+                  le.previous(change),
+                )}".`;
                 await le.createLawExecProtokol({
                   r_user_id: auth.userContact.id,
                   typ: 2,
-                  dsc: `${t(change)}. Новое значение: "${await this.helper.help(
-                    change,
-                    le[change],
-                  )}". Старое значение: "${await this.helper.help(
-                    change,
-                    le.previous(change),
-                  )}".`,
+                  dsc: truncator(value),
                 });
                 break;
             }
