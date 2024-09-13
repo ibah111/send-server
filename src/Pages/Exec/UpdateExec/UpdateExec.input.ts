@@ -65,9 +65,22 @@ export class UpdateExecInput {
   @IsNotEmpty()
   @IsNumber()
   template_typ: number;
+  /*
+   * template variables
+   */
   @IsOptional()
   @IsBoolean()
   add_interests?: boolean;
+  @IsOptional()
+  @IsBoolean()
+  rename_notification?: boolean;
+  @IsOptional()
+  @IsBoolean()
+  list_egrul?: boolean;
+  @IsOptional()
+  @IsNumber()
+  custom_requisites_id?: number;
+  // end of template variables
   @IsNotEmpty()
   @IsNumber()
   debt_guarantor: number;
@@ -80,9 +93,6 @@ export class UpdateExecInput {
   @IsOptional()
   @Type(() => SaveOptions)
   options?: SaveOptions;
-  @IsOptional()
-  @IsNumber()
-  custom_requisites_id?: number;
 
   @IsOptional()
   @IsNumber()

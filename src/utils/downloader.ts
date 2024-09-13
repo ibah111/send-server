@@ -126,6 +126,8 @@ export class Downloader {
     template_id: number,
     params: {
       addInterests?: boolean;
+      listEgrul?: boolean;
+      renameNotification?: boolean;
       appeal_typ?: number;
       customRequisitesId?: number;
       testVariable?: string;

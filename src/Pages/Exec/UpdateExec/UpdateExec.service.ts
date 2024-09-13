@@ -320,6 +320,8 @@ export class UpdateExecService {
             {
               testVariable: `ID реквизитов:${requisites_id}`,
               addInterests: body.add_interests,
+              listEgrul: body.list_egrul || false,
+              renameNotification: body.rename_notification || false,
               customRequisitesId: requisites_id,
               appeal_typ: body.appeal_typ,
             },
