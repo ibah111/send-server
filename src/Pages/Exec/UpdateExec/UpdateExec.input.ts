@@ -57,11 +57,21 @@ export class UpdateExecInput {
   @IsOptional()
   @IsDate()
   @Type(() => Date)
+  start_date?: Date | null;
+
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
   fssp_date?: Date | null;
+
+  @IsString()
+  @IsNotEmpty()
+  r_court_name?: string;
 
   @IsNumber()
   @IsNotEmpty()
   r_court_id: number;
+
   @IsNotEmpty()
   @IsNumber()
   template_typ: number;
