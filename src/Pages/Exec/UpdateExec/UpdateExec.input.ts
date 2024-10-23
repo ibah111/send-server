@@ -65,7 +65,7 @@ export class UpdateExecInput {
   fssp_date?: Date | null;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   r_court_name?: string;
 
   @IsNumber()
