@@ -4,8 +4,8 @@ import { AddCommentInput } from './AddComment.input';
 import { AddCommentService } from './AddComment.service';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Comment')
 @Controller('add_comment')
+@ApiTags('Comment')
 @UseGuards(AuthGuard)
 export class AddCommentController {
   constructor(private readonly addCommentService: AddCommentService) {}
