@@ -214,10 +214,11 @@ export class UpdateExecService {
                   change,
                   le.previous(change),
                 )}".`;
+                const comment = truncator(r_court_id_value);
                 await le.createLawExecProtokol({
                   r_user_id: auth.userContact.id,
                   typ: 2,
-                  dsc: truncator(r_court_id_value),
+                  dsc: comment,
                 });
                 break;
               case 'dsc':
@@ -226,10 +227,11 @@ export class UpdateExecService {
                   le[change],
                 )}".`;
                 try {
+                  const comment = truncator(dsc);
                   await le.createLawExecProtokol({
                     r_user_id: auth.userContact.id,
                     typ: 2,
-                    dsc: truncator(dsc),
+                    dsc: comment,
                   });
                 } catch (error) {
                   //@ts-expect-error ///
@@ -257,10 +259,12 @@ export class UpdateExecService {
                       change,
                       le.previous(change),
                     )}".`;
+                    const comment = truncator(value);
+
                     await le.createLawExecProtokol({
                       r_user_id: auth.userContact.id,
                       typ: 2,
-                      dsc: truncator(value),
+                      dsc: comment,
                     });
                     break;
                 }
@@ -281,8 +285,14 @@ export class UpdateExecService {
                 break;
             }
           }
-          await le.save({ transaction });
-          await transaction.commit();
+          console.log('LE: ', le);
+          try {
+            await le.save({ transaction });
+            await transaction.commit();
+          } catch (error) {
+            console.log(error);
+            throw new Error(`${error}`);
+          }
         }
       }
       const doc_name = `Сопровод к ИД ${le
