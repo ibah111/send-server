@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Max,
+} from 'class-validator';
 
 export class CourtInput {
   @ApiProperty({
@@ -42,8 +48,11 @@ export class LawCourtInput {
   typ: number;
   @ApiPropertyOptional()
   EMAIL: string;
-  @ApiPropertyOptional()
+  @ApiProperty()
+  @IsNotEmpty()
+  @Max(64)
   EXT_ID$: string;
-  @ApiPropertyOptional()
+  @Max(5)
+  @ApiProperty()
   EXT_ID_NUM: string;
 }
