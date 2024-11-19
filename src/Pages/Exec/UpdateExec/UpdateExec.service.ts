@@ -145,6 +145,7 @@ export class UpdateExecService {
       });
       await law_act.update({
         court_sum: body.court_sum,
+        exec_number: body.exec_number,
       });
       await this.changeDebtGuarantor(
         le,
@@ -359,6 +360,7 @@ export class UpdateExecService {
           return { file: data.file, name: data.sql.name };
         }
       } else if (law_court.name === 'Сбербанк') {
+        le.start_date = body.start_date || new Date();
         /**
          * Логика отправления в сбербанк
          */

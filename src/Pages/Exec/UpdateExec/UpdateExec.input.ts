@@ -21,10 +21,12 @@ export class UpdateExecInput {
   @IsNumber()
   @IsNotEmpty()
   id: number;
-  @IsNumber()
   @IsOptional()
   @Min(0)
   @Max(10000000)
+  @IsNumber({
+    maxDecimalPlaces: 2,
+  })
   total_sum?: number | null;
   @IsDate()
   @IsNotEmpty()
@@ -103,16 +105,23 @@ export class UpdateExecInput {
   @IsOptional()
   @Type(() => SaveOptions)
   options?: SaveOptions;
-
   @IsOptional()
-  @IsNumber()
+  @IsNumber({
+    maxDecimalPlaces: 2,
+  })
   court_sum?: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsNumber({
+    maxDecimalPlaces: 2,
+  })
   debt_payments_sum?: number;
 
   @IsOptional()
   @IsString()
   dsc: string;
+
+  @IsOptional()
+  @IsString()
+  exec_number: string;
 }
