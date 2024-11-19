@@ -10,4 +10,6 @@ export class DictService {
       where: { parent_id: body.id },
     });
   }
+
+  async rawQueryToDictName() {}
 }

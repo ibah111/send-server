@@ -9,4 +9,9 @@ export class DictController {
   async dict(@Body() body: DictInput) {
     return await this.dictService.dict(body);
   }
+
+  @Post('raw')
+  async raw() {
+    return this.dictService.rawQueryToDictName();
+  }
 }
