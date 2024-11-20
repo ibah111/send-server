@@ -21,7 +21,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "commitlint": "commitlint --edit",
-    "release": "release-it"
+    "release:patch": "dotenv release-it patch --",
+    "release:minor": "dotenv release-it minor --",
+    "release:major": "dotenv release-it major --"
   },
   "dependencies": {
     "@contact/models": "^0.4.11",

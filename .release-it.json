@@ -6,7 +6,8 @@
   "gitlab": {
     "origin": "https://git.usb.ru",
     "certificateAuthorityFile": "./https/ca.crt",
-    "release": true
+    "release": true,
+    "tokenHeader": "PRIVATE-TOKEN"
   },
   "npm": false,
   "plugins": {
