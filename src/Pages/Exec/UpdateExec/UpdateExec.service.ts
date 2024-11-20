@@ -286,12 +286,17 @@ export class UpdateExecService {
                 break;
             }
           }
-          console.log('LE: ', le);
           try {
             await le.save({ transaction });
             await transaction.commit();
           } catch (error) {
-            console.log(error);
+            console.log(
+              'LAW_EXEC: -----------------\n ',
+              le,
+              '\n----------------------------',
+            );
+            console.log('TRYCATCH ERROR: ', error);
+
             throw new Error(`${error}`);
           }
         }
@@ -360,7 +365,10 @@ export class UpdateExecService {
           return { file: data.file, name: data.sql.name };
         }
       } else if (law_court.name === 'Сбербанк') {
+        le.state = 7;
+        le.fssp_doc_num = 'В Сбербанк';
         le.start_date = body.start_date || new Date();
+        le.save();
         /**
          * Логика отправления в сбербанк
          */
