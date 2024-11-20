@@ -1,7 +1,9 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { DictInput } from './Dict.input';
+import { DictInput, getRawDictNamesClass } from './Dict.input';
 import { DictService } from './Dict.service';
+import { ApiTags } from '@nestjs/swagger';
 @Controller('dict')
+@ApiTags('Dict')
 export class DictController {
   constructor(private dictService: DictService) {}
   @Post()
@@ -10,8 +12,8 @@ export class DictController {
     return await this.dictService.dict(body);
   }
 
-  @Post('raw')
-  async raw() {
-    return this.dictService.rawQueryToDictName();
+  @Post('getDictName')
+  async raw(@Body() body: getRawDictNamesClass) {
+    return this.dictService.getRawDictNames(body);
   }
 }
