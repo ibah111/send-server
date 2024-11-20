@@ -5876,6 +5876,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv-cli@npm:^7.4.3":
+  version: 7.4.3
+  resolution: "dotenv-cli@npm:7.4.3"
+  dependencies:
+    cross-spawn: "npm:^7.0.3"
+    dotenv: "npm:^16.3.0"
+    dotenv-expand: "npm:^10.0.0"
+    minimist: "npm:^1.2.6"
+  bin:
+    dotenv: cli.js
+  checksum: 678ec8f57e5fb779bf8faa98b7ba7cb53ba055a96c8261d315c1ddce2825660e49b34187b35aee3c8991ccccd4c08ec205a55b93f7682e2b46b4720d74d1a1c9
+  languageName: node
+  linkType: hard
+
+"dotenv-expand@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "dotenv-expand@npm:10.0.0"
+  checksum: b41eb278bc96b92cbf3037ca5f3d21e8845bf165dc06b6f9a0a03d278c2bd5a01c0cfbb3528ae3a60301ba1a8a9cace30e748c54b460753bc00d4c014b675597
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.3.0, dotenv@npm:^16.4.5":
+  version: 16.4.5
+  resolution: "dotenv@npm:16.4.5"
+  checksum: 55a3134601115194ae0f924e54473459ed0d9fc340ae610b676e248cca45aa7c680d86365318ea964e6da4e2ea80c4514c1adab5adb43d6867fb57ff068f95c8
+  languageName: node
+  linkType: hard
+
 "dottie@npm:^2.0.0, dottie@npm:^2.0.2, dottie@npm:^2.0.6":
   version: 2.0.6
   resolution: "dottie@npm:2.0.6"
@@ -12415,6 +12443,8 @@ __metadata:
     content-disposition: "npm:^0.5.4"
     cross-env: "npm:^7.0.3"
     crypto-js: "npm:^4.2.0"
+    dotenv: "npm:^16.4.5"
+    dotenv-cli: "npm:^7.4.3"
     dottie: "npm:^2.0.6"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"
