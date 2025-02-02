@@ -8,7 +8,7 @@ import Models from '@contact/models';
       dialect: 'mssql',
       username: 'contact',
       password: 'contact',
-      database: process.env.NODE_ENV === 'prod' ? 'i_collect' : 'i_collect3',
+      database: 'i_collect',
       name: 'contact',
       models: Models,
       logging: false,
