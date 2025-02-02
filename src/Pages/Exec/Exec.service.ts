@@ -119,13 +119,21 @@ export default class ExecService {
 по аналогии с кнопкой "Отправить", но сопровод не формируется, комментарий не добавляется
 создается карточка ИП в статусе "не создано" с заполненными полями
    */
-  async createIp(body, auth) {
+  async createIp(body) {
     const not_created = await this.dicts('Не создано');
     const state = not_created[0].code;
-    const law_exec_analog = await this.createAnalog(body, auth);
-    const updated = await law_exec_analog.update({
-      state,
-    });
+    const law_exec = await this.modelLawExec.update(
+      {
+        ...body,
+        state,
+      },
+      {
+        where: {
+          id: body.id,
+        },
+      },
+    );
+    return law_exec;
   }
 
   /**
@@ -133,14 +141,24 @@ export default class ExecService {
 по аналогии с кнопкой "Отправить", но сопровод не формируется, комментарий не добавляется. Просто сохранить данные в уже созданной карточке ИП
 т.е как бы подготавливаем карточку ИП к отправке ИД на предъявление
    */
-  async saveId(body, auth) {
-    await this.createAnalog(body, auth);
+  async saveId(body) {
+    const law_exec = await this.modelLawExec.update(
+      {
+        ...body,
+      },
+      {
+        where: {
+          id: body.id,
+        },
+      },
+    );
+    return law_exec;
   }
 
   /**
    * Аналогия с кнопкой отправить
    */
-  async createAnalog(body: any, auth: any) {
+  async updateAnalog(body: any, auth: any) {
     try {
       const law_exec = await this.modelLawExec.findByPk(body.id, {
         rejectOnEmpty: true,
@@ -172,8 +190,7 @@ export default class ExecService {
           this.sequelize,
           auth.userContact.id,
         );
-        const dicts = await this.dicts('Не создано');
-        law_exec.state = dicts[0].code;
+        law_exec.state = 9;
         const new_dsc = `${moment()
           .utcOffset(3)
           .format('DD.MM.YYYY')} Сопровод к ИД ${
@@ -298,6 +315,7 @@ export default class ExecService {
           try {
             await law_exec.save({ transaction });
             await transaction.commit();
+            return law_exec;
           } catch (error) {
             throw new Error(`${error}`);
           }

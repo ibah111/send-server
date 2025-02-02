@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Auth, AuthGuard } from 'src/Modules/Guards/auth.guard';
+import { AuthGuard } from 'src/Modules/Guards/auth.guard';
 import ExecService from './Exec.service';
 
 @Controller('Exec')
@@ -11,15 +11,11 @@ export class ExecController {
 
   @Post('saveId')
   async saveId(@Body() body: any) {
-    console.log(body);
-    return;
-    return await this.service.saveId();
+    return await this.service.saveId(body);
   }
 
   @Post('createIp')
-  async createIp(@Body() body: any, @Auth() auth: any) {
-    console.log(body);
-    return;
-    return await this.service.createIp();
+  async createIp(@Body() body: any) {
+    return await this.service.createIp(body);
   }
 }
