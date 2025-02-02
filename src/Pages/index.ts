@@ -18,6 +18,7 @@ import { RestartModule } from './Restart';
 import { RequisitesModule } from './Requisites/BankRequisites.module';
 import PortfoliosToRequisitesModule from './PortfoliosToRequisites/PortfoliosToRequisites.module';
 import CommentsModule from './Comments/Comments.module';
+import ExecModule from './Exec/Exec.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import CommentsModule from './Comments/Comments.module';
     RestartModule,
     RequisitesModule,
     PortfoliosToRequisitesModule,
+    ExecModule,
   ],
 })
 export class PagesModule {}

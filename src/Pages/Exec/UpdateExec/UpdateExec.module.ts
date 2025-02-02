@@ -19,5 +19,6 @@ import PortfoliosToRequisitesModule from 'src/Pages/PortfoliosToRequisites/Portf
   ],
   controllers: [UpdateExecController],
   providers: [UpdateExecService],
+  exports: [UpdateExecService],
 })
 export class UpdateExecModule {}
