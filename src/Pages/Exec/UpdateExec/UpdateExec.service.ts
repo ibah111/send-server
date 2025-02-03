@@ -12,6 +12,7 @@ import getContextTransaction from 'src/utils/getContextTransaction';
 import { lastValueFrom } from 'rxjs';
 import PortfoliosToRequisitesService from 'src/Pages/PortfoliosToRequisites/PortfoliosToRequisites.service';
 import truncator from 'src/utils/truncator';
+import { SocketService } from 'src/Modules/Socket/Socket.service';
 
 function transform<T extends keyof Attributes<LawExec> & keyof UpdateExecInput>(
   name: T,
@@ -101,6 +102,7 @@ export class UpdateExecService {
     private readonly downloader: Downloader,
     private readonly helper: Helper,
     private readonly portfolioToRequisites: PortfoliosToRequisitesService,
+    private readonly socketService: SocketService,
   ) {}
   async changeDebtGuarantor(
     le: MIS<LawExec>,
@@ -160,6 +162,7 @@ export class UpdateExecService {
       le.deposit_typ = body.person_property ? 1 : null;
       const changes = le.changed();
       if (changes) {
+        this.socketService.send_event('changes_event');
         const transaction = await getContextTransaction(
           this.sequelize,
           auth.userContact.id,

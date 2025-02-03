@@ -1,9 +1,9 @@
 /* eslint-disable */
-import { Metadata } from "@grpc/grpc-js";
-import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Observable } from "rxjs";
+import { Metadata } from '@grpc/grpc-js';
+import { GrpcMethod, GrpcStreamMethod } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
-export const protobufPackage = "smb";
+export const protobufPackage = 'smb';
 
 export interface LoginInput {
   domain: string;
@@ -52,7 +52,7 @@ export interface ResultFile {
   result: Buffer;
 }
 
-export const SMB_PACKAGE_NAME = "smb";
+export const SMB_PACKAGE_NAME = 'smb';
 
 export interface SmbServiceClient {
   login(request: LoginInput, metadata?: Metadata): Observable<ResultString>;
@@ -63,7 +63,10 @@ export interface SmbServiceClient {
 
   readFile(request: PathInput, metadata?: Metadata): Observable<ResultFile>;
 
-  writeFileStream(request: Observable<WriteFileStream>, metadata?: Metadata): Observable<ResultBool>;
+  writeFileStream(
+    request: Observable<WriteFileStream>,
+    metadata?: Metadata,
+  ): Observable<ResultBool>;
 
   writeFile(request: WriteFile, metadata?: Metadata): Observable<ResultBool>;
 
@@ -71,45 +74,95 @@ export interface SmbServiceClient {
 
   rmdir(request: PathInput, metadata?: Metadata): Observable<ResultBool>;
 
-  readdir(request: ReadDirInput, metadata?: Metadata): Observable<ResultArrayString>;
+  readdir(
+    request: ReadDirInput,
+    metadata?: Metadata,
+  ): Observable<ResultArrayString>;
 }
 
 export interface SmbServiceController {
-  login(request: LoginInput, metadata?: Metadata): Promise<ResultString> | Observable<ResultString> | ResultString;
+  login(
+    request: LoginInput,
+    metadata?: Metadata,
+  ): Promise<ResultString> | Observable<ResultString> | ResultString;
 
-  exists(request: PathInput, metadata?: Metadata): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
+  exists(
+    request: PathInput,
+    metadata?: Metadata,
+  ): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
 
-  mkdir(request: MkdirInput, metadata?: Metadata): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
+  mkdir(
+    request: MkdirInput,
+    metadata?: Metadata,
+  ): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
 
   readFile(request: PathInput, metadata?: Metadata): Observable<ResultFile>;
 
-  writeFileStream(request: Observable<WriteFileStream>, metadata?: Metadata): Observable<ResultBool>;
+  writeFileStream(
+    request: Observable<WriteFileStream>,
+    metadata?: Metadata,
+  ): Observable<ResultBool>;
 
-  writeFile(request: WriteFile, metadata?: Metadata): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
+  writeFile(
+    request: WriteFile,
+    metadata?: Metadata,
+  ): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
 
-  unlink(request: PathInput, metadata?: Metadata): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
+  unlink(
+    request: PathInput,
+    metadata?: Metadata,
+  ): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
 
-  rmdir(request: PathInput, metadata?: Metadata): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
+  rmdir(
+    request: PathInput,
+    metadata?: Metadata,
+  ): Promise<ResultBool> | Observable<ResultBool> | ResultBool;
 
   readdir(
     request: ReadDirInput,
     metadata?: Metadata,
-  ): Promise<ResultArrayString> | Observable<ResultArrayString> | ResultArrayString;
+  ):
+    | Promise<ResultArrayString>
+    | Observable<ResultArrayString>
+    | ResultArrayString;
 }
 
 export function SmbServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["login", "exists", "mkdir", "readFile", "writeFile", "unlink", "rmdir", "readdir"];
+    const grpcMethods: string[] = [
+      'login',
+      'exists',
+      'mkdir',
+      'readFile',
+      'writeFile',
+      'unlink',
+      'rmdir',
+      'readdir',
+    ];
     for (const method of grpcMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("SmbService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcMethod('SmbService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
-    const grpcStreamMethods: string[] = ["writeFileStream"];
+    const grpcStreamMethods: string[] = ['writeFileStream'];
     for (const method of grpcStreamMethods) {
-      const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("SmbService", method)(constructor.prototype[method], method, descriptor);
+      const descriptor: any = Reflect.getOwnPropertyDescriptor(
+        constructor.prototype,
+        method,
+      );
+      GrpcStreamMethod('SmbService', method)(
+        constructor.prototype[method],
+        method,
+        descriptor,
+      );
     }
   };
 }
 
-export const SMB_SERVICE_NAME = "SmbService";
+export const SMB_SERVICE_NAME = 'SmbService';

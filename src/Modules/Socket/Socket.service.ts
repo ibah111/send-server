@@ -33,4 +33,12 @@ export class SocketService {
     };
     return result;
   }
+
+  @SubscribeMessage('server_event')
+  send_event(event: string, data?: Record<string, string>) {
+    return {
+      event,
+      data,
+    };
+  }
 }
