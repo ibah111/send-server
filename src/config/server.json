@@ -3,5 +3,5 @@
   "token": "sl1HjBxOWIScFIMUCy2x4AbtfnkK4alc",
   "oauth": "https://apps.usb.ru:3008",
   "fastreport": "https://apps.usb.ru:3009",
-  "fastreport_dev": "http://balezin.usb.ru:3009"
+  "fastreport_dev": "https://apps.usb.ru:3009"
 }
