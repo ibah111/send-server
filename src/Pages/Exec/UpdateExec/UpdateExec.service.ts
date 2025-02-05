@@ -162,7 +162,6 @@ export class UpdateExecService {
       le.deposit_typ = body.person_property ? 1 : null;
       const changes = le.changed();
       if (changes) {
-        this.socketService.send_event('changes_event');
         const transaction = await getContextTransaction(
           this.sequelize,
           auth.userContact.id,
@@ -293,13 +292,6 @@ export class UpdateExecService {
             await le.save({ transaction });
             await transaction.commit();
           } catch (error) {
-            console.log(
-              'LAW_EXEC: -----------------\n ',
-              le,
-              '\n----------------------------',
-            );
-            console.log('TRYCATCH ERROR: ', error);
-
             throw new Error(`${error}`);
           }
         }

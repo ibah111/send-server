@@ -1,15 +1,15 @@
 import { Dict, LawAct, LawExec } from '@contact/models';
 import { Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
-import { UpdateExecService } from './UpdateExec/UpdateExec.service';
 import { Op } from 'sequelize';
 import { UpdateExecInput } from './UpdateExec/UpdateExec.input';
-import { Attributes } from '@sql-tools/sequelize';
+import { Attributes, MIS } from '@sql-tools/sequelize';
 import moment from 'moment-timezone';
 import { Helper } from 'src/utils/helper';
 import truncator from 'src/utils/truncator';
-import getContextTransaction from 'src/utils/getContextTransaction';
 import { Sequelize } from '@sql-tools/sequelize-typescript';
+import { AuthResult } from 'src/Modules/Guards/auth.guard';
+import { CreateLiteralAssociation } from '@sql-tools/association-literal';
 
 @Injectable()
 export default class ExecService {
@@ -87,6 +87,130 @@ export default class ExecService {
     'fssp_date',
     'r_court_id',
   ];
+
+  async changeDebtGuarantor(
+    le: MIS<LawExec>,
+    debt_guarantor: number,
+    r_user_id: number,
+  ) {
+    const link = await le.getLawExecPersonLink();
+    if (debt_guarantor > -1) {
+      link.PERSON_ROLE = 2;
+      if (link.PERSON_ID !== debt_guarantor) {
+        link.PERSON_ID = debt_guarantor;
+        await link.save();
+        const dg = await link.getDebtGuarantor();
+        await le.createLawExecProtokol({
+          r_user_id,
+          typ: 6,
+          dsc: `Изменение стороны на поручителя "${dg.fio}"`,
+        });
+      }
+    }
+    if (link.PERSON_ROLE === 2 && debt_guarantor === -1) {
+      link.PERSON_ROLE = 1;
+      link.PERSON_ID = le.r_person_id;
+      await link.save();
+      await le.createLawExecProtokol({
+        r_user_id,
+        typ: 6,
+        dsc: `Изменение стороны на должника`,
+      });
+    }
+  }
+
+  async protokolChanges(
+    changes: string[],
+    law_exec: CreateLiteralAssociation<LawExec>,
+    auth: AuthResult,
+  ) {
+    for (const change of changes as unknown as keyof Attributes<LawExec>) {
+      switch (change) {
+        case 'r_court_id':
+          const r_court_id_value = `${this.t(change)}. Новое значение: "${await this.helper.help(
+            change,
+            law_exec[change],
+          )}". Старое значение: "${await this.helper.help(
+            change,
+            law_exec.previous(change),
+          )}".`;
+          const comment = truncator(r_court_id_value);
+          await law_exec.createLawExecProtokol({
+            r_user_id: auth.userContact!.id,
+            typ: 2,
+            dsc: comment,
+          });
+          break;
+        case 'dsc':
+          const dsc = `${this.t(change)}. Новое значение: "${await this.helper.help(
+            change,
+            law_exec[change],
+          )}".`;
+          try {
+            const comment = truncator(dsc);
+            await law_exec.createLawExecProtokol({
+              r_user_id: auth.userContact!.id,
+              typ: 2,
+              dsc: comment,
+            });
+          } catch (error) {
+            //@ts-expect-error ///
+            throw Error(error);
+          }
+          break;
+        case 'state':
+          switch (law_exec.previous(change)) {
+            case 13:
+              await law_exec.createLawExecProtokol({
+                r_user_id: auth.userContact!.id,
+                typ: 30,
+                dsc: truncator(
+                  `Перевод исполнительного документа на исполнительное производство`,
+                ),
+              });
+              break;
+            default:
+              const value = `${this.t(
+                change,
+              )}. Новое значение: "${await this.helper.help(
+                change,
+                law_exec[change],
+              )}". Старое значение: "${await this.helper.help(
+                change,
+                law_exec.previous(change),
+              )}".`;
+              const comment = truncator(value);
+
+              await law_exec.createLawExecProtokol({
+                r_user_id: auth.userContact!.id,
+                typ: 2,
+                dsc: comment,
+              });
+              break;
+          }
+          break;
+        default:
+          const value = `${this.t(change)}. Новое значение: "${await this.helper.help(
+            change,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            law_exec[change],
+          )}". Старое значение: "${await this.helper.help(
+            change,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            law_exec.previous(change),
+          )}".`;
+          await law_exec.createLawExecProtokol({
+            r_user_id: auth.userContact!.id,
+            typ: 2,
+            dsc: truncator(value),
+          });
+          break;
+      }
+    }
+  }
+
   constructor(
     @InjectConnection('contact') private readonly sequelize: Sequelize,
     @InjectModel(LawExec, 'contact')
@@ -95,7 +219,6 @@ export default class ExecService {
     private readonly modelLawAct: typeof LawAct,
     @InjectModel(Dict, 'contact')
     private readonly modelDict: typeof Dict,
-    private readonly updateExecService: UpdateExecService,
     private readonly helper: Helper,
   ) {}
 
@@ -104,6 +227,7 @@ export default class ExecService {
    */
   async dicts(name: string) {
     const dicts = await this.modelDict.findAll({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
       where: {
         parent_id: 77,
@@ -114,26 +238,44 @@ export default class ExecService {
     });
     return dicts;
   }
+
+  async typs(parent_id: number) {
+    const typs = await this.modelDict.findAll({
+      where: {
+        parent_id,
+      },
+    });
+    return typs;
+  }
+
   /**
    * "Создать ИД"
 по аналогии с кнопкой "Отправить", но сопровод не формируется, комментарий не добавляется
 создается карточка ИП в статусе "не создано" с заполненными полями
    */
-  async createIp(body) {
-    const not_created = await this.dicts('Не создано');
-    const state = not_created[0].code;
-    const law_exec = await this.modelLawExec.update(
-      {
-        ...body,
-        state,
-      },
-      {
-        where: {
-          id: body.id,
-        },
-      },
-    );
-    return law_exec;
+  async create(body: any, auth: AuthResult) {
+    if (auth.userContact!.id) {
+      const fio =
+        auth.userContact!.f +
+        ' ' +
+        auth.userContact!.i +
+        ' ' +
+        auth.userContact!.o;
+      const dsc = `ИП создано в статусе "Не создано" пользователем ${fio}`;
+      return await this.modelLawExec
+        .create({
+          ...body,
+        })
+        .then(async (result) => {
+          return await result
+            .createLawExecProtokol({
+              typ: 1,
+              r_user_id: auth!.userContact!.id,
+              dsc,
+            })
+            .then(() => true);
+        });
+    }
   }
 
   /**
@@ -141,189 +283,29 @@ export default class ExecService {
 по аналогии с кнопкой "Отправить", но сопровод не формируется, комментарий не добавляется. Просто сохранить данные в уже созданной карточке ИП
 т.е как бы подготавливаем карточку ИП к отправке ИД на предъявление
    */
-  async saveId(body) {
-    const law_exec = await this.modelLawExec.update(
-      {
-        ...body,
-      },
-      {
+  async save(body: any, auth: AuthResult) {
+    try {
+      const law_exec = await this.modelLawExec.findOne({
         where: {
           id: body.id,
         },
-      },
-    );
-    return law_exec;
-  }
-
-  /**
-   * Аналогия с кнопкой отправить
-   */
-  async updateAnalog(body: any, auth: any) {
-    try {
-      const law_exec = await this.modelLawExec.findByPk(body.id, {
         rejectOnEmpty: true,
       });
-      const law_act = await this.modelLawAct.findOne({
-        where: {
-          id: law_exec.r_act_id!,
-        },
-        rejectOnEmpty: true,
-      });
-      await law_act.update({
-        court_sum: body.court_sum,
-        exec_number: body.exec_number,
-      });
-      await this.updateExecService.changeDebtGuarantor(
-        law_exec,
-        body.debt_guarantor,
-        auth.userContact.id,
-      );
-      for (const value of this.strings) {
-        this.updateData(law_exec, value, this.transform(value, body[value]));
-      }
-      law_exec.fssp_doc_num = null;
-      law_exec.start_date = null;
-      law_exec.deposit_typ = body.person_property ? 1 : null;
-      const changes = law_exec.changed();
-      if (changes) {
-        const transaction = await getContextTransaction(
-          this.sequelize,
-          auth.userContact.id,
-        );
-        law_exec.state = 9;
-        const new_dsc = `${moment()
-          .utcOffset(3)
-          .format('DD.MM.YYYY')} Сопровод к ИД ${
-          law_exec.court_doc_num
-        } ${await this.helper.help('executive_typ', law_exec.executive_typ)} ${moment(
-          law_exec.court_date,
-        )
-          .utcOffset(3)
-          .format('DD.MM.YYYY')}`;
-        if (law_exec.dsc === 'Создается ИП из "Отправка"') {
-          law_exec.dsc = new_dsc;
-        } else {
-          if (!law_exec.dsc) {
-            law_exec.dsc = '';
-          } else {
-            law_exec.dsc += '\r\n';
+      return await law_exec
+        .update({
+          ...body,
+        })
+        .then(async (result) => {
+          const changes = result.changed();
+          console.log('changes: ', changes);
+          if (!changes) return changes;
+          else if (changes) {
+            await this.protokolChanges(changes, result, auth).then(() => true);
           }
-          law_exec.dsc += new_dsc;
-        }
-        const law_act = await law_exec.getLawAct();
-        if (law_act !== null) {
-          if (law_act.typ !== 1) {
-            law_act.act_status = 13;
-          } else {
-            law_act.status = 9;
-          }
-          await law_act.save({ transaction });
-          await transaction.commit();
-          await law_act.createLawActProtokol({
-            r_user_id: auth.userContact.id,
-            typ: 36,
-            dsc: `Перевод исполнительного документа на исполнительное производство. ID исп. док-та = ${law_exec.id}`,
-          });
-        }
-        const changes = law_exec.changed() as (keyof Attributes<LawExec>)[];
-        if (changes) {
-          const transaction = await getContextTransaction(
-            this.sequelize,
-            auth.userContact.id,
-          );
-          for (const change of changes) {
-            switch (change) {
-              case 'r_court_id':
-                const r_court_id_value = `${this.t(change)}. Новое значение: "${await this.helper.help(
-                  change,
-                  law_exec[change],
-                )}". Старое значение: "${await this.helper.help(
-                  change,
-                  law_exec.previous(change),
-                )}".`;
-                const comment = truncator(r_court_id_value);
-                await law_exec.createLawExecProtokol({
-                  r_user_id: auth.userContact.id,
-                  typ: 2,
-                  dsc: comment,
-                });
-                break;
-              case 'dsc':
-                const dsc = `${this.t(change)}. Новое значение: "${await this.helper.help(
-                  change,
-                  law_exec[change],
-                )}".`;
-                try {
-                  const comment = truncator(dsc);
-                  await law_exec.createLawExecProtokol({
-                    r_user_id: auth.userContact.id,
-                    typ: 2,
-                    dsc: comment,
-                  });
-                } catch (error) {
-                  //@ts-expect-error ///
-                  throw Error(error);
-                }
-                break;
-              case 'state':
-                switch (law_exec.previous(change)) {
-                  case 13:
-                    await law_exec.createLawExecProtokol({
-                      r_user_id: auth.userContact.id,
-                      typ: 30,
-                      dsc: truncator(
-                        `Перевод исполнительного документа на исполнительное производство`,
-                      ),
-                    });
-                    break;
-                  default:
-                    const value = `${this.t(
-                      change,
-                    )}. Новое значение: "${await this.helper.help(
-                      change,
-                      law_exec[change],
-                    )}". Старое значение: "${await this.helper.help(
-                      change,
-                      law_exec.previous(change),
-                    )}".`;
-                    const comment = truncator(value);
-
-                    await law_exec.createLawExecProtokol({
-                      r_user_id: auth.userContact.id,
-                      typ: 2,
-                      dsc: comment,
-                    });
-                    break;
-                }
-                break;
-              default:
-                const value = `${this.t(change)}. Новое значение: "${await this.helper.help(
-                  change,
-                  law_exec[change],
-                )}". Старое значение: "${await this.helper.help(
-                  change,
-                  law_exec.previous(change),
-                )}".`;
-                await law_exec.createLawExecProtokol({
-                  r_user_id: auth.userContact.id,
-                  typ: 2,
-                  dsc: truncator(value),
-                });
-                break;
-            }
-          }
-          try {
-            await law_exec.save({ transaction });
-            await transaction.commit();
-            return law_exec;
-          } catch (error) {
-            throw new Error(`${error}`);
-          }
-        }
-      }
+        });
     } catch (error) {
       console.log(error);
-      throw new Error('Create analog ERROR');
+      throw new Error(`${error}`);
     }
   }
 }

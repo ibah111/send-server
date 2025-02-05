@@ -6,12 +6,14 @@ import { HelperModule } from 'src/utils/helper';
 import { UpdateExecController } from './UpdateExec.controller';
 import { UpdateExecService } from './UpdateExec.service';
 import PortfoliosToRequisitesModule from 'src/Pages/PortfoliosToRequisites/PortfoliosToRequisites.module';
+import { SocketModule } from 'src/Modules/Socket/Socket.module';
 
 @Module({
   imports: [
     PortfoliosToRequisitesModule,
     DownloaderModule,
     HelperModule,
+    SocketModule,
     SequelizeModule.forFeature(
       [LawExec, DocAttach, LawCourt, LawAct],
       'contact',
