@@ -262,8 +262,13 @@ export default class ExecService {
         ' ' +
         auth.userContact!.o;
       const dsc = `ИП создано в статусе "Не создано" пользователем ${fio}`;
+      const dicts = await this.dicts('Не создано');
+      const state = dicts[0].code;
+      const total_sum: number = body.total_sum!;
       return await this.modelLawExec
         .create({
+          state,
+          total_sum,
           ...body,
         })
         .then(async (result) => {

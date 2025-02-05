@@ -124,4 +124,7 @@ export class UpdateExecInput {
   @IsOptional()
   @IsString()
   exec_number: string;
+
+  @IsNumber()
+  r_person_id: number;
 }
