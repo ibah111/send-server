@@ -264,22 +264,28 @@ export default class ExecService {
       const dsc = `ИП создано в статусе "Не создано" пользователем ${fio}`;
       const dicts = await this.dicts('Не создано');
       const state = dicts[0].code;
-      const total_sum: number = body.total_sum!;
-      return await this.modelLawExec
-        .create({
-          state,
-          total_sum,
-          ...body,
-        })
-        .then(async (result) => {
-          return await result
-            .createLawExecProtokol({
-              typ: 1,
-              r_user_id: auth!.userContact!.id,
+      try {
+        return await this.modelLawExec
+          .update(
+            {
+              ...body,
+              state,
               dsc,
-            })
-            .then(() => true);
-        });
+            },
+            {
+              where: {
+                id: body.id,
+              },
+            },
+          )
+          .then(async (result) => {
+            console.log(result);
+            return true;
+          });
+      } catch (error) {
+        console.log(error);
+        throw new Error(`${error}`);
+      }
     }
   }
 
