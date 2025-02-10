@@ -1,3 +1,20 @@
+
+
+## [0.3.3](https://git.usb.ru/send/server/compare/v0.3.2...v0.3.3) (2025-02-10)
+
+
+### Features
+
+* add is optional ([274c1d0](https://git.usb.ru/send/server/commit/274c1d09cbeeec217fab66299f5dc9122aaecdf7))
+* add max ([a140ea5](https://git.usb.ru/send/server/commit/a140ea546ab6960a4ffc6179aede4f95672156d3))
+* change fastreport dev ([aec0114](https://git.usb.ru/send/server/commit/aec0114a95ad3702daca45acfcfddbd50e24ccb3))
+* change inputs ([b223811](https://git.usb.ru/send/server/commit/b2238119b7d975f4637d05baf97f5fb7a379d76c))
+* delete i_collect3 prod connection ([dd03bea](https://git.usb.ru/send/server/commit/dd03bea5b135d0e024ed231405a1f24106eccdf7))
+* exec module ([6495e6e](https://git.usb.ru/send/server/commit/6495e6e1fae06cac1e4ec64e8738b52f7d7d6502))
+* new methods ([9750e14](https://git.usb.ru/send/server/commit/9750e14e6321509916d3dcd218da506b590a0ff0))
+* prettied ([197e31a](https://git.usb.ru/send/server/commit/197e31ad5ece3a867070c460af6a38e362eb0636))
+* uncomment methods ([7d125bf](https://git.usb.ru/send/server/commit/7d125bf26d360b0885908fb3fd177b7aaa9327b9))
+
 ## [0.3.2](https://git.usb.ru/send/server/compare/v0.3.1...v0.3.2) (2024-11-20)
 
 ### Features
