@@ -1,4 +1,4 @@
-import { Dict, LawAct, LawExec } from '@contact/models';
+import { Dict, LawAct, LawCourt, LawExec } from '@contact/models';
 import { Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Op } from 'sequelize';
@@ -219,6 +219,8 @@ export default class ExecService {
     private readonly modelLawAct: typeof LawAct,
     @InjectModel(Dict, 'contact')
     private readonly modelDict: typeof Dict,
+    @InjectModel(LawCourt, 'contact')
+    private readonly modelLawCourt: typeof LawCourt,
     private readonly helper: Helper,
   ) {}
 
@@ -254,6 +256,7 @@ export default class ExecService {
 создается карточка ИП в статусе "не создано" с заполненными полями
    */
   async create(body: any, auth: AuthResult) {
+    console.log(body);
     if (auth.userContact!.id) {
       const fio =
         auth.userContact!.f +
@@ -264,11 +267,45 @@ export default class ExecService {
       const dsc = `ИП создано в статусе "Не создано" пользователем ${fio}`;
       const dicts = await this.dicts('Не создано');
       const state = dicts[0].code;
+      const law_court = await this.modelLawCourt.findByPk(body.r_court_id);
+      console.log(law_court);
+
       try {
-        return await this.modelLawExec
+        const law_exec = await this.modelLawExec.findOne({
+          where: {
+            id: body.id,
+          },
+          rejectOnEmpty: true,
+        });
+        await this.modelLawAct
+          .findOne({
+            where: {
+              id: law_exec.r_act_id!,
+            },
+            rejectOnEmpty: true,
+          })
+          .then((law_act) =>
+            law_act
+              ?.update({
+                court_sum: body.court_sum,
+              })
+              .then(async () => {
+                console.log(
+                  `law_act_id: ${law_act.id} has been updated to ${body.court_sum}`,
+                );
+                await law_act.createLawActProtokol({
+                  typ: 2,
+                  dsc: `Пред. сумма: "${law_act.previous().court_sum}" изменена на "${body.court_sum}"`,
+                  r_user_id: auth.userContact!.id,
+                });
+                return true;
+              }),
+          );
+        return law_exec
           .update(
             {
               ...body,
+              court_name: law_court!.name,
               state,
               dsc,
             },
@@ -278,9 +315,11 @@ export default class ExecService {
               },
             },
           )
-          .then(async (result) => {
-            console.log(result);
-            return true;
+          .then(async () => {
+            const changes = law_exec.changed() as string[];
+            return await this.protokolChanges(changes, law_exec, auth).then(
+              () => true,
+            );
           });
       } catch (error) {
         console.log(error);
