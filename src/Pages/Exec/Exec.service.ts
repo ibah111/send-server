@@ -268,7 +268,6 @@ export default class ExecService {
       const dicts = await this.dicts('Не создано');
       const state = dicts[0].code;
       const law_court = await this.modelLawCourt.findByPk(body.r_court_id);
-      console.log(law_court);
 
       try {
         const law_exec = await this.modelLawExec.findOne({
@@ -288,6 +287,7 @@ export default class ExecService {
             law_act
               ?.update({
                 court_sum: body.court_sum,
+                exec_number: body.exec_number,
               })
               .then(async () => {
                 console.log(
@@ -295,8 +295,13 @@ export default class ExecService {
                 );
                 await law_act.createLawActProtokol({
                   typ: 2,
-                  dsc: `Пред. сумма: "${law_act.previous().court_sum}" изменена на "${body.court_sum}"`,
                   r_user_id: auth.userContact!.id,
+                  dsc: `Пред. сумма: "${law_act.previous().court_sum}" изменена на "${body.court_sum}"`,
+                });
+                await law_act.createLawActProtokol({
+                  typ: 2,
+                  r_user_id: auth.userContact!.id,
+                  dsc: `Номер документа (приказа/иска) изменён с "${law_act.previous().exec_number}" на "${body.exec_number}"`,
                 });
                 return true;
               }),
@@ -317,9 +322,10 @@ export default class ExecService {
           )
           .then(async () => {
             const changes = law_exec.changed() as string[];
-            return await this.protokolChanges(changes, law_exec, auth).then(
-              () => true,
-            );
+            if (changes)
+              return await this.protokolChanges(changes, law_exec, auth).then(
+                () => true,
+              );
           });
       } catch (error) {
         console.log(error);
