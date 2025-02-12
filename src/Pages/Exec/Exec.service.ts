@@ -310,7 +310,7 @@ export default class ExecService {
           .update(
             {
               ...body,
-              court_name: law_court!.name,
+              // court_name: law_court!.name,
               state,
               dsc,
             },
@@ -353,7 +353,6 @@ export default class ExecService {
         })
         .then(async (result) => {
           const changes = result.changed();
-          console.log('changes: ', changes);
           if (!changes) return changes;
           else if (changes) {
             await this.protokolChanges(changes, result, auth).then(() => true);
