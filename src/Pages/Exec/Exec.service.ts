@@ -11,6 +11,7 @@ import truncator from 'src/utils/truncator';
 import { Sequelize } from '@sql-tools/sequelize-typescript';
 import { AuthResult } from 'src/Modules/Guards/auth.guard';
 import { CreateLiteralAssociation } from '@sql-tools/association-literal';
+import { node } from 'src/main';
 
 @Injectable()
 export default class ExecService {
@@ -258,7 +259,7 @@ export default class ExecService {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async create(body: any, auth: AuthResult) {
-    console.log(body);
+    node === 'prod' ? () => {} : console.log(body);
     if (auth.userContact!.id) {
       const fio =
         auth.userContact!.f +
@@ -296,9 +297,11 @@ export default class ExecService {
                 exec_number: body.exec_number,
               })
               .then(async () => {
-                console.log(
-                  `law_act_id: ${law_act.id} has been updated to ${body.court_sum}`,
-                );
+                node === 'prod'
+                  ? () => {}
+                  : console.log(
+                      `law_act_id: ${law_act.id} has been updated to ${body.court_sum}`,
+                    );
                 await law_act.createLawActProtokol({
                   typ: 2,
                   r_user_id: auth.userContact!.id,
