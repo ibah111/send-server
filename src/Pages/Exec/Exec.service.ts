@@ -277,6 +277,11 @@ export default class ExecService {
           },
           rejectOnEmpty: true,
         });
+        await this.changeDebtGuarantor(
+          law_exec,
+          body.debt_guarantor,
+          auth.userContact!.id,
+        );
         await this.modelLawAct
           .findOne({
             where: {
