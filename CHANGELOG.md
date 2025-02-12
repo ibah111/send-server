@@ -1,5 +1,19 @@
 
 
+## [0.3.4](https://git.usb.ru/send/server/compare/v0.3.3...v0.3.4) (2025-02-12)
+
+
+### Features
+
+* added methods logic ([d1e6863](https://git.usb.ru/send/server/commit/d1e68631bf3499b2ee5d1df44d4bf76d2e997582))
+* changes logics ([840edcc](https://git.usb.ru/send/server/commit/840edccd17f7a1dcd8a7d60347038d4457d30243))
+* console outputs on dev node_env ([d2ee40d](https://git.usb.ru/send/server/commit/d2ee40d6a066e0fcebf20854d5e4921f6189cc1e))
+* court_name commented ([c39be30](https://git.usb.ru/send/server/commit/c39be303105304c89304a507fb40123310387b52))
+* databse connect on prod node_env ([0657a04](https://git.usb.ru/send/server/commit/0657a041d75dcb8118518f193f6d8db2cc0acc07))
+* fix create law_exec ([ad209c8](https://git.usb.ru/send/server/commit/ad209c860bd944d2dfcc730604b6b0b4097567bf))
+* fix exec_number and court_sum ([01e4b96](https://git.usb.ru/send/server/commit/01e4b9627f3dfeefe0d6ebacb5efa07ad6294b21))
+* fixed not changable debt guarantor ([e0b15b7](https://git.usb.ru/send/server/commit/e0b15b72d0241236f8be8e2be7422391b5eb2986))
+
 ## [0.3.3](https://git.usb.ru/send/server/compare/v0.3.2...v0.3.3) (2025-02-10)
 
 
