@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Dict, LawAct, LawCourt, LawExec } from '@contact/models';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Op } from 'sequelize';
 import { UpdateExecInput } from './UpdateExec/UpdateExec.input';
@@ -255,6 +256,7 @@ export default class ExecService {
 по аналогии с кнопкой "Отправить", но сопровод не формируется, комментарий не добавляется
 создается карточка ИП в статусе "не создано" с заполненными полями
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async create(body: any, auth: AuthResult) {
     console.log(body);
     if (auth.userContact!.id) {
@@ -267,7 +269,6 @@ export default class ExecService {
       const dsc = `ИП создано в статусе "Не создано" пользователем ${fio}`;
       const dicts = await this.dicts('Не создано');
       const state = dicts[0].code;
-      const law_court = await this.modelLawCourt.findByPk(body.r_court_id);
 
       try {
         const law_exec = await this.modelLawExec.findOne({
@@ -339,25 +340,97 @@ export default class ExecService {
 по аналогии с кнопкой "Отправить", но сопровод не формируется, комментарий не добавляется. Просто сохранить данные в уже созданной карточке ИП
 т.е как бы подготавливаем карточку ИП к отправке ИД на предъявление
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async save(body: any, auth: AuthResult) {
+    const r_user_id = auth.userContact!.id;
+    const response = {
+      law_act_response: false,
+      law_exec_response: false,
+    };
     try {
+      /**
+       * Law exec changes
+       */
       const law_exec = await this.modelLawExec.findOne({
+        where: {
+          id: body.id,
+        },
+        rejectOnEmpty: new NotFoundException('Law exec not found'),
+      });
+      const old_data_values = law_exec.dataValues;
+      law_exec.update({
+        ...body,
+      });
+      const new_data_values = await this.modelLawExec.findOne({
         where: {
           id: body.id,
         },
         rejectOnEmpty: true,
       });
-      return await law_exec
-        .update({
-          ...body,
-        })
-        .then(async (result) => {
-          const changes = result.changed();
-          if (!changes) return changes;
-          else if (changes) {
-            await this.protokolChanges(changes, result, auth).then(() => true);
-          }
+
+      const changes = {};
+      Object.keys(new_data_values.dataValues).forEach((key) => {
+        //@ts-ignore
+        const oldValue = old_data_values[key];
+        //@ts-ignore
+        const newValue = new_data_values.dataValues[key];
+
+        if (oldValue !== newValue) {
+          //@ts-ignore
+          changes[key] = { old: oldValue, new: newValue };
+        }
+      });
+      if (changes) {
+        response.law_exec_response = true;
+        Object.entries(changes).forEach(
+          //@ts-ignore
+          async ([field, { old, new: newValue }]) => {
+            const dsc = `Поле "${this.t(field)}" было изменено с: "${old}" => "${newValue}" `;
+            console.log(dsc);
+            await law_exec.createLawExecProtokol({
+              r_user_id,
+              typ: 2,
+              dsc,
+            });
+          },
+        );
+      }
+      /**
+       * Law act changes
+       */
+      const law_act = await this.modelLawAct.findOne({
+        where: {
+          id: law_exec.r_act_id!,
+        },
+        rejectOnEmpty: new NotFoundException('Law act not found'),
+      });
+      law_act.exec_number = body.exec_number;
+      law_act.court_sum = body.court_sum;
+      console.log('law_act prev', law_act.previous());
+
+      const prevs = law_act.previous();
+      if (prevs.exec_number) {
+        const dsc = `Номер дела в суде был изменён с "${prevs.exec_number}" => "${body.exec_number}"`;
+        await law_act.createLawActProtokol({
+          r_user_id,
+          dsc,
+          typ: 2,
         });
+      }
+      if (prevs.court_sum) {
+        const dsc = `Сумма по решению суда изменена с "${prevs.court_sum}" => "${body.court_sum}"`;
+        await law_act.createLawActProtokol({
+          r_user_id,
+          dsc,
+          typ: 2,
+        });
+      }
+
+      await law_act.save().then(() => {
+        response.law_act_response = true;
+      });
+      console.log('responce: ', response);
+      return response;
     } catch (error) {
       console.log(error);
       throw new Error(`${error}`);
