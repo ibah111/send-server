@@ -1,5 +1,16 @@
 
 
+## [0.3.5](https://git.usb.ru/send/server/compare/v0.3.4...v0.3.5) (2025-02-27)
+
+
+### Features
+
+* db connections ([6be8ab7](https://git.usb.ru/send/server/commit/6be8ab7001f75a6e6069b8c241c92129d9308a99))
+* dockerfile ([13fc09e](https://git.usb.ru/send/server/commit/13fc09e362a7a34893f91df970171acd18aa4838))
+* link model ([ef1a32f](https://git.usb.ru/send/server/commit/ef1a32fbc0f00590eac6e8fc0d3cf473716309ff))
+* link module ([5c6889c](https://git.usb.ru/send/server/commit/5c6889cbc2273df21c8c2df65c753d72820d2643))
+* migration ([bff3e4c](https://git.usb.ru/send/server/commit/bff3e4cb0cd168f62eac90d287d0a18616424259))
+
 ## [0.3.4](https://git.usb.ru/send/server/compare/v0.3.3...v0.3.4) (2025-02-12)
 
 
