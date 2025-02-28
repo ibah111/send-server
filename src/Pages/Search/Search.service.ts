@@ -137,7 +137,14 @@ export class SearchService {
                 { [Op.like]: `%${body.name}%` },
               )
             : {},
-          attributes: ['id', 'f', 'i', 'o', [Sequelize.literal("''"), 'fio']],
+          attributes: [
+            'id',
+            'f',
+            'i',
+            'o',
+            [Sequelize.literal("''"), 'fio'],
+            'birth_date',
+          ],
         },
       ],
       limit: 25,
