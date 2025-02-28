@@ -1,5 +1,15 @@
 
 
+## [0.3.6](https://git.usb.ru/send/server/compare/v0.3.5...v0.3.6) (2025-02-28)
+
+
+### Features
+
+* add birth date ([6cc12b0](https://git.usb.ru/send/server/commit/6cc12b00df30ac0c088ef0856cfaeb728251e3ba))
+* add links seed ([a12ac79](https://git.usb.ru/send/server/commit/a12ac79ee5bae1154765cb16c2e007d8ac6efc17))
+* added different api input ([0d1990e](https://git.usb.ru/send/server/commit/0d1990eef1b71ef3ddcd016aa315c98ca943f0bc))
+* changed inputs, removed .then(), fixing endpoint name ([eef16cb](https://git.usb.ru/send/server/commit/eef16cba08ef400e2e452d66d2d749f1f1174562))
+
 ## [0.3.5](https://git.usb.ru/send/server/compare/v0.3.4...v0.3.5) (2025-02-27)
 
 
