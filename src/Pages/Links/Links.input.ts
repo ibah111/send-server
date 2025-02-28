@@ -17,3 +17,15 @@ export default class LinkInput {
   @IsString()
   item_url: string;
 }
+
+export class AddLinkInput {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  item_name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  item_url: string;
+}
