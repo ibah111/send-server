@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
-import LinkInput from './Links.input';
+import LinkInput, { AddLinkInput } from './Links.input';
 import { Link } from 'src/Modules/Database/send.server.database/server.models/Link.model';
 
 @Injectable()
@@ -10,7 +10,7 @@ export default class LinksService {
     private readonly modelLink: typeof Link,
   ) {}
 
-  async addLink(body: LinkInput) {
+  async addLink(body: AddLinkInput) {
     return await this.modelLink
       .create({
         ...body,
@@ -19,13 +19,11 @@ export default class LinksService {
   }
 
   async deleteLink({ id }: LinkInput) {
-    return await this.modelLink
-      .destroy({
-        where: {
-          id,
-        },
-      })
-      .then((res) => (res > 0 ? true : false));
+    return await this.modelLink.destroy({
+      where: {
+        id,
+      },
+    });
   }
 
   async getLinks() {
