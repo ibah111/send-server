@@ -22,8 +22,7 @@ export class UpdateExecInput {
   @IsNotEmpty()
   id: number;
   @IsOptional()
-  @Min(0)
-  // @Max(100000000)
+  @Min(0.01, { message: 'Общая сумма должна быть больше 0' })
   @IsNumber({
     maxDecimalPlaces: 2,
   })
