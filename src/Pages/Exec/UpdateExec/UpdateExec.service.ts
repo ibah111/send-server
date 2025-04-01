@@ -190,15 +190,20 @@ export class UpdateExecService {
             .utcOffset(3)
             .format('DD.MM.YYYY')}`;
 
+          // Ограничиваем длину dsc до 2000 символов
           if (le.dsc === 'Создается ИП из "Отправка"') {
-            le.dsc = new_dsc;
+            le.dsc = new_dsc.substring(0, 2000);
           } else {
             if (!le.dsc) {
               le.dsc = '';
             } else {
               le.dsc += '\r\n';
             }
-            le.dsc += new_dsc;
+            // Обрезаем новый текст, чтобы общая длина не превышала 2000 символов
+            const remainingLength = 2000 - le.dsc.length;
+            if (remainingLength > 0) {
+              le.dsc += new_dsc.substring(0, remainingLength);
+            }
           }
 
           // Сохраняем изменения в le
