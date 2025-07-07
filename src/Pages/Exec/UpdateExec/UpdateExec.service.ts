@@ -102,6 +102,7 @@ export class UpdateExecService {
     private readonly portfolioToRequisites: PortfoliosToRequisitesService,
     private readonly socketService: SocketService,
   ) {}
+
   async changeDebtGuarantor(
     le: MIS<LawExec>,
     debt_guarantor: number,
@@ -132,6 +133,7 @@ export class UpdateExecService {
       });
     }
   }
+
   async update(body: UpdateExecInput, auth: AuthResult) {
     if (auth.userContact !== null) {
       const le = await this.ModelLawExec.findByPk(body.id, {
@@ -299,6 +301,64 @@ export class UpdateExecService {
         await transaction.rollback();
         throw error;
       }
+
+      const law_court = await this.modelLawCourt.findOne({
+        where: {
+          id: body.r_court_id,
+        },
+        rejectOnEmpty: true,
+      });
+
+      if (law_court!.name !== 'Сбербанк') {
+        const data = await lastValueFrom(
+          this.downloader.downloadFile(
+            auth.userContact,
+            le,
+            doc_name,
+            body.template_typ,
+            {
+              testVariable: `ID реквизитов:${requisites_id}`,
+              addInterests: body.add_interests,
+              listEgrul: body.list_egrul || false,
+              renameNotification: body.rename_notification || false,
+              customRequisitesId: requisites_id,
+              appeal_typ: body.appeal_typ,
+            },
+            auth.user.token,
+          ),
+        );
+
+        if (data.file) {
+          if (body.options?.save_file) {
+            const doc = await this.ModelDocAttach.create(data.sql);
+            await le.createLawExecProtokol({
+              r_user_id: auth.userContact.id,
+              typ: 8,
+              r_doc_attach_id: doc.id,
+              dsc: `Вложение: ${doc.name}`,
+            });
+            const debt = await le.getDebt();
+            const transaction = await getContextTransaction(
+              this.sequelize,
+              auth.userContact.id,
+            );
+            debt!.law_exec_flag = 1;
+            await debt!.save({ transaction });
+            await transaction.commit();
+          }
+          return { file: data.file, name: data.sql.name };
+        }
+      } else if (law_court.name === 'Сбербанк') {
+        le.state = 7;
+        le.fssp_doc_num = 'В Сбербанк';
+        le.start_date = body.start_date || new Date();
+        le.save();
+        /**
+         * Логика отправления в сбербанк
+         */
+        return true;
+      }
+      return null;
     } else {
       return false;
     }

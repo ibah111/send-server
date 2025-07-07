@@ -10,12 +10,12 @@ import { UpdateExecInput } from './UpdateExec/UpdateExec.input';
 export class ExecController {
   constructor(private readonly service: ExecService) {}
 
-  @Post('saveId')
+  @Post('save-id')
   async saveId(@Body() body: UpdateExecInput, @Auth() auth: AuthResult) {
     return await this.service.save(body, auth);
   }
 
-  @Post('createIp')
+  @Post('create-ip')
   async createIp(@Body() body: UpdateExecInput, @Auth() auth: AuthResult) {
     return await this.service.create(body, auth);
   }

@@ -5,7 +5,7 @@ import server from './server';
 import { Sequelize } from '@sql-tools/sequelize-typescript';
 import { ConstValue, DocAttach, LawExec, User } from '@contact/models';
 import { InjectModel, SequelizeModule } from '@sql-tools/nestjs-sequelize';
-import { Injectable, Module } from '@nestjs/common';
+import { Injectable, Logger, Module } from '@nestjs/common';
 import { MIS } from '@sql-tools/sequelize';
 import { from, map, mergeMap, Observable, of } from 'rxjs';
 import { SMBService } from '@tools/nestjs-smb2';
@@ -22,12 +22,16 @@ type uploads = {
 };
 @Injectable()
 export class Downloader {
+  private readonly service_tag: string = Downloader.name;
+  private readonly logger = new Logger();
+
   constructor(
     @InjectModel(DocAttach, 'contact') private ModelDocAttach: typeof DocAttach,
     @InjectModel(ConstValue, 'contact')
     private ModelConstValue: typeof ConstValue,
     private readonly smb: SMBService,
   ) {}
+
   uploadSmb(
     doc_name: string,
     save_path: string,
@@ -134,7 +138,9 @@ export class Downloader {
     },
     token: string,
   ) {
+    const tag = `${this.service_tag}-${this.downloadFile.name}`;
     const download_url = `${server('fastreport')}/print/${template_id}`;
+    this.logger.debug(`Downloading file. Using "${download_url}" URL.`, tag);
     try {
       const axios_request = axios.get<Buffer>(download_url, {
         responseType: 'arraybuffer',
