@@ -1,5 +1,22 @@
 
 
+## [0.3.7](https://git.usb.ru/send/server/compare/v0.3.6...v0.3.7) (2025-07-07)
+
+
+### Features
+
+* сумма не может быть меньше нуля ([d5fd563](https://git.usb.ru/send/server/commit/d5fd563a297fa684df3f13358485a462c8a8c4ac))
+* renamed endpoints ([63724c5](https://git.usb.ru/send/server/commit/63724c533cc0c7a928222d98b61a062e3983678a))
+* updated lock file + npm lock json + package.json ([30ffd5b](https://git.usb.ru/send/server/commit/30ffd5bb5d77820f524178ddf66d4a5d0419ddab))
+
+
+### Bug Fixes
+
+* **db:** fixed db connect ([072a702](https://git.usb.ru/send/server/commit/072a70296cfba20df8f0b6b737fc69de1e930b5c))
+* fixing law_exec dsc ([d7a9166](https://git.usb.ru/send/server/commit/d7a91660719fabacb37ecb291a03b801746aa750))
+* lint and prettier fixes ([e17649c](https://git.usb.ru/send/server/commit/e17649c02e941af4f66eec69d10f855dabd8058a))
+* trying to fix date ([b9b6998](https://git.usb.ru/send/server/commit/b9b69986b44d65ca8ee4976da7deccaeac1b2f57))
+
 ## [0.3.6](https://git.usb.ru/send/server/compare/v0.3.5...v0.3.6) (2025-02-28)
 
 
