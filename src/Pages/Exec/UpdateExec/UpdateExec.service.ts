@@ -104,6 +104,7 @@ export class UpdateExecService {
     private readonly portfolioToRequisites: PortfoliosToRequisitesService,
     private readonly socketService: SocketService,
   ) {}
+
   async changeDebtGuarantor(
     le: MIS<LawExec>,
     debt_guarantor: number,
@@ -134,6 +135,7 @@ export class UpdateExecService {
       });
     }
   }
+
   async update(body: UpdateExecInput, auth: AuthResult) {
     if (auth.userContact !== null) {
       const le = await this.ModelLawExec.findByPk(body.id, {
@@ -321,6 +323,7 @@ export class UpdateExecService {
         },
         rejectOnEmpty: true,
       });
+
       if (law_court!.name !== 'Сбербанк') {
         const data = await lastValueFrom(
           this.downloader.downloadFile(
@@ -339,6 +342,7 @@ export class UpdateExecService {
             auth.user.token,
           ),
         );
+
         if (data.file) {
           if (body.options?.save_file) {
             const doc = await this.ModelDocAttach.create(data.sql);

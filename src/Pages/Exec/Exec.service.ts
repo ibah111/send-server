@@ -5,7 +5,6 @@ import { InjectConnection, InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Op } from 'sequelize';
 import { UpdateExecInput } from './UpdateExec/UpdateExec.input';
 import { Attributes, MIS } from '@sql-tools/sequelize';
-import moment from 'moment-timezone';
 import { Helper } from 'src/utils/helper';
 import truncator from 'src/utils/truncator';
 import { Sequelize } from '@sql-tools/sequelize-typescript';
@@ -32,51 +31,12 @@ export default class ExecService {
     dsc: 'Коментарий',
     deposit_typ: 'Залоговое имущество',
   };
+
   t = (value: string) => {
     if (this.translate[value]) return this.translate[value];
     return 'Не определено';
   };
 
-  private updateData<V extends T[K], K extends keyof T, T extends LawExec>(
-    data: T,
-    key: K,
-    value: V,
-  ) {
-    data[key] = value;
-  }
-
-  private transform<
-    T extends keyof Attributes<LawExec> & keyof UpdateExecInput,
-  >(name: T, value?: LawExec[T]): LawExec[T] {
-    if (value) {
-      switch (name) {
-        case 'load_dt':
-          return moment(value as Date).toDate() as LawExec[T];
-        case 'court_date':
-          return moment(value as Date)
-            .startOf('day')
-            .toDate() as LawExec[T];
-        case 'entry_force_dt':
-          return moment(value as Date)
-            .startOf('day')
-            .toDate() as LawExec[T];
-        case 'receipt_recover_dt':
-          return moment(value as Date)
-            .startOf('day')
-            .toDate() as LawExec[T];
-        case 'fssp_date':
-          return moment(value as Date)
-            .startOf('day')
-            .toDate() as LawExec[T];
-        default:
-          return value;
-      }
-    } else {
-      if (name === 'total_sum' && (value === null || value === 0))
-        return 0 as LawExec[T];
-      return null as LawExec[T];
-    }
-  }
   strings: (keyof UpdateExecInput & keyof Attributes<LawExec>)[] = [
     'total_sum',
     'load_dt',
