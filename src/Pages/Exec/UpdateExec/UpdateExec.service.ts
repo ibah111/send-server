@@ -21,23 +21,21 @@ function transform<T extends keyof Attributes<LawExec> & keyof UpdateExecInput>(
   if (value) {
     switch (name) {
       case 'load_dt':
-        return moment(value as Date).toDate() as LawExec[T];
       case 'court_date':
-        return moment(value as Date)
-          .startOf('day')
-          .toDate() as LawExec[T];
       case 'entry_force_dt':
-        return moment(value as Date)
-          .startOf('day')
-          .toDate() as LawExec[T];
       case 'receipt_recover_dt':
-        return moment(value as Date)
-          .startOf('day')
-          .toDate() as LawExec[T];
       case 'fssp_date':
-        return moment(value as Date)
-          .startOf('day')
-          .toDate() as LawExec[T];
+        try {
+          const date = moment(value);
+          if (!date.isValid()) {
+            console.error(`Invalid date for ${name}:`, value);
+            return null as LawExec[T];
+          }
+          return date.startOf('day').toDate() as LawExec[T];
+        } catch (error) {
+          console.error(`Error parsing date for ${name}:`, value, error);
+          return null as LawExec[T];
+        }
       default:
         return value;
     }
@@ -141,180 +139,167 @@ export class UpdateExecService {
       const le = await this.ModelLawExec.findByPk(body.id, {
         rejectOnEmpty: new NotFoundException('Такой дело не найдено'),
       });
+
       const law_act = await this.modelLawAct.findOne({
         where: {
           id: le.r_act_id!,
         },
         rejectOnEmpty: new NotFoundException('Такой law_act не найден'),
       });
-      await law_act.update({
-        court_sum: body.court_sum,
-        exec_number: body.exec_number,
-      });
-      await this.changeDebtGuarantor(
-        le,
-        body.debt_guarantor,
+
+      // Начинаем транзакцию
+      const transaction = await getContextTransaction(
+        this.sequelize,
         auth.userContact.id,
       );
-      for (const value of strings) {
-        updateData(le, value, transform(value, body[value]));
-      }
-      le.fssp_doc_num = null;
-      le.start_date = null;
-      le.deposit_typ = body.person_property ? 1 : null;
-      const changes = le.changed();
-      if (changes) {
-        const transaction = await getContextTransaction(
-          this.sequelize,
+
+      try {
+        // Обновляем law_act
+        await law_act.update(
+          {
+            court_sum: body.court_sum,
+            exec_number: body.exec_number,
+          },
+          { transaction },
+        );
+
+        // Обновляем debt_guarantor
+        await this.changeDebtGuarantor(
+          le,
+          body.debt_guarantor,
           auth.userContact.id,
         );
-        le.state = 9;
-        const new_dsc = `${moment()
-          .utcOffset(3)
-          .format('DD.MM.YYYY')} Сопровод к ИД ${
-          le.court_doc_num
-        } ${await this.helper.help('executive_typ', le.executive_typ)} ${moment(
-          le.court_date,
-        )
-          .utcOffset(3)
-          .format('DD.MM.YYYY')}`;
-        if (le.dsc === 'Создается ИП из "Отправка"') {
-          le.dsc = new_dsc;
-        } else {
-          if (!le.dsc) {
-            le.dsc = '';
-          } else {
-            le.dsc += '\r\n';
-          }
-          le.dsc += new_dsc;
-        }
-        const la = await le.getLawAct();
-        if (la !== null) {
-          if (la.typ !== 1) {
-            la.act_status = 13;
-          } else {
-            la.status = 9;
-          }
-          await la.save({ transaction });
-          await transaction.commit();
-          await la.createLawActProtokol({
-            r_user_id: auth.userContact.id,
-            typ: 36,
-            dsc: `Перевод исполнительного документа на исполнительное производство. ID исп. док-та = ${le.id}`,
-          });
-        }
-        const changes = le.changed() as (keyof Attributes<LawExec>)[];
-        if (changes) {
-          const transaction = await getContextTransaction(
-            this.sequelize,
-            auth.userContact.id,
-          );
-          for (const change of changes) {
-            switch (change) {
-              case 'r_court_id':
-                const r_court_id_value = `${t(change)}. Новое значение: "${await this.helper.help(
-                  change,
-                  le[change],
-                )}". Старое значение: "${await this.helper.help(
-                  change,
-                  le.previous(change),
-                )}".`;
-                const comment = truncator(r_court_id_value);
-                await le.createLawExecProtokol({
-                  r_user_id: auth.userContact.id,
-                  typ: 2,
-                  dsc: comment,
-                });
-                break;
-              case 'dsc':
-                const dsc = `${t(change)}. Новое значение: "${await this.helper.help(
-                  change,
-                  le[change],
-                )}".`;
-                try {
-                  const comment = truncator(dsc);
-                  await le.createLawExecProtokol({
-                    r_user_id: auth.userContact.id,
-                    typ: 2,
-                    dsc: comment,
-                  });
-                } catch (error) {
-                  //@ts-expect-error ///
-                  throw Error(error);
-                }
-                break;
-              case 'state':
-                switch (le.previous(change)) {
-                  case 13:
-                    await le.createLawExecProtokol({
-                      r_user_id: auth.userContact.id,
-                      typ: 30,
-                      dsc: truncator(
-                        `Перевод исполнительного документа на исполнительное производство`,
-                      ),
-                    });
-                    break;
-                  default:
-                    const value = `${t(
-                      change,
-                    )}. Новое значение: "${await this.helper.help(
-                      change,
-                      le[change],
-                    )}". Старое значение: "${await this.helper.help(
-                      change,
-                      le.previous(change),
-                    )}".`;
-                    const comment = truncator(value);
 
-                    await le.createLawExecProtokol({
+        // Обновляем основные поля
+        for (const value of strings) {
+          updateData(le, value, transform(value, body[value]));
+        }
+
+        le.fssp_doc_num = null;
+        le.start_date = null;
+        le.deposit_typ = body.person_property ? 1 : null;
+
+        const changes = le.changed();
+        if (changes) {
+          le.state = 9;
+          const new_dsc = `${moment()
+            .utcOffset(3)
+            .format('DD.MM.YYYY')} Сопровод к ИД ${
+            le.court_doc_num
+          } ${await this.helper.help('executive_typ', le.executive_typ)} ${moment(
+            le.court_date,
+          )
+            .utcOffset(3)
+            .format('DD.MM.YYYY')}`;
+
+          // Ограничиваем длину dsc до 2000 символов
+          if (le.dsc === 'Создается ИП из "Отправка"') {
+            le.dsc = new_dsc.substring(0, 2000);
+          } else {
+            if (!le.dsc) {
+              le.dsc = '';
+            } else {
+              le.dsc += '\r\n';
+            }
+            // Обрезаем новый текст, чтобы общая длина не превышала 2000 символов
+            const remainingLength = 2000 - le.dsc.length;
+            if (remainingLength > 0) {
+              le.dsc += new_dsc.substring(0, remainingLength);
+            }
+          }
+
+          // Сохраняем изменения в le
+          await le.save({ transaction });
+
+          const la = await le.getLawAct();
+          if (la !== null) {
+            if (la.typ !== 1) {
+              la.act_status = 13;
+            } else {
+              la.status = 9;
+            }
+            await la.save({ transaction });
+
+            await la.createLawActProtokol(
+              {
+                r_user_id: auth.userContact.id,
+                typ: 36,
+                dsc: `Перевод исполнительного документа на исполнительное производство. ID исп. док-та = ${le.id}`,
+              },
+              { transaction },
+            );
+          }
+
+          // Обрабатываем изменения
+          const changes = le.changed() as (keyof Attributes<LawExec>)[];
+          if (changes) {
+            for (const change of changes) {
+              switch (change) {
+                case 'r_court_id':
+                  const r_court_id_value = `${t(change)}. Новое значение: "${await this.helper.help(
+                    change,
+                    le[change],
+                  )}". Старое значение: "${await this.helper.help(
+                    change,
+                    le.previous(change),
+                  )}".`;
+                  const comment = truncator(r_court_id_value);
+                  await le.createLawExecProtokol(
+                    {
                       r_user_id: auth.userContact.id,
                       typ: 2,
                       dsc: comment,
-                    });
-                    break;
-                }
-                break;
-              default:
-                const value = `${t(change)}. Новое значение: "${await this.helper.help(
-                  change,
-                  le[change],
-                )}". Старое значение: "${await this.helper.help(
-                  change,
-                  le.previous(change),
-                )}".`;
-                await le.createLawExecProtokol({
-                  r_user_id: auth.userContact.id,
-                  typ: 2,
-                  dsc: truncator(value),
-                });
-                break;
+                    },
+                    { transaction },
+                  );
+                  break;
+                case 'dsc':
+                  const dsc = `${t(change)}. Новое значение: "${await this.helper.help(
+                    change,
+                    le[change],
+                  )}".`;
+                  try {
+                    const comment = truncator(dsc);
+                    await le.createLawExecProtokol(
+                      {
+                        r_user_id: auth.userContact.id,
+                        typ: 2,
+                        dsc: comment,
+                      },
+                      { transaction },
+                    );
+                  } catch (error) {
+                    console.error('Error creating protocol for dsc:', error);
+                    throw error;
+                  }
+                  break;
+                case 'state':
+                  switch (le.previous(change)) {
+                    case 13:
+                      await le.createLawExecProtokol(
+                        {
+                          r_user_id: auth.userContact.id,
+                          typ: 30,
+                          dsc: truncator(
+                            `Изменение статуса с "На исполнении" на "Исполнительное производство"`,
+                          ),
+                        },
+                        { transaction },
+                      );
+                      break;
+                  }
+                  break;
+              }
             }
           }
-          try {
-            await le.save({ transaction });
-            await transaction.commit();
-          } catch (error) {
-            throw new Error(`${error}`);
-          }
         }
-      }
-      const doc_name = `Сопровод к ИД ${le
-        .court_doc_num!.replaceAll('\\', '-')
-        .replaceAll('/', '-')} ${await this.helper.help(
-        'executive_typ',
-        le.executive_typ,
-      )} ${moment(le.court_date).utcOffset(3).format('DD.MM.YYYY')}.pdf`;
 
-      /**
-       * linked requisites to portfolio logic
-       */
-      let requisites_id: number = 0;
-      if (body.custom_requisites_id! != 0) {
-        requisites_id = body.custom_requisites_id!;
-      } else if (body.custom_requisites_id === 0) {
-        const linked_requisites_id =
-          await this.portfolioToRequisites.getRequisitesByLawExecId(le.id);
-        requisites_id = linked_requisites_id;
+        // Коммитим транзакцию
+        await transaction.commit();
+      } catch (error) {
+        // Откатываем транзакцию в случае ошибки
+        await transaction.rollback();
+        throw error;
       }
 
       const law_court = await this.modelLawCourt.findOne({
