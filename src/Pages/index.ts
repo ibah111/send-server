@@ -20,6 +20,7 @@ import PortfoliosToRequisitesModule from './PortfoliosToRequisites/PortfoliosToR
 import CommentsModule from './Comments/Comments.module';
 import ExecModule from './Exec/Exec.module';
 import { LinksModule } from './Links/Links.module';
+import { RejectStatusesModule } from './RejectStatuses/RejectStatuses.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { LinksModule } from './Links/Links.module';
     PortfoliosToRequisitesModule,
     ExecModule,
     LinksModule,
+    RejectStatusesModule,
   ],
 })
 export class PagesModule {}

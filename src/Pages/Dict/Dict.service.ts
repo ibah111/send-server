@@ -1,7 +1,7 @@
 import { Dict, DictName } from '@contact/models';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import { Injectable } from '@nestjs/common';
-import { DictInput, getRawDictNamesClass } from './Dict.input';
+import { DictInput, GetRawDictNamesClass } from './Dict.input';
 import { Op } from 'sequelize';
 @Injectable()
 export class DictService {
@@ -16,23 +16,13 @@ export class DictService {
     });
   }
 
-  async addDictNames() {
-    return;
-  }
-
-  async getRawDictNames({ name }: getRawDictNamesClass) {
+  async getRawDictNames({ name, code }: GetRawDictNamesClass) {
     const dictNames = await this.modelDictName.findAll({
       attributes: ['id', 'code', 'name', 'r_code', 'typ'],
-      logging: console.log,
+      //@ts-expect-error expecting error
       where: {
-        //@ts-expect-error ///
-        [Op.or]: [
-          {
-            name: {
-              [Op.like]: `%${name}%`,
-            },
-          },
-        ],
+        code: code ? code : undefined,
+        name: name ? { [Op.like]: `%${name}%` } : undefined,
       },
     });
     return dictNames;

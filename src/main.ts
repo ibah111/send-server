@@ -39,12 +39,12 @@ async function bootstrap() {
     options.adapter,
   );
   app.register(contentParser);
-  try {
-    await app.get(LocalSeed).seed();
-  } catch (e) {
-    console.log(e);
-    throw e;
-  }
+  // try {
+  //   await app.get(LocalSeed).seed();
+  // } catch (e) {
+  //   console.log(e);
+  //   throw e;
+  // }
   const config = new DocumentBuilder()
     .setTitle('Подача')
     .setDescription('ПО Подача для отдела ИП')

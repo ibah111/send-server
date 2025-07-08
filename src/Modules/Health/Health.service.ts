@@ -23,7 +23,7 @@ export class HealthService {
     return this.health.check([
       () => this.socket.connections('sockets'),
       () =>
-        this.http.responseCheck<HealthCheckResult>(
+        this.http.responseCheck<HealthCheckResult, 'templates'>(
           'templates',
           server('fastreport') + '/health',
           (res) => res.data.status === 'ok',
