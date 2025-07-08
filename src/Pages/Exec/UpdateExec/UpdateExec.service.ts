@@ -138,10 +138,10 @@ export class UpdateExecService {
 
   async update(body: UpdateExecInput, auth: AuthResult) {
     if (auth.userContact !== null) {
-      const le = await this.ModelLawExec.findByPk(body.id, {
+      const le: MIS<LawExec> = await this.ModelLawExec.findByPk(body.id, {
         rejectOnEmpty: new NotFoundException('Такой дело не найдено'),
       });
-      const law_act = await this.modelLawAct.findOne({
+      const law_act: MIS<LawAct> = await this.modelLawAct.findOne({
         where: {
           id: le.r_act_id!,
         },
