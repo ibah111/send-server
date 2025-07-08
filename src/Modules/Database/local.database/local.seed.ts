@@ -64,24 +64,27 @@ export class LocalSeed implements OnModuleInit {
   }
 
   async seedDebtRejected() {
-    this.logger.debug('Seeding debt rejected statuses');
     const debt_rejected = await this.modelDebtRejectStatuses.findAll();
     if (debt_rejected.length === 0) {
       for (const reject of this.debt_rejected) {
         await this.modelDebtRejectStatuses.create({ reject_id: reject });
       }
+    } else {
+      this.logger.verbose('Debt rejected statuses already seeded');
     }
   }
 
   async seedLawActRejected() {
-    this.logger.debug('Seeding law act rejected statuses');
     const law_act_rejected = await this.modelLawActRejectStatuses.findAll();
     if (law_act_rejected.length === 0) {
+      this.logger.debug('Seeding law act rejected statuses');
       for (const reject of this.law_act_rejected) {
         await this.modelLawActRejectStatuses.create({
           reject_name: reject,
         });
       }
+    } else {
+      this.logger.verbose('Law act rejected statuses already seeded');
     }
   }
 }
