@@ -7502,6 +7502,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"git-semver-tags@npm:^7.0.0":
+  version: 7.0.1
+  resolution: "git-semver-tags@npm:7.0.1"
+  dependencies:
+    meow: "npm:^12.0.1"
+    semver: "npm:^7.5.2"
+  bin:
+    git-semver-tags: cli.mjs
+  checksum: 10/07b8a352bd28ad7678a2e12c91b11b5e53aff017420497bbb1cba0645e609f58d0a7d02d5f2ea6c7cd3019d7631ce7737f64cc90c47d944753c6bd2a36c03211
+  languageName: node
+  linkType: hard
+
 "git-semver-tags@npm:^8.0.0":
   version: 8.0.0
   resolution: "git-semver-tags@npm:8.0.0"
@@ -11789,7 +11801,7 @@ __metadata:
     eslint-config-prettier: "npm:^10.1.5"
     eslint-plugin-prettier: "npm:^5.5.1"
     fastify-multer: "npm:^2.0.3"
-    git-semver-tags: "npm:^8.0.0"
+    git-semver-tags: "npm:^7.0.0"
     husky: "npm:^9.1.7"
     jest: "npm:^30.0.4"
     mime-types: "npm:^3.0.1"

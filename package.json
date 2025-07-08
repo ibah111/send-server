@@ -54,7 +54,7 @@
     "crypto-js": "^4.2.0",
     "dottie": "^2.0.6",
     "fastify-multer": "^2.0.3",
-    "git-semver-tags": "^8.0.0",
+    "git-semver-tags": "^7.0.0",
     "mime-types": "^3.0.1",
     "moment-timezone": "^0.6.0",
     "nest-fastify-multer": "^2.0.0",
