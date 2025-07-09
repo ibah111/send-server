@@ -1,7 +1,7 @@
 import { Bank, BankRequisits, Debt, LawExec, Portfolio } from '@contact/models';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
-import { Op } from 'sequelize';
+import { Op } from '@sql-tools/sequelize';
 import { PortfoliosToRequisites } from 'src/Modules/Database/send.server.database/server.models/PortfolioToRequisites';
 
 class CreateLinkInput {
@@ -38,10 +38,8 @@ export default class PortfoliosToRequisitesService {
         const result_ids: number[] = result.map(
           (item) => item.dataValues.r_portfolio_id,
         );
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
+
         const portfolios = await this.modelPortfolio.findAll({
-          //@ts-expect-error type error
           where: {
             id: {
               [Op.in]: result_ids,
