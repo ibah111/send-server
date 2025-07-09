@@ -9,6 +9,5 @@ export class AddDebtRejectStatusDto {
   })
   @IsNumber({}, { message: 'reject_id must be a number' })
   @IsNotEmpty({ message: 'reject_id is required' })
-  @Transform(({ value }) => Number(value))
   reject_id: number;
 }
