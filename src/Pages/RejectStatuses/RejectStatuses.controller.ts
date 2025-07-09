@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { RejectStatusesService } from './RejectStatuses.service';
 import {
   ApiBasicAuth,
@@ -10,8 +18,8 @@ import { AddLawActRejectStatusDto } from './dto/add-law-act-reject-status.dto';
 import { AddDebtRejectStatusDto } from './dto/add-debt-reject-status.dto';
 import { AuthGuard } from 'src/Modules/Guards/auth.guard';
 
-@ApiBasicAuth()
-@UseGuards(AuthGuard)
+// @ApiBasicAuth()
+// @UseGuards(AuthGuard)
 @ApiTags('RejectStatuses')
 @Controller('reject-statuses')
 export class RejectStatusesController {
@@ -45,5 +53,25 @@ export class RejectStatusesController {
   @Post('law-act')
   public async addLawActRejectStatus(@Body() body: AddLawActRejectStatusDto) {
     return this.rejectStatusesService.addLawActRejectStatus(body.reject_name);
+  }
+
+  @Delete('debt/:reject_id')
+  @ApiOperation({ summary: 'Delete debt reject status' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return 1 if debt reject status deleted',
+  })
+  public async deleteDebtRejectStatus(@Param('reject_id') reject_id: number) {
+    return this.rejectStatusesService.deleteDebtRejectStatus(reject_id);
+  }
+
+  @Delete('law-act/:name')
+  @ApiOperation({ summary: 'Delete law act reject status' })
+  @ApiResponse({
+    status: 200,
+    description: 'Return 1 if law act reject status deleted',
+  })
+  public async deleteLawActRejectStatus(@Param('name') name: string) {
+    return this.rejectStatusesService.deleteLawActRejectStatus(name);
   }
 }

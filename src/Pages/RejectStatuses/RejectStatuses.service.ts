@@ -8,6 +8,7 @@ import { DebtRejectStatuses } from 'src/Modules/Database/local.database/models/D
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import LawActRejectStatuses from 'src/Modules/Database/local.database/models/LawActRejectStatuses.model';
 import { Dict } from '@contact/models';
+import { Op } from '@sql-tools/sequelize';
 
 @Injectable()
 export class RejectStatusesService {
@@ -24,8 +25,8 @@ export class RejectStatusesService {
   ) {}
 
   async getAll(): Promise<{
-    debtRejectStatuses: number[];
-    lawActRejectStatuses: string[];
+    debt_reject_statuses: number[];
+    law_act_reject_statuses: string[];
   }> {
     try {
       const debtRejectStatuses = await this.modelDebtRejectStatuses.findAll();
@@ -33,11 +34,11 @@ export class RejectStatusesService {
         await this.modelLawActRejectStatuses.findAll();
 
       const response: {
-        debtRejectStatuses: number[];
-        lawActRejectStatuses: string[];
+        debt_reject_statuses: number[];
+        law_act_reject_statuses: string[];
       } = {
-        debtRejectStatuses: debtRejectStatuses.map((debt) => debt.reject_id),
-        lawActRejectStatuses: lawActRejectStatuses.map(
+        debt_reject_statuses: debtRejectStatuses.map((debt) => debt.reject_id),
+        law_act_reject_statuses: lawActRejectStatuses.map(
           (law) => law.reject_name,
         ),
       };
@@ -50,20 +51,31 @@ export class RejectStatusesService {
   }
 
   async addDebtRejectStatus(reject_id: number): Promise<DebtRejectStatuses> {
+    const DEBT_DICT_CODE = 6; // Код словаря для долга
     try {
       const dict = await this.modelDict.findOne({
         where: {
-          code: reject_id,
+          [Op.and]: [{ parent_id: DEBT_DICT_CODE }, { code: reject_id }],
         },
       });
       if (!dict) {
         throw new BadRequestException('Статус отказа не найден');
       }
-      const debtRejectStatus = await this.modelDebtRejectStatuses.create({
-        reject_id: dict.id,
+      const element = await this.modelDebtRejectStatuses.findOne({
+        where: {
+          reject_id,
+        },
+      });
+      if (element) {
+        throw new BadRequestException(
+          `Статус отказа debt - "${dict.name}" уже существует`,
+        );
+      }
+      const debt_reject_status = await this.modelDebtRejectStatuses.create({
+        reject_id: dict.code,
       });
 
-      return debtRejectStatus;
+      return debt_reject_status;
     } catch (error) {
       this.logger.error(error);
       const err_message =
@@ -78,12 +90,33 @@ export class RejectStatusesService {
   async addLawActRejectStatus(
     reject_name: string,
   ): Promise<LawActRejectStatuses> {
+    const LAW_ACT_DICT_CODE = 18; // Код словаря для законаS
     try {
-      const lawActRejectStatus = await this.modelLawActRejectStatuses.create({
-        reject_name,
+      const dict = await this.modelDict.findOne({
+        where: {
+          [Op.and]: [{ parent_id: LAW_ACT_DICT_CODE }, { name: reject_name }],
+        },
       });
+      if (!dict) {
+        throw new BadRequestException('Статус отказа law_act не найден');
+      }
+      const element = await this.modelLawActRejectStatuses.findOne({
+        where: {
+          reject_name,
+        },
+      });
+      if (element) {
+        throw new BadRequestException(
+          `Статус отказа law_act - "${dict.name}" уже существует`,
+        );
+      }
+      const law_act_reject_status = await this.modelLawActRejectStatuses.create(
+        {
+          reject_name,
+        },
+      );
 
-      return lawActRejectStatus;
+      return law_act_reject_status;
     } catch (error) {
       this.logger.error(error);
       const err_message =
@@ -93,5 +126,17 @@ export class RejectStatusesService {
         err_message,
       );
     }
+  }
+
+  async deleteDebtRejectStatus(reject_id: number) {
+    return await this.modelDebtRejectStatuses.destroy({
+      where: { reject_id },
+    });
+  }
+
+  async deleteLawActRejectStatus(name: string) {
+    return await this.modelLawActRejectStatuses.destroy({
+      where: { reject_name: name },
+    });
   }
 }
