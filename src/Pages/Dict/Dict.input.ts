@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class DictInput {
   @IsNumber()
@@ -8,6 +8,22 @@ export class DictInput {
     example: 1,
   })
   id: number;
+
+  @IsOptional()
+  @IsArray()
+  @ApiPropertyOptional({
+    description: 'ID словарей, которые не нужно включать в результат',
+    example: [],
+  })
+  not_in_ids?: number[];
+
+  @IsOptional()
+  @IsArray()
+  @ApiPropertyOptional({
+    description: 'Названия словарей, которые не нужно включать в результат',
+    example: ['Отмена приказа'],
+  })
+  not_in_names?: string[];
 }
 
 export class GetRawDictNamesClass {
