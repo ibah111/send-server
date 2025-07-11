@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class AddLawActRejectStatusDto {
+export class LawActRejectStatusDto {
   @ApiProperty({
     description: 'The name of the reject status',
     example: 'Отмена приказа',

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export class AddDebtRejectStatusDto {
+export class DebtRejectStatusDto {
   @ApiProperty({
     description: 'The ID of the reject status',
     example: 1,

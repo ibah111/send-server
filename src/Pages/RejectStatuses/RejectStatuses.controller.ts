@@ -14,8 +14,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { AddLawActRejectStatusDto } from './dto/add-law-act-reject-status.dto';
-import { AddDebtRejectStatusDto } from './dto/add-debt-reject-status.dto';
+import { LawActRejectStatusDto } from './dto/law-act-reject-status.dto';
+import { DebtRejectStatusDto } from './dto/debt-reject-status.dto';
 import { AuthGuard } from 'src/Modules/Guards/auth.guard';
 
 // @ApiBasicAuth()
@@ -41,7 +41,7 @@ export class RejectStatusesController {
     status: 200,
     description: 'Return added debt reject status',
   })
-  public async addDebtRejectStatus(@Body() body: AddDebtRejectStatusDto) {
+  public async addDebtRejectStatus(@Body() body: DebtRejectStatusDto) {
     return this.rejectStatusesService.addDebtRejectStatus(body.reject_id);
   }
 
@@ -51,27 +51,29 @@ export class RejectStatusesController {
     description: 'Return added law act reject status',
   })
   @Post('law-act')
-  public async addLawActRejectStatus(@Body() body: AddLawActRejectStatusDto) {
+  public async addLawActRejectStatus(@Body() body: LawActRejectStatusDto) {
     return this.rejectStatusesService.addLawActRejectStatus(body.reject_name);
   }
 
-  @Delete('debt/:reject_id')
+  @Delete('debt')
   @ApiOperation({ summary: 'Delete debt reject status' })
   @ApiResponse({
     status: 200,
     description: 'Return 1 if debt reject status deleted',
   })
-  public async deleteDebtRejectStatus(@Param('reject_id') reject_id: number) {
-    return this.rejectStatusesService.deleteDebtRejectStatus(reject_id);
+  public async deleteDebtRejectStatus(@Body() body: DebtRejectStatusDto) {
+    return this.rejectStatusesService.deleteDebtRejectStatus(body.reject_id);
   }
 
-  @Delete('law-act/:name')
+  @Delete('law-act')
   @ApiOperation({ summary: 'Delete law act reject status' })
   @ApiResponse({
     status: 200,
     description: 'Return 1 if law act reject status deleted',
   })
-  public async deleteLawActRejectStatus(@Param('name') name: string) {
-    return this.rejectStatusesService.deleteLawActRejectStatus(name);
+  public async deleteLawActRejectStatus(@Body() body: LawActRejectStatusDto) {
+    return this.rejectStatusesService.deleteLawActRejectStatus(
+      body.reject_name,
+    );
   }
 }
