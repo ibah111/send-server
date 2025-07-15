@@ -12,9 +12,13 @@ export class DictService {
   ) {}
   async dict(body: DictInput) {
     return await this.ModelDict.findAll({
+      attributes: ['id', 'code', 'name', 'r_code', 'typ'],
       where: {
         parent_id: body.id,
-        ...(body.not_in_ids && { id: { [Op.notIn]: body.not_in_ids } }),
+        ...(body.name && {
+          [Op.and]: [{ name: { [Op.like]: `%${body.name}%` } }],
+        }),
+        ...(body.not_in_ids && { code: { [Op.notIn]: body.not_in_ids } }),
         ...(body.not_in_names && {
           name: { [Op.notIn]: body.not_in_names },
         }),

@@ -5,9 +5,17 @@ export class DictInput {
   @IsNumber()
   @ApiProperty({
     description: 'ID словаря',
-    example: 1,
+    example: 18,
   })
   id: number;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({
+    description: 'Название статуса',
+    example: 'Отмена приказа',
+  })
+  name?: string;
 
   @IsOptional()
   @IsArray()
@@ -21,7 +29,7 @@ export class DictInput {
   @IsArray()
   @ApiPropertyOptional({
     description: 'Названия словарей, которые не нужно включать в результат',
-    example: ['Отмена приказа'],
+    example: [],
   })
   not_in_names?: string[];
 }
