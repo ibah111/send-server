@@ -1951,6 +1951,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@keyv/serialize@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@keyv/serialize@npm:1.0.3"
+  dependencies:
+    buffer: "npm:^6.0.3"
+  checksum: 10/d6a9194dd781bc26cc4d55f392d843810c1fdc0da81e69203e633cb289fc0a8edc8bc6466f66c4cbb55da0a5b405e89f14a68b48d6e73919ae82f8249fb5e444
+  languageName: node
+  linkType: hard
+
 "@lukeed/csprng@npm:^1.0.0":
   version: 1.1.0
   resolution: "@lukeed/csprng@npm:1.1.0"
@@ -2151,6 +2160,19 @@ __metadata:
     axios: ^1.3.1
     rxjs: ^7.0.0
   checksum: 10/9a61ac8a2fdbf304961696148945ba9e19c0ed73256767b0a643bbafe77106b2f738cb2f35f2fc63bff09a8abcd18365d2f8c772484e2fdd70b455bceb7b5822
+  languageName: node
+  linkType: hard
+
+"@nestjs/cache-manager@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@nestjs/cache-manager@npm:3.0.1"
+  peerDependencies:
+    "@nestjs/common": ^9.0.0 || ^10.0.0 || ^11.0.0
+    "@nestjs/core": ^9.0.0 || ^10.0.0 || ^11.0.0
+    cache-manager: ">=6"
+    keyv: ">=5"
+    rxjs: ^7.8.1
+  checksum: 10/4e34d187f749f6c1068eb85966d17304cea1129f2f9edb176511096dc93e42bb45ea4921eb999ebd5c0db3212f4c49b34d1c762e84e3e356495fdae7dd063cac
   languageName: node
   linkType: hard
 
@@ -4983,6 +5005,15 @@ __metadata:
     tar: "npm:^7.4.3"
     unique-filename: "npm:^4.0.0"
   checksum: 10/ea026b27b13656330c2bbaa462a88181dcaa0435c1c2e705db89b31d9bdf7126049d6d0445ba746dca21454a0cfdf1d6f47fd39d34c8c8435296b30bc5738a13
+  languageName: node
+  linkType: hard
+
+"cache-manager@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "cache-manager@npm:7.0.1"
+  dependencies:
+    keyv: "npm:^5.3.4"
+  checksum: 10/f65b18ac9e9dfd95ef2342b72047b0f59696a4391ba57272b94746481fd386fb80ce530148460bd788aabc08af90512d7d8ba7292e6237712517bd5150940b73
   languageName: node
   linkType: hard
 
@@ -9147,6 +9178,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"keyv@npm:^5.3.4":
+  version: 5.3.4
+  resolution: "keyv@npm:5.3.4"
+  dependencies:
+    "@keyv/serialize": "npm:^1.0.3"
+  checksum: 10/3e294eb1168af78ad3430d0cc47b6839fd3e70593238d35226a0a1e4094abe397ea378b7bce35cfcb314e55b5d1b4fcdae3c19bee5610e78d283b3cb5b279c8b
+  languageName: node
+  linkType: hard
+
 "klaw-sync@npm:^6.0.0":
   version: 6.0.0
   resolution: "klaw-sync@npm:6.0.0"
@@ -11753,6 +11793,7 @@ __metadata:
     "@grpc/proto-loader": "npm:^0.7.13"
     "@mui/x-data-grid-premium": "npm:^8.7.0"
     "@nestjs/axios": "npm:^4.0.0"
+    "@nestjs/cache-manager": "npm:^3.0.1"
     "@nestjs/cli": "npm:^11.0.7"
     "@nestjs/common": "npm:^11.1.3"
     "@nestjs/core": "npm:^11.1.3"
@@ -11788,6 +11829,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^6.21.0"
     "@typescript-eslint/parser": "npm:^6.21.0"
     axios: "npm:^1.10.0"
+    cache-manager: "npm:^7.0.1"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.2"
     colors: "npm:^1.4.0"
