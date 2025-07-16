@@ -9,6 +9,10 @@ import { InjectModel } from '@sql-tools/nestjs-sequelize';
 import LawActRejectStatuses from 'src/Modules/Database/local.database/models/LawActRejectStatuses.model';
 import { Dict } from '@contact/models';
 import { Op } from '@sql-tools/sequelize';
+import CacheService from 'src/Modules/Cache/Cache.service';
+import { CacheEnums } from 'src/utils/enums';
+import { GetAllResponse } from './interfaces/get-all-response';
+import { endPerfomance } from 'src/utils/endPerfomance';
 
 @Injectable()
 export class RejectStatusesService {
@@ -19,15 +23,36 @@ export class RejectStatusesService {
     private readonly modelDebtRejectStatuses: typeof DebtRejectStatuses,
     @InjectModel(LawActRejectStatuses, 'local')
     private readonly modelLawActRejectStatuses: typeof LawActRejectStatuses,
-
     @InjectModel(Dict, 'contact')
     private readonly modelDict: typeof Dict,
+    private readonly cacheService: CacheService,
   ) {}
 
-  async getAll(): Promise<{
-    debt_reject_statuses: number[];
-    law_act_reject_statuses: string[];
-  }> {
+  async resetCacheRejectStatuses() {
+    const newRejectStatuses = await this.getAllFromDB();
+    this.cacheService.set({
+      key: CacheEnums.REJECT_STATUSES,
+      value: newRejectStatuses,
+      ttl: 60000,
+    });
+  }
+
+  async getAll() {
+    const begin = performance.now();
+    const cachedData = await this.cacheService.get({
+      key: CacheEnums.REJECT_STATUSES,
+    });
+    if (cachedData) {
+      endPerfomance(begin, 'From Cache'.cyan);
+      return cachedData as GetAllResponse;
+    }
+    this.logger.log('Cache not found, getting from database');
+    const response = await this.getAllFromDB();
+    endPerfomance(begin, 'From DB'.blue);
+    return response;
+  }
+
+  async getAllFromDB(): Promise<GetAllResponse> {
     try {
       const debtRejectStatuses = await this.modelDebtRejectStatuses.findAll();
       const lawActRejectStatuses =
@@ -55,12 +80,7 @@ export class RejectStatusesService {
         attributes,
       });
 
-      const response: {
-        debt_reject_statuses: number[];
-        dict_for_debt: Dict[];
-        law_act_reject_statuses: string[];
-        dict_for_law_act: Dict[];
-      } = {
+      const response: GetAllResponse = {
         debt_reject_statuses: debtRejectStatuses.map((debt) => debt.reject_id),
         dict_for_debt,
         law_act_reject_statuses: lawActRejectStatuses.map(
@@ -68,6 +88,12 @@ export class RejectStatusesService {
         ),
         dict_for_law_act,
       };
+
+      this.cacheService.set({
+        key: CacheEnums.REJECT_STATUSES,
+        value: response as GetAllResponse,
+        ttl: 60000,
+      });
 
       return response;
     } catch (error) {
@@ -101,6 +127,7 @@ export class RejectStatusesService {
         reject_id: dict.code,
       });
 
+      this.resetCacheRejectStatuses();
       return debt_reject_status;
     } catch (error) {
       this.logger.error(error);
@@ -142,6 +169,7 @@ export class RejectStatusesService {
         },
       );
 
+      this.resetCacheRejectStatuses();
       return law_act_reject_status;
     } catch (error) {
       this.logger.error(error);
@@ -155,14 +183,18 @@ export class RejectStatusesService {
   }
 
   async deleteDebtRejectStatus(reject_id: number) {
-    return await this.modelDebtRejectStatuses.destroy({
+    const debt_reject_status = await this.modelDebtRejectStatuses.destroy({
       where: { reject_id },
     });
+    this.resetCacheRejectStatuses();
+    return debt_reject_status;
   }
 
   async deleteLawActRejectStatus(name: string) {
-    return await this.modelLawActRejectStatuses.destroy({
+    const law_act_reject_status = await this.modelLawActRejectStatuses.destroy({
       where: { reject_name: name },
     });
+    this.resetCacheRejectStatuses();
+    return law_act_reject_status;
   }
 }
