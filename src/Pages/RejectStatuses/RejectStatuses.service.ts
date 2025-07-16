@@ -33,14 +33,40 @@ export class RejectStatusesService {
       const lawActRejectStatuses =
         await this.modelLawActRejectStatuses.findAll();
 
+      const attributes = ['id', 'code', 'name'];
+
+      const dict_for_debt = await this.modelDict.findAll({
+        where: {
+          parent_id: 6,
+          code: {
+            [Op.in]: [...debtRejectStatuses.map((debt) => debt.reject_id)],
+          },
+        },
+        attributes,
+      });
+
+      const dict_for_law_act = await this.modelDict.findAll({
+        where: {
+          parent_id: 18,
+          name: {
+            [Op.in]: [...lawActRejectStatuses.map((law) => law.reject_name)],
+          },
+        },
+        attributes,
+      });
+
       const response: {
         debt_reject_statuses: number[];
+        dict_for_debt: Dict[];
         law_act_reject_statuses: string[];
+        dict_for_law_act: Dict[];
       } = {
         debt_reject_statuses: debtRejectStatuses.map((debt) => debt.reject_id),
+        dict_for_debt,
         law_act_reject_statuses: lawActRejectStatuses.map(
           (law) => law.reject_name,
         ),
+        dict_for_law_act,
       };
 
       return response;
