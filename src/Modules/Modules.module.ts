@@ -7,6 +7,7 @@ import { TaskModule } from './Task/Task.module';
 import { VersionModule } from './Version/version.module';
 import { SmbModule } from '@tools/nestjs-smb2';
 import smb from '../config/smb.json';
+import { LocalCacheModule } from './Cache/Cache.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import smb from '../config/smb.json';
     VersionModule,
     SocketModule,
     TaskModule,
+    LocalCacheModule,
   ],
 })
 export class ModulesModule {}
