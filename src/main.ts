@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -39,12 +39,6 @@ async function bootstrap() {
     options.adapter,
   );
   app.register(contentParser);
-  // try {
-  //   await app.get(LocalSeed).seed();
-  // } catch (e) {
-  //   console.log(e);
-  //   throw e;
-  // }
   const config = new DocumentBuilder()
     .setTitle('Подача')
     .setDescription('ПО Подача для отдела ИП')
@@ -62,7 +56,18 @@ async function bootstrap() {
   );
   SwaggerModule.setup('docs', app, document, getSwaggerOptionsCustom());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  app.enableCors();
+
+  const cors_config =
+    node === 'dev'
+      ? {
+          origin: true,
+          methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+          allowedHeaders: ['Content-Type', 'Authorization', 'token'],
+          credentials: true,
+        }
+      : {};
+  console.log('cors_config'.yellow, cors_config);
+  app.enableCors(cors_config);
   await app.listen(client('port'), '0.0.0.0');
   console.log(
     `NODE_ENV: ${node}, Send-Application is running on: ${await app.getUrl()}/docs
