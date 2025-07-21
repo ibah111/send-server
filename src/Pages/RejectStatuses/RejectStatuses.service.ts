@@ -127,7 +127,7 @@ export class RejectStatusesService {
         reject_id: dict.code,
       });
 
-      this.resetCacheRejectStatuses();
+      await this.resetCacheRejectStatuses();
       return debt_reject_status;
     } catch (error) {
       this.logger.error(error);
@@ -169,7 +169,7 @@ export class RejectStatusesService {
         },
       );
 
-      this.resetCacheRejectStatuses();
+      await this.resetCacheRejectStatuses();
       return law_act_reject_status;
     } catch (error) {
       this.logger.error(error);
@@ -182,19 +182,27 @@ export class RejectStatusesService {
     }
   }
 
-  async deleteDebtRejectStatus(reject_id: number) {
-    const debt_reject_status = await this.modelDebtRejectStatuses.destroy({
+  async deleteDebtRejectStatus(reject_id: number): Promise<DebtRejectStatuses> {
+    const debt_reject_status = await this.modelDebtRejectStatuses.findOne({
       where: { reject_id },
     });
-    this.resetCacheRejectStatuses();
+    if (!debt_reject_status) {
+      throw new BadRequestException('Статус отказа не найден');
+    }
+    await debt_reject_status.destroy();
+    await this.resetCacheRejectStatuses();
     return debt_reject_status;
   }
 
-  async deleteLawActRejectStatus(name: string) {
-    const law_act_reject_status = await this.modelLawActRejectStatuses.destroy({
+  async deleteLawActRejectStatus(name: string): Promise<LawActRejectStatuses> {
+    const law_act_reject_status = await this.modelLawActRejectStatuses.findOne({
       where: { reject_name: name },
     });
-    this.resetCacheRejectStatuses();
+    if (!law_act_reject_status) {
+      throw new BadRequestException('Статус отказа не найден');
+    }
+    await law_act_reject_status.destroy();
+    await this.resetCacheRejectStatuses();
     return law_act_reject_status;
   }
 }
