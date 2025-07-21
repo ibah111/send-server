@@ -18,8 +18,8 @@ import { LawActRejectStatusDto } from './dto/law-act-reject-status.dto';
 import { DebtRejectStatusDto } from './dto/debt-reject-status.dto';
 import { AuthGuard } from 'src/Modules/Guards/auth.guard';
 
-// @ApiBasicAuth()
-// @UseGuards(AuthGuard)
+@ApiBasicAuth()
+@UseGuards(AuthGuard)
 @ApiTags('RejectStatuses')
 @Controller('reject-statuses')
 export class RejectStatusesController {
