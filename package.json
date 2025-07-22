@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@contact/models": "^0.4.11",
+    "@fastify/multipart": "^9.0.3",
     "@fastify/static": "^8.2.0",
     "@grpc/grpc-js": "^1.11.1",
     "@grpc/proto-loader": "^0.7.13",
