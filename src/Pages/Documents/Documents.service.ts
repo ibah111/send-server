@@ -34,6 +34,7 @@ export class DocumentsService {
     private readonly smb: SMBService,
     private downloader: Downloader,
   ) {}
+
   get(id: number) {
     return from(
       this.ModelConstValue.findOne({
@@ -65,7 +66,7 @@ export class DocumentsService {
       }),
     );
   }
-  //Получение вложений по исполнительному производству
+
   getAllLawExecDocAttachs(law_exec_id: number): Observable<DocAttach[]> {
     const law_exec_doc_attach = from(
       this.ModelLawExec.findOne({
@@ -76,7 +77,7 @@ export class DocumentsService {
     ).pipe(map((law_exec) => law_exec.DocAttachs!));
     return law_exec_doc_attach;
   }
-  //Получение вложений по судебной работе
+
   getAllLawActDocAttachs(law_act_id: number): Observable<DocAttach[]> {
     const law_act_doc_attach = from(
       this.ModelLawAct.findOne({
@@ -118,6 +119,7 @@ export class DocumentsService {
       ),
     );
   }
+
   remove(id: number, auth: AuthResult) {
     return from(
       this.ModelDocAttach.findByPk(id, {

@@ -1,4 +1,37 @@
+# Changelog
 
+## <small>0.3.9 (2025-07-22)</small>
+
+* feat: add multipart ([0d31e8f](https://git.usb.ru/send/server/commits/0d31e8f))
+* feat: registred multipart ([1585f2e](https://git.usb.ru/send/server/commits/1585f2e))
+
+## <small>0.3.8 (2025-07-21)</small>
+
+* feat: added 2 sqls in row for reject statuses ([de32741](https://git.usb.ru/send/server/commits/de32741))
+* feat: added key as generic additional type ([d1a12f6](https://git.usb.ru/send/server/commits/d1a12f6))
+* feat: added models to local models stack ([8e33076](https://git.usb.ru/send/server/commits/8e33076))
+* feat: added name to dict search ([91424ab](https://git.usb.ru/send/server/commits/91424ab))
+* feat: added rejected models table ([9c0f925](https://git.usb.ru/send/server/commits/9c0f925))
+* feat: cache manager ([3a65214](https://git.usb.ru/send/server/commits/3a65214))
+* feat: cache module ([bd798ce](https://git.usb.ru/send/server/commits/bd798ce))
+* feat: change op package ([86f6e20](https://git.usb.ru/send/server/commits/86f6e20))
+* feat: dev cors config ([d6a91c5](https://git.usb.ru/send/server/commits/d6a91c5))
+* feat: dict changes ([363deb8](https://git.usb.ru/send/server/commits/363deb8))
+* feat: downgrade git semver tags ([b461b12](https://git.usb.ru/send/server/commits/b461b12))
+* feat: new delete endpoints ([c35faa3](https://git.usb.ru/send/server/commits/c35faa3))
+* feat: reject status api ([8e2f8a9](https://git.usb.ru/send/server/commits/8e2f8a9))
+* feat: reject statuses updated api ([e321538](https://git.usb.ru/send/server/commits/e321538))
+* feat: removed transform ([8ad0b37](https://git.usb.ru/send/server/commits/8ad0b37))
+* feat: resetting cache reject statuses for perfomance needed ([2be3c3d](https://git.usb.ru/send/server/commits/2be3c3d))
+* feat: restart ([a08f0b0](https://git.usb.ru/send/server/commits/a08f0b0))
+* feat: unmute guards ([52aa673](https://git.usb.ru/send/server/commits/52aa673))
+* feat: update types ([beca457](https://git.usb.ru/send/server/commits/beca457))
+* feat: updated dict api ([6b32771](https://git.usb.ru/send/server/commits/6b32771))
+* feat: utility functions ([e96f52c](https://git.usb.ru/send/server/commits/e96f52c))
+* feat(package): update deps ([98ac4c8](https://git.usb.ru/send/server/commits/98ac4c8))
+* fix: event loop fix ([3d0777f](https://git.usb.ru/send/server/commits/3d0777f))
+* chore: removed logs ([bf19dcb](https://git.usb.ru/send/server/commits/bf19dcb))
+* Revert "Merge branch 'master_github'" ([361441b](https://git.usb.ru/send/server/commits/361441b))
 
 ## [0.3.7](https://git.usb.ru/send/server/compare/v0.3.6...v0.3.7) (2025-07-07)
 

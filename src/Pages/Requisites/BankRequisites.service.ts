@@ -5,9 +5,9 @@ import {
   SearchPortfolioInput,
 } from './BankRequisites.input';
 import { InjectModel } from '@sql-tools/nestjs-sequelize';
-import { Op } from 'sequelize';
 import getSize from 'src/utils/getSize';
 import { PortfoliosToRequisites } from 'src/Modules/Database/send.server.database/server.models/PortfolioToRequisites';
+import { Op } from '@sql-tools/sequelize';
 
 @Injectable()
 export default class BankRequisitesService {
@@ -94,14 +94,10 @@ export default class BankRequisitesService {
     );
     const size = getSize(body.paginationModel.pageSize);
     const offset = body.paginationModel.page * size;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
     const { count, rows } = await this.modelPortfolio.findAndCountAll({
       attributes: this.portfolioAttributes,
       offset,
       limit: size,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
       where: {
         id: {
           [Op.notIn]: ids,

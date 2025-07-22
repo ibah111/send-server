@@ -1,9 +1,12 @@
-import { Controller, Module, Post } from '@nestjs/common';
+import { Controller, Logger, Module, Post } from '@nestjs/common';
 @Controller('restart')
 export class RestartController {
+  private readonly logger = new Logger(RestartController.name);
+
   @Post()
   restart() {
-    process.kill(process.pid, 'SIGTERM');
+    this.logger.debug('Restarting server...');
+    process.exit(0);
   }
 }
 
