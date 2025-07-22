@@ -12,7 +12,7 @@ import { Op } from '@sql-tools/sequelize';
 import CacheService from 'src/Modules/Cache/Cache.service';
 import { CacheEnums } from 'src/utils/enums';
 import { GetAllResponse } from './interfaces/get-all-response';
-import { endPerfomance } from 'src/utils/endPerfomance';
+import { endPerfomance } from 'src/utils/loggers';
 
 @Injectable()
 export class RejectStatusesService {
@@ -48,7 +48,6 @@ export class RejectStatusesService {
     }
     this.logger.log('Cache not found, getting from database');
     const response = await this.getAllFromDB();
-    endPerfomance(begin, 'From DB'.blue);
     return response;
   }
 

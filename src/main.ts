@@ -7,8 +7,7 @@ import {
 import { AppModule } from './app.module';
 import https from './utils/https';
 import client from './utils/client';
-import { contentParser } from 'fastify-multer';
-import { LocalSeed } from './Modules/Database/local.database/local.seed';
+// import { contentParser } from 'fastify-multer';
 import moment from 'moment';
 import './utils/CustomCA';
 import 'colors';
@@ -17,6 +16,7 @@ import {
   getSwaggerOptions,
   getSwaggerOptionsCustom,
 } from './utils/getSwaggerOptions';
+import multipart from '@fastify/multipart';
 
 export const node = process.env.NODE_ENV;
 class bootstrapOptions {
@@ -33,12 +33,24 @@ class bootstrapOptions {
 
 moment.tz.setDefault('GMT');
 async function bootstrap() {
+  const logger = new Logger('bootstrap');
   const options = new bootstrapOptions();
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     options.adapter,
   );
-  app.register(contentParser);
+
+  await app
+    .register(multipart, {
+      limits: {
+        fileSize: 10 * 1024 * 1024,
+      },
+    })
+    .then(() => {
+      logger.debug('multipart registered');
+    });
+
+  // app.register(contentParser);
   const config = new DocumentBuilder()
     .setTitle('Подача')
     .setDescription('ПО Подача для отдела ИП')
@@ -62,7 +74,12 @@ async function bootstrap() {
       ? {
           origin: true,
           methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-          allowedHeaders: ['Content-Type', 'Authorization', 'token'],
+          allowedHeaders: [
+            'Content-Type',
+            'Authorization',
+            'token',
+            'Content-Length',
+          ],
           credentials: true,
         }
       : {};

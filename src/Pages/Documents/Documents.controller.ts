@@ -8,6 +8,7 @@ import {
   UploadedFile,
   UseGuards,
   StreamableFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FastifyFileInterceptor } from 'nest-fastify-multer';
 import { map } from 'rxjs';
@@ -18,21 +19,20 @@ import {
   LawActDocumentsInput,
 } from './Documents.input';
 import { DocumentsService } from './Documents.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBasicAuth()
+@UseGuards(AuthGuard)
 @ApiTags('Documents')
 @Controller('documents')
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
-  @UseGuards(AuthGuard)
   @Post('getLawExec')
   getLawExecAttachs(@Body() body: LawExecDocumentsInput) {
     if (body.id) {
       return this.documentsService.get(body.id);
     }
-    //Поиск вложений
     if (body.law_exec_id) {
-      //Поиск вложений исполнительного производства
       const LawExec = this.documentsService.getAllLawExecDocAttachs(
         body.law_exec_id,
       );
@@ -40,7 +40,6 @@ export class DocumentsController {
     }
   }
 
-  @UseGuards(AuthGuard)
   @Post('getLawAct')
   getLawActAttachs(@Body() body: LawActDocumentsInput) {
     const LawAct = this.documentsService.getAllLawActDocAttachs(
@@ -61,7 +60,7 @@ export class DocumentsController {
       ),
     );
   }
-  @UseGuards(AuthGuard)
+
   @FastifyFileInterceptor('file', {})
   @Post('upload/:id')
   upload(
@@ -71,7 +70,7 @@ export class DocumentsController {
   ) {
     return this.documentsService.upload(file, id, auth);
   }
-  @UseGuards(AuthGuard)
+
   @Post('remove')
   remove(@Body() body: DocumentsRemoveInput, @Auth() auth: AuthResult) {
     return this.documentsService.remove(body.id, auth);
