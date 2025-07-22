@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>0.3.9 (2025-07-22)</small>
+
+* feat: add multipart ([0d31e8f](https://git.usb.ru/send/server/commits/0d31e8f))
+* feat: registred multipart ([1585f2e](https://git.usb.ru/send/server/commits/1585f2e))
+
 ## <small>0.3.8 (2025-07-21)</small>
 
 * feat: added 2 sqls in row for reject statuses ([de32741](https://git.usb.ru/send/server/commits/de32741))
