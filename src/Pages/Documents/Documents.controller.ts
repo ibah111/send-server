@@ -20,6 +20,7 @@ import {
 } from './Documents.input';
 import { DocumentsService } from './Documents.service';
 import { ApiBasicAuth, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/utils/decorators/public.decorator';
 
 @ApiBasicAuth()
 @UseGuards(AuthGuard)
@@ -27,6 +28,21 @@ import { ApiBasicAuth, ApiTags } from '@nestjs/swagger';
 @Controller('documents')
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
+
+  @Public()
+  @Get(':id')
+  getFile(@Param('id', ParseIntPipe) id: number) {
+    return this.documentsService.get(id).pipe(
+      map(
+        (doc) =>
+          new StreamableFile(doc.file, {
+            type: doc.mime,
+            disposition: doc.disposition,
+          }),
+      ),
+    );
+  }
+
   @Post('getLawExec')
   getLawExecAttachs(@Body() body: LawExecDocumentsInput) {
     if (body.id) {
@@ -46,19 +62,6 @@ export class DocumentsController {
       body.law_act_id,
     );
     return LawAct;
-  }
-
-  @Get(':id')
-  getFile(@Param('id', ParseIntPipe) id: number) {
-    return this.documentsService.get(id).pipe(
-      map(
-        (doc) =>
-          new StreamableFile(doc.file, {
-            type: doc.mime,
-            disposition: doc.disposition,
-          }),
-      ),
-    );
   }
 
   @FastifyFileInterceptor('file', {})

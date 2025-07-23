@@ -11,7 +11,8 @@ import { checkLogin } from './check_login';
 import { ClassConstructor } from 'class-transformer';
 import { getConnectionToken } from '@sql-tools/nestjs-sequelize';
 import { Model } from '@sql-tools/sequelize-typescript';
-import { ModuleRef } from '@nestjs/core';
+import { ModuleRef, Reflector } from '@nestjs/core';
+import { IS_PUBLIC_KEY } from 'src/utils/decorators/public.decorator';
 export class AuthUser<T> {
   output: T extends true ? 'Вы вошли' : 'Вы не вошли';
   error: T extends false ? string : never;
@@ -52,7 +53,12 @@ export class AuthGuard implements CanActivate {
     'contact',
   );
   private readonly modelUserLocal = this.getRepository(UserLocal, 'local');
-  constructor(private moduleRef: ModuleRef) {}
+
+  constructor(
+    private moduleRef: ModuleRef,
+    private reflector: Reflector,
+  ) {}
+
   private getRepository<T extends Model>(
     model: ClassConstructor<T>,
     connection_name: string,
@@ -62,9 +68,19 @@ export class AuthGuard implements CanActivate {
     });
     return connection.getRepository<T>(model);
   }
+
   async canActivate(ctx: ExecutionContext) {
     const data = ctx.switchToHttp().getRequest();
     const body = data.headers;
+
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      ctx.getHandler(),
+      ctx.getClass(),
+    ]);
+    if (isPublic) {
+      return true;
+    }
+
     if (body) {
       const { token } = body;
       const result = await checkLogin(token);
